@@ -1,0 +1,46 @@
+// Filtering and aggregation: Azure Data Explorer sample StormEvents.
+let startTime = ago(7d);
+let endTime = now();
+StormEvents
+| where StartTime between (startTime .. endTime)
+| where State == "TEXAS"
+| summarize Events = count(), TotalDamage = sum(DamageProperty) by State
+| top 10 by Events desc;
+
+// Time series.
+StormEvents
+| where StartTime > startTime
+| make-series Events = count() on StartTime from startTime to endTime step 1h;
+
+// Dynamic values and a small dimension join.
+let Regions = datatable(State:string, Region:string)
+[
+    "TEXAS", "South",
+    "WASHINGTON", "West"
+];
+StormEvents
+| join kind=leftouter Regions on State
+| extend Metadata = dynamic({"tags":["storm","sample"]})
+| mv-expand Tag = Metadata.tags
+| summarize Events = count(), States = make_set(State) by Region;
+
+// Cross-cluster references and user-defined functions.
+declare query_parameters(minimumEvents:long = 10);
+let RecentEvents = (window:timespan) {
+    cluster("mycluster.kusto.windows.net").database("Telemetry").Events
+    | where Timestamp > ago(window)
+};
+RecentEvents(1h)
+| extend Region = tostring(parse_json(Metadata).region)
+| where Message matches regex @"error\s+""[^""]+"""
+| summarize Events = countif(Level == "Error") by Region
+| where Events >= minimumEvents;
+
+// Syntax fixtures, not a single executable production script.
+print Verbatim = @"a ""quoted"" string",
+      Multiline = ```line one
+| not an operator inside a string
+line three```,
+      Timestamp = datetime(2026-01-01T00:00:00Z),
+      Duration = 2milliseconds;
+.show tables

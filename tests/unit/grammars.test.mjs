@@ -92,6 +92,29 @@ test('Kusto escaped verbatim and multiline strings do not tokenize their content
 		assert.ok(flatten(tokens, 'string').length);
 	}
 });
+test('Kusto dotted identifiers are not management commands and uppercase UDFs are functions', () => {
+	load('kusto');
+	const tokens = prism.tokenize(
+		'Metadata.region\ncluster("x").database("db").Events\n.show tables\nMyFunction(2milliseconds)\nT | where Message hasprefix "x"',
+		prism.languages.kusto,
+	);
+	const commands = flatten(tokens, 'command');
+	assert.equal(commands.length, 1);
+	assert.ok(commands[0].includes('.show'));
+	assert.ok(flatten(tokens, 'function').join(' ').includes('MyFunction'));
+	assert.ok(flatten(tokens, 'number').join(' ').includes('2milliseconds'));
+	assert.ok(flatten(tokens, 'keyword').join(' ').includes('hasprefix'));
+});
+test('real Kusto examples include joins, dynamic data, query parameters and cross-cluster queries', () => {
+	load('kusto');
+	const source = readFileSync('tests/fixtures/kusto.kql', 'utf8');
+	const tokens = prism.tokenize(source, prism.languages.kusto);
+	const html = prism.highlight(source, prism.languages.kusto, 'kusto');
+	assert.ok(flatten(tokens, 'keyword').join(' ').includes('join'));
+	assert.ok(flatten(tokens, 'function').join(' ').includes('RecentEvents'));
+	assert.ok(html.includes('token datetime'));
+	assert.ok(html.includes('token verbatim-string'));
+});
 test(
 	'adversarial grammar fixtures terminate within a bounded test timeout',
 	{ timeout: 5000 },
