@@ -80,14 +80,19 @@ Validated endpoints before delivery:
 | WordPress | PHP | Environment |
 |---|---|---|
 | 6.8.12 | 8.2.35 | WordPress Playground / Chromium; both themes |
+| 6.8.12 | 8.5.12 | WordPress Playground / Chromium; both themes |
+| 7.1.4 | 8.2.35 | WordPress Playground / Chromium; both themes |
 | 7.1.4 | 8.5.12 | WordPress Playground / Chromium; both themes |
 | PHP units and lint | 8.5.12 | Native Windows PHP |
 | PHP units and syntax | 8.2.35 | PHP.wasm |
 
-The full four-corner CI matrix also includes WordPress 6.8.12/PHP 8.5 and
-WordPress 7.1.4/PHP 8.2. Delivery validation JSON in `artifacts` is the authority
-for locally completed matrix runs. Do not describe a pending run as passed.
-Test counts and final matrix results are summarized in the delivery response.
+All four combinations completed locally: 147 PHP integration assertions per
+combination, plus actual browser clipboard/editor/keyboard/conditional-asset
+checks. The extracted production ZIP also passed on WordPress 7.1.4/PHP 8.5.12.
+Standalone suites passed seven grammar tests, 124 PHP assertions and five
+frontend browser tests. Native lint, PHPStan, Composer strict validation and
+dependency audits passed. Delivery validation JSON/screenshots in `artifacts`
+record the WordPress/benchmark evidence. These local runs are not hosted CI.
 
 ## Build and grammars
 

@@ -7,9 +7,12 @@ A dedicated read-only security review examined the migration diff
 preview, build isolation and dependency changes. It reported **no security
 vulnerabilities in the reviewed changes** and independently reran the original
 122 PHP assertions and five grammar tests successfully. It did not independently
-run the browser or WordPress suites. Later compatibility/grammar refinements
-have additional automated checks; the review result is not a blanket audit of
-all upstream code or every future commit.
+run the browser or WordPress suites. A final incremental review examined
+`fab7b34..668b59d` plus the then-pending implementation/tooling changes: runtime
+consolidation, aliases/settings, serialized-block protection, Kusto refinements,
+CI, packaging and test harnesses. It also reported **no vulnerabilities** and
+did not rerun tests. The result is not a blanket audit of all upstream code or
+every future commit.
 
 | # | Severity | File | Lines | Vulnerability | Confidence |
 |---|----------|------|-------|---------------|------------|

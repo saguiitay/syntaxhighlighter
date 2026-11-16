@@ -29,16 +29,18 @@ PHP, Python and markup blocks; twenty alternating TypeScript/Kusto blocks; and
 | Scenario | Legacy JS+CSS gzip | Prism JS+CSS gzip | Legacy / Prism requests | Legacy / Prism init median |
 |---|---:|---:|---:|---:|
 | No code | 0 B | 0 B | 0 / 0 | harness only |
-| One TypeScript | 12,260 B | 8,656 B | 4 / 5 | 4.4 / 10.1 ms |
-| Five languages | 17,015 B | 14,718 B | 8 / 10 | 15.9 / 20.5 ms |
-| Twenty blocks | 12,693 B | 9,907 B | 5 / 6 | 23.0 / 19.0 ms |
-| Large KQL | 11,830 B | 7,130 B | 4 / 3 | 28.1 / 100.5 ms |
+| One TypeScript | 12,260 B | 8,656 B | 4 / 5 | 4.9 / 9.4 ms |
+| Five languages | 17,015 B | 14,779 B | 8 / 10 | 14.7 / 19.4 ms |
+| Twenty blocks | 12,693 B | 9,968 B | 5 / 6 | 18.0 / 22.0 ms |
+| Large KQL | 11,830 B | 7,191 B | 4 / 3 | 27.6 / 85.0 ms |
 
-This run reduced transferred JS+CSS by 13.5%-39.7% on code pages. Small
-TypeScript and mixed-language pages have modest initialization regressions;
-twenty-block initialization improved. Native Kusto coloring costs substantially
-more than the old plaintext fallback. Do not interpret that as a parser-speed
-comparison or promise these timings on other hardware.
+This final run reduced transferred JS+CSS by 13.1%-39.2% on code pages.
+Initialization regressed in all four code scenarios in this run; the earlier
+twenty-block improvement did not reproduce. Native Kusto coloring costs
+substantially more than the old plaintext fallback. Do not interpret that as a
+parser-speed comparison or promise these timings on other hardware. Measurements
+are local medians on a shared Windows workstation, not isolated laboratory
+results. The final snapshot uses Node 24.18.0 and Chromium 145.0.7632.6.
 
 ## Refinements and limits
 
