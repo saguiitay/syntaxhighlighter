@@ -9,6 +9,11 @@ $plugin->codeformat = false;
 $legacy_pre = $plugin->convert_legacy_pre( '<pre class="brush: js; first-line: 20; highlight: [20-21];">&lt;script&gt;literal&lt;/script&gt;</pre>' );
 sh_assert( '<script>literal</script>' === sh_source( $legacy_pre ) && false !== strpos( $legacy_pre, 'data-firstline="20"' ), 'Legacy direct pre adapter.' );
 $fixtures = json_decode( file_get_contents( $root . '/tests/fixtures/legacy-content.json' ), true );
+$nested_source = '[js]<img src=x onerror=alert(1)>[/js] [code]&amp; literal[/code]';
+$nested_saved = '<!-- wp:syntaxhighlighter/code {"language":"plain"} -->' . "\n" . '<pre class="wp-block-syntaxhighlighter-code">' . htmlspecialchars( $nested_source, ENT_NOQUOTES, 'UTF-8' ) . '</pre>' . "\n" . '<!-- /wp:syntaxhighlighter/code -->';
+sh_assert( $nested_saved === $plugin->encode_shortcode_contents( $nested_saved ), 'Classic save filter must not re-encode serialized block source.' );
+$plugin->codeformat = false;
+sh_assert( $nested_source === sh_source( apply_filters( 'the_content', $nested_saved ) ), 'Classic rendering must not parse shortcodes inside block source.' );
 foreach ( $fixtures['shortcodes'] as $fixture ) {
 	$id = wp_insert_post( array( 'post_title' => $fixture['name'], 'post_status' => 'publish', 'post_content' => wp_slash( $fixture['content'] ) ), true );
 	sh_assert( ! is_wp_error( $id ), 'Fixture post save failed.' );

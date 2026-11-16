@@ -165,6 +165,50 @@ try {
 				`Editor content changed: ${result.name}`,
 			);
 	}
+	await page.keyboard.press('Escape');
+	await page.waitForFunction(() =>
+		wp.data
+			.select('core/block-editor')
+			.getBlocks()
+			.some((block) => block.name === 'syntaxhighlighter/code'),
+	);
+	const edited = await page.evaluate(async () => {
+		const block = wp.data
+			.select('core/block-editor')
+			.getBlocks()
+			.find((item) => item.name === 'syntaxhighlighter/code');
+		const before = { ...block.attributes };
+		wp.data
+			.dispatch('core/block-editor')
+			.updateBlockAttributes(block.clientId, { language: 'kusto' });
+		const after = wp.data
+			.select('core/block-editor')
+			.getBlock(block.clientId).attributes;
+		await wp.data.dispatch('core/editor').savePost();
+		return {
+			before,
+			after,
+			content: wp.data.select('core/editor').getEditedPostContent(),
+		};
+	});
+	assert.equal(edited.after.language, 'kusto', 'Language changes must persist');
+	assert.equal(edited.before.content, edited.after.content);
+	assert.equal(edited.after.firstLineNumber, '12');
+	assert.equal(edited.after.highlightLines, '12,14-15');
+	assert.ok(edited.content.includes('"language":"kusto"'));
+	const iframe = page.frameLocator('iframe[name="editor-canvas"]');
+	const textarea = (await page.locator('iframe[name="editor-canvas"]').count())
+		? iframe.locator('.wp-block-syntaxhighlighter__textarea')
+		: page.locator('.wp-block-syntaxhighlighter__textarea');
+	assert.equal(
+		await textarea.first().inputValue(),
+		edited.before.content,
+		'Old blocks must remain editable without transformed text',
+	);
+	assert.equal(
+		await page.getByText('Attempt Block Recovery', { exact: true }).count(),
+		0,
+	);
 	assert.ok(
 		!errors.some((error) =>
 			/validation|syntaxhighlighter|undefined/i.test(error),

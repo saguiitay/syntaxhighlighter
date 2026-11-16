@@ -658,6 +658,25 @@ class SyntaxHighlighter {
 	function shortcode_hack( $content, $callback, $ignore_html = true ) {
 		global $shortcode_tags;
 
+		// Classic filters must not interpret examples inside serialized code blocks.
+		$opening = '<!-- wp:syntaxhighlighter/code';
+		$closing = '<!-- /wp:syntaxhighlighter/code -->';
+		$offset = 0;
+		$protected = '';
+		while ( false !== ( $start = strpos( $content, $opening, $offset ) ) ) {
+			$end = strpos( $content, $closing, $start + strlen( $opening ) );
+			if ( false === $end ) {
+				break;
+			}
+			$end += strlen( $closing );
+			$protected .= $this->shortcode_hack( substr( $content, $offset, $start - $offset ), $callback, $ignore_html );
+			$protected .= substr( $content, $start, $end - $start );
+			$offset = $end;
+		}
+		if ( $offset ) {
+			return $protected . $this->shortcode_hack( substr( $content, $offset ), $callback, $ignore_html );
+		}
+
 		// Regex is slow. Let's do some strpos() checks first.
 		if ( ! $this->string_has_shortcodes( $content, $this->shortcodes ) ) {
 			return $content;
