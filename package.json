@@ -1,40 +1,45 @@
 {
-  "name": "syntaxhighlighter",
-  "version": "3.7.2",
-  "description": "Easily post syntax-highlighted code to your WordPress site without having to modify the code at all.",
-  "homepage": "https://alex.blog/wordpress-plugins/syntaxhighlighter/",
-  "author": "Alex Mills (Viper007Bond)",
-  "license": "GPL-2.0-or-later",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Viper007Bond/syntaxhighlighter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Viper007Bond/syntaxhighlighter/issues"
-  },
-  "scripts": {
-    "start": "wp-scripts start",
-    "build": "npm run build:assets && npm run archive",
-    "build:assets": "wp-scripts build && npm run create-dist",
-    "create-dist": "mkdir -p dist && mv build/index.js dist/blocks.build.js && mv build/index.css dist/blocks.editor.build.css && mv build/style-index.css dist/blocks.style.build.css",
-    "distclean": "rm -rf node_modules && rm -rf dist && rm -rf build",
-    "archive": "composer archive --file=$npm_package_name --format=zip"
-  },
-  "dependencies": {
-    "@wordpress/escape-html": "^3.47.0",
-    "@wordpress/create-block": "^4.90.0",
-    "@wordpress/scripts": "32.3.0",
-    "lodash.unescape": "^4.0.1",
-    "lodash.flow": "^3.5.0"
-  },
-  "overrides": {
-    "basic-ftp": "5.3.1",
-    "cookie": "0.7.2",
-    "cross-spawn": "7.0.6",
-    "form-data": "4.0.4",
-    "minimatch": "10.2.5",
-    "serialize-javascript": "7.0.5",
-    "tar-fs": "3.1.2",
-    "ws": "8.21.0"
-  }
+	"name": "syntaxhighlighter-prism",
+	"version": "4.0.0",
+	"private": true,
+	"description": "Backward-compatible WordPress code highlighting with local Prism grammars, TypeScript and Kusto.",
+	"license": "GPL-2.0-or-later",
+	"repository": "github:saguiitay/syntaxhighlighter",
+	"engines": {
+		"node": ">=24.18",
+		"npm": ">=11.16"
+	},
+	"scripts": {
+		"build": "node scripts/build.mjs",
+		"archive": "node scripts/package.mjs",
+		"test": "node --test tests/unit/*.test.mjs",
+		"test:browser": "playwright test",
+		"test:php": "node scripts/test-php.mjs",
+		"test:wordpress": "node scripts/test-wordpress.mjs",
+		"benchmark": "node scripts/benchmark.mjs",
+		"lint": "eslint src scripts tests --no-warn-ignored",
+		"format:check": "prettier --check src/frontend.js src/frontend.css scripts tests/unit tests/browser *.mjs package.json languages.json .github/workflows",
+		"audit": "npm audit --omit=optional",
+		"check": "npm run build && npm test && npm run lint && npm run format:check && npm run test:php && npm run test:browser"
+	},
+	"dependencies": {
+		"prismjs": "1.30.0"
+	},
+	"devDependencies": {
+		"@php-wasm/node": "3.1.63",
+		"@php-wasm/universal": "3.1.63",
+		"@playwright/test": "1.58.2",
+		"@wp-playground/cli": "3.1.63",
+		"esbuild": "0.28.2",
+		"eslint": "9.39.5",
+		"fflate": "0.8.3",
+		"prettier": "3.8.2"
+	},
+	"overrides": {
+		"body-parser": "1.20.9",
+		"fast-uri": "3.1.9",
+		"isomorphic-git": "1.44.12",
+		"proxy-addr": "2.0.8",
+		"qs": "6.17.1"
+	}
 }

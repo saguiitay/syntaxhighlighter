@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import flow from 'lodash.flow';
 
 /**
  * WordPress dependencies
@@ -15,10 +14,11 @@ import { escapeEditableHTML } from '@wordpress/escape-html';
  * @return {string} The given content with some characters escaped.
  */
 export function escape( content ) {
-	return flow(
-		escapeEditableHTML,
-		escapeProtocolInIsolatedUrls
-	)( content || '' );
+	return escapeProtocolInIsolatedUrls( escapeEditableHTML( content || '' ) );
+}
+
+export function unescapeIsolatedUrls( content = '' ) {
+	return content.replace( /^(\s*https?:)&#0?47;&#0?47;([^\s<>"]+\s*)$/gm, '$1//$2' );
 }
 
 /**

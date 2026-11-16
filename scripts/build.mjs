@@ -1,0 +1,84 @@
+import { build, transform } from 'esbuild';
+import { readFile, mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const components = require('prismjs/components.json').languages;
+const { aliases } = JSON.parse(await readFile('languages.json', 'utf8'));
+await mkdir('dist/grammars', { recursive: true });
+const grammarIds = new Set();
+function visit(id) {
+	if (id === 'plain' || grammarIds.has(id)) return;
+	if (!components[id]) throw new Error(`Unknown Prism grammar: ${id}`);
+	for (const dep of [components[id].require || []].flat()) visit(dep);
+	grammarIds.add(id);
+}
+Object.values(aliases).forEach(visit);
+const manifest = { aliases, dependencies: {} };
+for (const id of grammarIds) {
+	manifest.dependencies[id] = [components[id].require || []].flat();
+	let source = await readFile(
+		require.resolve(`prismjs/components/prism-${id}.js`),
+		'utf8',
+	);
+	if (id === 'kusto')
+		source += '\n' + (await readFile('src/kusto-extension.js', 'utf8'));
+	const { code } = await transform(
+		`(function(Prism){${source}\n})(window.SyntaxHighlighterPrism);`,
+		{ minify: true },
+	);
+	await writeFile(`dist/grammars/${id}.js`, code);
+}
+const core = await readFile(
+	require.resolve('prismjs/components/prism-core.js'),
+	'utf8',
+);
+const { code } = await transform(
+	`window.SyntaxHighlighterPrism=(function(){var window,global;var module={exports:{}};${core}\nmodule.exports.manual=true;module.exports.disableWorkerMessageHandler=true;return module.exports;})();`,
+	{ minify: true },
+);
+await writeFile('dist/prism-core.js', code);
+await writeFile('dist/manifest.json', JSON.stringify(manifest, null, 2) + '\n');
+await build({
+	entryPoints: ['src/frontend.js'],
+	bundle: true,
+	minify: true,
+	outfile: 'dist/frontend.js',
+	target: 'es2020',
+});
+await build({
+	entryPoints: ['src/frontend.css'],
+	minify: true,
+	outfile: 'dist/frontend.css',
+});
+await build({
+	entryPoints: ['src/index.js'],
+	bundle: true,
+	minify: true,
+	outfile: 'dist/blocks.build.js',
+	loader: { '.js': 'jsx', '.scss': 'empty' },
+	jsxFactory: 'wp.element.createElement',
+	jsxFragment: 'wp.element.Fragment',
+	plugins: [
+		{
+			name: 'wordpress-externals',
+			setup(builder) {
+				builder.onResolve({ filter: /^@wordpress\// }, ({ path }) => ({
+					path,
+					namespace: 'wordpress',
+				}));
+				builder.onLoad(
+					{ filter: /.*/, namespace: 'wordpress' },
+					({ path }) => ({
+						contents: `module.exports = wp.${path.slice('@wordpress/'.length).replace(/-([a-z])/g, (_, c) => c.toUpperCase())};`,
+					}),
+				);
+			},
+		},
+	],
+});
+await copyFile('src/editor.css', 'dist/blocks.editor.build.css');
+await copyFile(require.resolve('prismjs/LICENSE'), 'dist/PRISM-LICENSE');
+console.log(
+	`Built editor, frontend and ${grammarIds.size} dependency-aware local grammars.`,
+);

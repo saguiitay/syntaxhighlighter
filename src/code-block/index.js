@@ -9,9 +9,9 @@ const { settings } = window.syntaxHighlighterData;
 
 export default {
 	title: __( 'SyntaxHighlighter Code', 'syntaxhighlighter' ),
-	description: __( 'Adds syntax highlighting to source code (front end only).', 'syntaxhighlighter' ),
+	description: __( 'Local syntax highlighting, including TypeScript and Kusto Query Language.', 'syntaxhighlighter' ),
 	icon: 'editor-code',
-	category: 'formatting',
+	category: 'text',
 	keywords: [
 		// translators: Keyword that user might search for when trying to locate block.
 		__( 'Source', 'syntaxhighlighter' ),
@@ -53,6 +53,8 @@ export default {
 			type: 'boolean',
 			default: settings.quickCode.default,
 		},
+		theme: { type: 'string' },
+		collapse: { type: 'boolean' },
 	},
 	supports: {
 		html: false,

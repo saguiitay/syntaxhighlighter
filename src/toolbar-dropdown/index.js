@@ -59,7 +59,7 @@ const ToolbarDropdown = ( {
 					<MenuGroup label={ optionsLabel }>
 						{ options.map( ( option ) => {
 							const isSelected =
-								option.value === selectedOption.value;
+								option.value === selectedOption?.value;
 							let itemClassNames = 'syntaxhighlighter-toolbar-dropdown__option';
 							if ( isSelected ) {
 								itemClassNames += ' is-selected';

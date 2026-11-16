@@ -5,11 +5,12 @@ import {
 	ToggleControl,
 	TextControl,
 	ToolbarGroup,
+	ComboboxControl,
 } from '@wordpress/components';
 
 import { Fragment } from '@wordpress/element';
 
-import { InspectorControls, BlockControls } from '@wordpress/editor';
+import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import languageToolbar from './toolbar.language';
 
@@ -41,12 +42,12 @@ export default ( { attributes, setAttributes } ) => {
 
 		blockSettings.push(
 			<PanelRow key="code-language">
-				<SelectControl
+				<ComboboxControl
 					label={ __( 'Code Language', 'syntaxhighlighter' ) }
 					value={ language }
 					options={ options }
 					onChange={ ( nextLanguage ) => setAttributes( { language: nextLanguage } ) }>
-				</SelectControl>
+				</ComboboxControl>
 			</PanelRow>
 		);
 
@@ -143,6 +144,22 @@ export default ( { attributes, setAttributes } ) => {
 		</BlockControls>
 		<InspectorControls key="syntaxHighlighterInspectorControls">
 			<PanelBody title={ __( 'Settings', 'syntaxhighlighter' ) }>
+				<SelectControl
+					label={ __( 'Theme', 'syntaxhighlighter' ) }
+					value={ attributes.theme || '' }
+					options={ [
+						{ label: __( 'Site setting', 'syntaxhighlighter' ), value: '' },
+						{ label: __( 'Automatic', 'syntaxhighlighter' ), value: 'auto' },
+						{ label: __( 'Light', 'syntaxhighlighter' ), value: 'light' },
+						{ label: __( 'Dark', 'syntaxhighlighter' ), value: 'dark' },
+					] }
+					onChange={ ( theme ) => setAttributes( { theme: theme || undefined } ) }
+				/>
+				<ToggleControl
+					label={ __( 'Collapse code', 'syntaxhighlighter' ) }
+					checked={ !! attributes.collapse }
+					onChange={ ( collapse ) => setAttributes( { collapse } ) }
+				/>
 				{ blockSettings }
 			</PanelBody>
 		</InspectorControls>

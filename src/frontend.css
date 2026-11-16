@@ -1,0 +1,154 @@
+.sh-prism {
+	--sh-bg: #f5f8fc;
+	--sh-ink: #223047;
+	--sh-muted: #52657e;
+	--sh-rule: #cad5e4;
+	--sh-keyword: #185abd;
+	--sh-string: #14665e;
+	--sh-function: #7657b1;
+	--sh-highlight: #c58b1f22;
+	margin-block: 1.5em;
+	border: 1px solid var(--sh-rule);
+	border-radius: 0.35rem;
+	background: var(--sh-bg);
+	color: var(--sh-ink);
+	overflow: hidden;
+	font-size: 1rem;
+}
+.sh-prism.sh-theme-dark {
+	--sh-bg: #182433;
+	--sh-ink: #e4ecf7;
+	--sh-muted: #a4b7ce;
+	--sh-rule: #43536b;
+	--sh-keyword: #8dbaff;
+	--sh-string: #8bd5c5;
+	--sh-function: #d0b4ff;
+}
+@media (prefers-color-scheme: dark) {
+	.sh-prism.sh-theme-auto {
+		--sh-bg: #182433;
+		--sh-ink: #e4ecf7;
+		--sh-muted: #a4b7ce;
+		--sh-rule: #43536b;
+		--sh-keyword: #8dbaff;
+		--sh-string: #8bd5c5;
+		--sh-function: #d0b4ff;
+	}
+}
+.sh-prism pre.syntaxhighlighter-code {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 1rem;
+	overflow: auto;
+	max-height: 75vh;
+	background: transparent;
+	color: inherit;
+	text-shadow: none;
+	font-family: Consolas, 'Liberation Mono', monospace;
+	line-height: 1.65;
+	white-space: pre;
+	text-align: left;
+	direction: ltr;
+}
+.sh-prism pre.syntaxhighlighter-code code {
+	display: block;
+	font: inherit;
+	color: inherit;
+	background: transparent;
+	padding: 0;
+	border: 0;
+	white-space: inherit;
+}
+.sh-prism .sh-line {
+	position: relative;
+	display: inline-block;
+	min-width: 100%;
+	box-sizing: border-box;
+}
+.sh-prism [data-gutter='true'] .sh-line {
+	padding-left: calc(var(--sh-gutter, 4ch) + 1ch);
+}
+.sh-prism [data-gutter='true'] .sh-line::before {
+	position: absolute;
+	left: 0;
+	width: var(--sh-gutter, 4ch);
+	content: attr(data-line);
+	text-align: right;
+	color: var(--sh-muted);
+	user-select: none;
+}
+.sh-prism .sh-highlight {
+	background: var(--sh-highlight);
+	box-shadow: inset 3px 0 #c58b1f;
+}
+.sh-prism .sh-tab {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: bottom;
+}
+.sh-prism pre.sh-wrap {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+.sh-prism .sh-title,
+.sh-prism .sh-controls,
+.sh-prism summary,
+.sh-prism .sh-large-notice {
+	padding: 0.5rem 1rem;
+	font: inherit;
+}
+.sh-prism .sh-controls {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.75rem;
+	font-size: 0.8rem;
+	border-bottom: 1px solid var(--sh-rule);
+}
+.sh-prism .sh-copy {
+	font: inherit;
+	color: inherit;
+	background: transparent;
+	padding: 0.25rem 0.6rem;
+	border: 1px solid var(--sh-rule);
+	border-radius: 0.2rem;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+.sh-prism summary {
+	cursor: pointer;
+}
+.sh-prism :is(button, summary, pre, a):focus-visible {
+	outline: 2px solid var(--sh-keyword);
+	outline-offset: -2px;
+}
+.sh-prism .token {
+	background: transparent;
+}
+.sh-prism .token:is(.comment, .prolog, .doctype) {
+	color: var(--sh-muted);
+}
+.sh-prism .token:is(.keyword, .operator, .boolean, .tag) {
+	color: var(--sh-keyword);
+}
+.sh-prism .token:is(.string, .attr-value, .char) {
+	color: var(--sh-string);
+}
+.sh-prism .token:is(.function, .class-name, .number, .regex) {
+	color: var(--sh-function);
+}
+.sh-prism a {
+	color: inherit;
+	text-decoration: underline;
+}
+.sh-prism.sh-theme-none .token {
+	color: inherit;
+}
+@media (max-width: 480px) {
+	.sh-prism {
+		font-size: 0.875rem;
+	}
+	.sh-prism pre.syntaxhighlighter-code {
+		padding: 0.6rem;
+	}
+}

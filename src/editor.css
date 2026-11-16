@@ -1,0 +1,8 @@
+.wp-block-syntaxhighlighter-code textarea.wp-block-syntaxhighlighter__textarea {
+	font: 0.9rem/1.6 Consolas, "Liberation Mono", monospace;
+	min-height: 8rem;
+	white-space: pre;
+	overflow: auto;
+	resize: vertical;
+}
+.syntaxhighlighter-editor-preview { margin-top: 0.75rem; }

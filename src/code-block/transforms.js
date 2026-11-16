@@ -1,6 +1,9 @@
 import { createBlock } from '@wordpress/blocks';
 import { escapeHTML } from '@wordpress/escape-html';
-import unescape from 'lodash.unescape';
+const unescape = ( content ) => content.replace(
+	/&(?:amp|lt|gt|quot|#39);/g,
+	( entity ) => ( { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" } )[ entity ]
+);
 
 export default {
 	from: [
