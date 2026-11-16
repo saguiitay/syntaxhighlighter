@@ -1,0 +1,35 @@
+{
+  "baselineCommit": "60d9239",
+  "blocks": [
+    {
+      "name": "javascript",
+      "serialized": "<!-- wp:syntaxhighlighter/code {\"language\":\"jscript\",\"lineNumbers\":true,\"firstLineNumber\":\"12\",\"highlightLines\":\"12,14-15\",\"wrapLines\":false,\"makeURLsClickable\":false,\"quickCode\":true} -->\n<pre class=\"wp-block-syntaxhighlighter-code\">const html = '&lt;script&gt;alert(\"xss\")&lt;/script&gt;';\nconsole.log(html);</pre>\n<!-- /wp:syntaxhighlighter/code -->",
+      "source": "const html = '<script>alert(\"xss\")</script>';\nconsole.log(html);"
+    },
+    {
+      "name": "plain-entities",
+      "serialized": "<!-- wp:syntaxhighlighter/code {\"language\":\"plain\"} -->\n<pre class=\"wp-block-syntaxhighlighter-code\">&amp;lt;literal&amp;gt; &amp;amp; &lt;foo&gt;\nhttps:&amp;#47;&amp;#47;example.com</pre>\n<!-- /wp:syntaxhighlighter/code -->",
+      "source": "&lt;literal&gt; &amp; <foo>\nhttps://example.com"
+    },
+    {
+      "name": "empty",
+      "serialized": "<!-- wp:syntaxhighlighter/code -->\n<pre class=\"wp-block-syntaxhighlighter-code\"></pre>\n<!-- /wp:syntaxhighlighter/code -->",
+      "source": ""
+    }
+  ],
+  "shortcodes": [
+    { "name": "raw-classic", "format": 1, "content": "[code language=\"csharp\"]public class Example {}[/code]", "source": "public class Example {}" },
+    { "name": "encoded-html", "format": 2, "content": "[sourcecode language=\"html\"]&lt;img src=x onerror=alert(1)&gt;[/sourcecode]", "source": "<img src=x onerror=alert(1)>" },
+    { "name": "raw-js", "format": 1, "content": "[js firstline=\"42\" highlight=\"42,44-46\" gutter=\"true\" collapse=\"true\" theme=\"midnight\"]<script>alert(\"xss\")</script>[/js]", "source": "<script>alert(\"xss\")</script>" },
+    { "name": "aliases", "format": 1, "content": "[source lang=\"py\" toolbar=\"true\" wraplines=\"true\"]print('hello')[/source]", "source": "print('hello')" },
+    { "name": "unicode", "format": 1, "content": "[code language=\"text\"]λ → 日本語\r\n\tone\rtwo\n[/code]", "source": "λ → 日本語\r\n\tone\rtwo\n" },
+    { "name": "nested-looking", "format": 1, "content": "[code language=\"text\"][gallery id=\"1\"] [js]literal[/js][/code]", "source": "[gallery id=\"1\"] [js]literal[/js]" },
+    { "name": "entities", "format": 2, "content": "[code language=\"plain\"]&amp;lt;literal&amp;gt; &amp;amp;[/code]", "source": "&lt;literal&gt; &amp;" },
+    { "name": "empty", "format": 1, "content": "[code][/code]", "source": "" }
+  ],
+  "themes": ["default", "django", "eclipse", "emacs", "fadetogrey", "midnight", "rdark", "none"],
+  "generatedCases": {
+    "long": { "repeat": 20000, "line": "StormEvents | where State == \"TEXAS\" | summarize count() by State\n" },
+    "multiple": { "count": 20, "languages": ["js", "php", "python", "xml", "sql"] }
+  }
+}
