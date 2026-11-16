@@ -48,7 +48,7 @@ PRs also address dependency security and gutter sizing. The fork's issue tracker
 is disabled; no existing fork PRs were returned. No upstream change is assumed
 merged solely because it was proposed.
 
-## Target design
+## Implemented design
 
 Keep the proven WordPress storage/editor adapters. Isolate language resolution,
 option normalization, escaped semantic HTML and asset dependencies in
@@ -57,7 +57,7 @@ disabled. Render-time enqueueing covers nested/reusable blocks, widgets and
 template hooks rather than guessing from the main post.
 
 Use locally bundled Prism 1.30.0, with automatic scanning and workers disabled.
-Build core, dependency-aware grammar files and a small scoped controller. Only
+Build a combined core/controller runtime and dependency-aware grammar files. Only
 rendered languages are enqueued. Preserve upstream licenses. No CDN, telemetry,
 network grammar loader, eval, MutationObserver or database migration.
 
@@ -66,8 +66,8 @@ plain textarea, with an opt-in preview sharing frontend tokens/styles. No Monaco
 Native details/summary supplies collapse without JS; code is readable without JS.
 Line decoration and copying must never mutate the original code text.
 
-Provisional identity: **SyntaxHighlighter Prism for WordPress**, distributable
-slug `syntaxhighlighter-prism`, version 4.0.0. Minimum WordPress 6.8 / PHP 8.2:
+Identity: **SyntaxHighlighter Prism for WordPress**, distributable
+slug `syntaxhighlighter-prism`, version 4.0.0. Minimum WordPress 6.8.12 / PHP 8.2:
 a contemporary WordPress baseline and security-supported PHP, avoiding obsolete
 editor compatibility shims. Actual tested versions, not aspirational claims,
 are recorded in development/security/performance documentation.

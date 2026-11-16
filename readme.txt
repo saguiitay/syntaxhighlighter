@@ -1,27 +1,27 @@
-=== SyntaxHighlighter Evolved ===
+=== SyntaxHighlighter Prism for WordPress ===
 Contributors: Viper007Bond, automattic, donncha
 Donate link: https://alex.blog/2019/03/13/in-memory-of-alex-donation-link-update/
-Tags: code, source, sourcecode, php, syntax highlighting, syntax, highlight, highlighting, highlighter, WordPress.com
-Requires at least: 5.7
-Tested up to: 6.7
-Stable tag: 3.7.2
+Tags: code, syntax highlighting, typescript, kusto, prism
+Requires at least: 6.8.12
+Requires PHP: 8.2
+Tested up to: 7.1.4
+Stable tag: 4.0.0
+License: GPL-2.0-or-later
 
-Easily post syntax-highlighted code to your site without having to modify the code at all. As seen on WordPress.com.
+Replacement fork with local Prism highlighting, TypeScript, TSX and Kusto Query Language, retaining existing content.
 
 == Description ==
 
-*Now with support for the new block editor in WordPress 5.0!*
+This is an independent replacement fork, not an Automattic release. Deactivate SyntaxHighlighter Evolved before activating it. No database migration or content resave is needed.
 
-SyntaxHighlighter Evolved allows you to easily post syntax-highlighted code to your site without losing its formatting or making any manual changes. It uses the [SyntaxHighlighter JavaScript package by Alex Gorbatchev](http://alexgorbatchev.com/wiki/SyntaxHighlighter).
+Uses local Prism.js 1.30.0. Supports TypeScript, TSX, Kusto Query Language (kql/kusto), existing aliases and shortcodes, native collapse, literal-source copy, line numbers/highlights and light/dark/system themes.
 
-For a live demo, see [this plugin's homepage](https://alex.blog/wordpress-plugins/syntaxhighlighter/).
+See README.md and docs/ for installation, compatibility differences, exact tested versions and development instructions.
 
-For a list of supported languages (most widely used languages are supported), see the [WordPress.com support document](http://en.support.wordpress.com/code/posting-source-code/).
+For supported languages, aliases and option equivalents, see docs/compatibility.md in this package.
 
-Development of this plugin is [on GitHub](https://github.com/Automattic/syntaxhighlighter).
-Translation of the plugin into different languages is on the [translation page](https://translate.wordpress.org/projects/wp-plugins/syntaxhighlighter).
-
-*[As seen on WordPress.com.](http://en.blog.wordpress.com/2009/12/02/better-source-code-posting/)*
+Development of this fork is [on GitHub](https://github.com/saguiitay/syntaxhighlighter).
+The retained translation domain and historical contributors come from SyntaxHighlighter Evolved. This fork is not the plugin deployed on WordPress.com or distributed by the upstream translation project.
 
 == Frequently Asked Questions ==
 
@@ -39,6 +39,13 @@ Try excluding this plugin's Javascript from any performance optimizations your s
 2. An example use of the editor block.
 
 == ChangeLog ==
+
+= Version 4.0.0 (unreleased fork) =
+
+- Replace old engines with Prism; add TypeScript, TSX and Kusto.
+- Preserve storage and public content identifiers; harden safe rendering.
+- Add focused PHP/JS/browser/WordPress tests, CI and reproducible packages.
+- See CHANGELOG.md and docs/compatibility.md for behavioral differences.
 
 = Version 3.7.2 =
 
