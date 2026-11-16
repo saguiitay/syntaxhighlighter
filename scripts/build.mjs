@@ -46,6 +46,10 @@ await build({
 	outfile: 'dist/frontend.js',
 	target: 'es2020',
 });
+await writeFile(
+	'dist/runtime.js',
+	code + '\n' + (await readFile('dist/frontend.js', 'utf8')),
+);
 await build({
 	entryPoints: ['src/frontend.css'],
 	minify: true,

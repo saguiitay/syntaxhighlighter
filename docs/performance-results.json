@@ -1,0 +1,352 @@
+{
+  "environment": {
+    "node": "v22.23.5",
+    "os": "win32 10.0.26300",
+    "cpu": "Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz",
+    "chromium": "145.0.7632.6",
+    "repetitions": 5
+  },
+  "method": "Loopback HTTP gzip; fresh browser context per sample; DOMContentLoaded synchronous initialization; median of five; legacy TypeScript uses JScript and KQL uses plaintext because the original has no native grammar. Counts exclude the HTML document.",
+  "results": [
+    {
+      "scenario": "no-code",
+      "engine": "legacy",
+      "blocks": 0,
+      "javascriptBytes": 0,
+      "javascriptGzip": 0,
+      "cssBytes": 0,
+      "cssGzip": 0,
+      "requests": 0,
+      "initializationMs": 0.10000002384185791,
+      "scriptMs": 0.289,
+      "samples": [
+        {
+          "initializationMs": 0.19999998807907104,
+          "scriptMs": 0.8019999999999999
+        },
+        {
+          "initializationMs": 0.19999998807907104,
+          "scriptMs": 0.386
+        },
+        {
+          "initializationMs": 0,
+          "scriptMs": 0.289
+        },
+        {
+          "initializationMs": 0.09999996423721313,
+          "scriptMs": 0.247
+        },
+        {
+          "initializationMs": 0.10000002384185791,
+          "scriptMs": 0.25
+        }
+      ]
+    },
+    {
+      "scenario": "no-code",
+      "engine": "prism",
+      "blocks": 0,
+      "javascriptBytes": 0,
+      "javascriptGzip": 0,
+      "cssBytes": 0,
+      "cssGzip": 0,
+      "requests": 0,
+      "initializationMs": 0.09999996423721313,
+      "scriptMs": 0.342,
+      "samples": [
+        {
+          "initializationMs": 0.09999996423721313,
+          "scriptMs": 0.321
+        },
+        {
+          "initializationMs": 0.09999996423721313,
+          "scriptMs": 0.23900000000000002
+        },
+        {
+          "initializationMs": 0.09999996423721313,
+          "scriptMs": 0.342
+        },
+        {
+          "initializationMs": 0.09999996423721313,
+          "scriptMs": 0.359
+        },
+        {
+          "initializationMs": 0.10000002384185791,
+          "scriptMs": 0.373
+        }
+      ]
+    },
+    {
+      "scenario": "one-typescript",
+      "engine": "legacy",
+      "blocks": 1,
+      "javascriptBytes": 25820,
+      "javascriptGzip": 10139,
+      "cssBytes": 10081,
+      "cssGzip": 2121,
+      "requests": 4,
+      "initializationMs": 4.400000035762787,
+      "scriptMs": 8.043,
+      "samples": [
+        {
+          "initializationMs": 4.100000023841858,
+          "scriptMs": 8.043
+        },
+        {
+          "initializationMs": 4.400000035762787,
+          "scriptMs": 7.186
+        },
+        {
+          "initializationMs": 5.5,
+          "scriptMs": 8.748000000000001
+        },
+        {
+          "initializationMs": 4.600000023841858,
+          "scriptMs": 8.191
+        },
+        {
+          "initializationMs": 4.199999988079071,
+          "scriptMs": 6.934
+        }
+      ]
+    },
+    {
+      "scenario": "one-typescript",
+      "engine": "prism",
+      "blocks": 1,
+      "javascriptBytes": 18159,
+      "javascriptGzip": 7600,
+      "cssBytes": 2811,
+      "cssGzip": 1056,
+      "requests": 5,
+      "initializationMs": 10.100000023841858,
+      "scriptMs": 12.588000000000001,
+      "samples": [
+        {
+          "initializationMs": 11.599999964237213,
+          "scriptMs": 14.25
+        },
+        {
+          "initializationMs": 10.100000023841858,
+          "scriptMs": 12.588000000000001
+        },
+        {
+          "initializationMs": 10.699999988079071,
+          "scriptMs": 12.776
+        },
+        {
+          "initializationMs": 8.800000011920929,
+          "scriptMs": 11.548
+        },
+        {
+          "initializationMs": 8.400000035762787,
+          "scriptMs": 10.441
+        }
+      ]
+    },
+    {
+      "scenario": "five-languages",
+      "engine": "legacy",
+      "blocks": 5,
+      "javascriptBytes": 36771,
+      "javascriptGzip": 14894,
+      "cssBytes": 10081,
+      "cssGzip": 2121,
+      "requests": 8,
+      "initializationMs": 15.900000035762787,
+      "scriptMs": 19.851,
+      "samples": [
+        {
+          "initializationMs": 18.400000035762787,
+          "scriptMs": 22.818
+        },
+        {
+          "initializationMs": 16.5,
+          "scriptMs": 20.266
+        },
+        {
+          "initializationMs": 15.5,
+          "scriptMs": 19.851
+        },
+        {
+          "initializationMs": 15.399999976158142,
+          "scriptMs": 18.426000000000002
+        },
+        {
+          "initializationMs": 15.900000035762787,
+          "scriptMs": 19.810000000000002
+        }
+      ]
+    },
+    {
+      "scenario": "five-languages",
+      "engine": "prism",
+      "blocks": 5,
+      "javascriptBytes": 33012,
+      "javascriptGzip": 13662,
+      "cssBytes": 2811,
+      "cssGzip": 1056,
+      "requests": 10,
+      "initializationMs": 20.5,
+      "scriptMs": 24.982,
+      "samples": [
+        {
+          "initializationMs": 20.19999998807907,
+          "scriptMs": 24.473000000000003
+        },
+        {
+          "initializationMs": 20.5,
+          "scriptMs": 24.982
+        },
+        {
+          "initializationMs": 22.69999998807907,
+          "scriptMs": 27.86
+        },
+        {
+          "initializationMs": 18.80000001192093,
+          "scriptMs": 23.094
+        },
+        {
+          "initializationMs": 20.80000001192093,
+          "scriptMs": 25.773
+        }
+      ]
+    },
+    {
+      "scenario": "twenty-blocks",
+      "engine": "legacy",
+      "blocks": 20,
+      "javascriptBytes": 26641,
+      "javascriptGzip": 10572,
+      "cssBytes": 10081,
+      "cssGzip": 2121,
+      "requests": 5,
+      "initializationMs": 23,
+      "scriptMs": 27.439,
+      "samples": [
+        {
+          "initializationMs": 23,
+          "scriptMs": 27.439
+        },
+        {
+          "initializationMs": 24.5,
+          "scriptMs": 32.001000000000005
+        },
+        {
+          "initializationMs": 16.099999964237213,
+          "scriptMs": 19.006
+        },
+        {
+          "initializationMs": 23.600000023841858,
+          "scriptMs": 27.726
+        },
+        {
+          "initializationMs": 17.100000023841858,
+          "scriptMs": 20.524
+        }
+      ]
+    },
+    {
+      "scenario": "twenty-blocks",
+      "engine": "prism",
+      "blocks": 20,
+      "javascriptBytes": 20586,
+      "javascriptGzip": 8851,
+      "cssBytes": 2811,
+      "cssGzip": 1056,
+      "requests": 6,
+      "initializationMs": 19,
+      "scriptMs": 21.877,
+      "samples": [
+        {
+          "initializationMs": 16.69999998807907,
+          "scriptMs": 19.043999999999997
+        },
+        {
+          "initializationMs": 19,
+          "scriptMs": 22.779
+        },
+        {
+          "initializationMs": 19.5,
+          "scriptMs": 21.877
+        },
+        {
+          "initializationMs": 14.900000035762787,
+          "scriptMs": 17.162
+        },
+        {
+          "initializationMs": 19.80000001192093,
+          "scriptMs": 23.558
+        }
+      ]
+    },
+    {
+      "scenario": "large-kql",
+      "engine": "legacy",
+      "blocks": 1,
+      "javascriptBytes": 24760,
+      "javascriptGzip": 9709,
+      "cssBytes": 10081,
+      "cssGzip": 2121,
+      "requests": 4,
+      "initializationMs": 28.100000023841858,
+      "scriptMs": 30.715,
+      "samples": [
+        {
+          "initializationMs": 28.30000001192093,
+          "scriptMs": 31.555
+        },
+        {
+          "initializationMs": 27.69999998807907,
+          "scriptMs": 30.047
+        },
+        {
+          "initializationMs": 28.100000023841858,
+          "scriptMs": 30.715
+        },
+        {
+          "initializationMs": 28.600000023841858,
+          "scriptMs": 30.807000000000002
+        },
+        {
+          "initializationMs": 26.399999976158142,
+          "scriptMs": 28.547
+        }
+      ]
+    },
+    {
+      "scenario": "large-kql",
+      "engine": "prism",
+      "blocks": 1,
+      "javascriptBytes": 13807,
+      "javascriptGzip": 6074,
+      "cssBytes": 2811,
+      "cssGzip": 1056,
+      "requests": 3,
+      "initializationMs": 100.5,
+      "scriptMs": 101.29299999999999,
+      "samples": [
+        {
+          "initializationMs": 97.29999995231628,
+          "scriptMs": 97.974
+        },
+        {
+          "initializationMs": 127.80000001192093,
+          "scriptMs": 129.11
+        },
+        {
+          "initializationMs": 111.89999997615814,
+          "scriptMs": 113.015
+        },
+        {
+          "initializationMs": 100.5,
+          "scriptMs": 101.29299999999999
+        },
+        {
+          "initializationMs": 91.30000001192093,
+          "scriptMs": 92.501
+        }
+      ]
+    }
+  ]
+}

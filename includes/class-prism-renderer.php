@@ -13,7 +13,7 @@ class SyntaxHighlighter_Prism_Renderer {
 		$this->plugin = $plugin;
 		$this->manifest = json_decode( file_get_contents( dirname( __DIR__ ) . '/dist/manifest.json' ), true );
 		$url = plugins_url( 'dist/', dirname( __DIR__ ) . '/syntaxhighlighter.php' );
-		wp_register_script( 'syntaxhighlighter-core', $url . 'prism-core.js', array(), $plugin->pluginver, true );
+		wp_register_script( 'syntaxhighlighter-core', $url . 'runtime.js', array(), $plugin->pluginver, true );
 		foreach ( $this->manifest['dependencies'] as $id => $dependencies ) {
 			$handles = array( 'syntaxhighlighter-core' );
 			foreach ( $dependencies as $dependency ) {
@@ -21,9 +21,9 @@ class SyntaxHighlighter_Prism_Renderer {
 			}
 			wp_register_script( 'syntaxhighlighter-prism-' . $id, $url . 'grammars/' . $id . '.js', $handles, $plugin->pluginver, true );
 		}
-		wp_register_script( 'syntaxhighlighter-prism', $url . 'frontend.js', array( 'syntaxhighlighter-core' ), $plugin->pluginver, true );
+		wp_register_script( 'syntaxhighlighter-prism', false, array( 'syntaxhighlighter-core' ), $plugin->pluginver, true );
 		wp_register_style( 'syntaxhighlighter-core', apply_filters( 'syntaxhighlighter_csscoreurl', $url . 'frontend.css' ), array(), $plugin->pluginver );
-		wp_localize_script( 'syntaxhighlighter-prism', 'syntaxHighlighterPrismLabels', array(
+		wp_localize_script( 'syntaxhighlighter-core', 'syntaxHighlighterPrismLabels', array(
 			'copy' => __( 'Copy code', 'syntaxhighlighter' ),
 			'copied' => __( 'Code copied.', 'syntaxhighlighter' ),
 			'failed' => __( 'Copy failed. Select the code and copy it manually.', 'syntaxhighlighter' ),
