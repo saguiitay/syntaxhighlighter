@@ -399,7 +399,7 @@ class SyntaxHighlighter {
 				wp_json_encode( $this->brush_names, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ),
 				wp_json_encode( $settings, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ),
 				wp_json_encode( $grammars ),
-				wp_json_encode( $manifest['aliases'] ),
+				wp_json_encode( $this->prism->aliases(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ),
 				wp_json_encode( $this->prism->options( array() )['theme'] )
 			),
 			'before'
@@ -1382,10 +1382,11 @@ class SyntaxHighlighter {
 		}
 		$settings = is_array( $settings ) ? $settings : array();
 		$normalized = $this->prism->options( array_merge( $this->defaultsettings, $settings ) );
+		$normalized['theme'] = isset( $settings['theme'] ) && is_string( $settings['theme'] ) && isset( $this->themes[ $settings['theme'] ] ) ? $settings['theme'] : $this->defaultsettings['theme'];
 		foreach ( array( 'loadallbrushes', 'autolinks', 'collapse', 'gutter', 'light', 'smarttabs', 'toolbar', 'wraplines', 'quickcode', 'copy' ) as $key ) {
 			$normalized[ $key ] = SyntaxHighlighter_Prism_Renderer::boolean( $settings[ $key ] ?? false ) ? 1 : 0;
 		}
-		$normalized['shversion'] = isset( $settings['shversion'] ) && 2 === (int) $settings['shversion'] ? 2 : 3;
+		$normalized['shversion'] = isset( $settings['shversion'] ) ? ( 2 === (int) $settings['shversion'] ? 2 : 3 ) : $this->settings['shversion'];
 		return array_merge( $this->settings, $normalized );
 	}
 

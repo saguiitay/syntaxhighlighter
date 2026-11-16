@@ -13,7 +13,7 @@
 		"clojure": "clojure",
 		"clj": "clojure",
 		"cpp": "cpp",
-		"c": "c",
+		"c": "cpp",
 		"c-sharp": "csharp",
 		"csharp": "csharp",
 		"cs": "csharp",

@@ -17,6 +17,10 @@ function sh_run_tests( $plugin ) {
 	foreach ( array( 'unknown', '"><script>', '', array( 'js' ) ) as $bad ) {
 		sh_assert( 'plain' === $plugin->prism->language( $bad ), 'Unknown language must be plain.' );
 	}
+	$original_brush = $plugin->brushes['js'];
+	$plugin->brushes['js'] = 'python';
+	sh_assert( 'python' === $plugin->prism->language( 'js' ), 'Legacy alias override was ignored.' );
+	$plugin->brushes['js'] = $original_brush;
 	$plugin->codeformat = 1;
 	$payloads = array(
 		'<script>alert("xss")</script>',

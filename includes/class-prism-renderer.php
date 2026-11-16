@@ -30,16 +30,24 @@ class SyntaxHighlighter_Prism_Renderer {
 		) );
 	}
 
-	public function language( $name ) {
-		if ( ! is_string( $name ) ) {
-			return 'plain';
+	public function aliases() {
+		$aliases = $this->manifest['aliases'];
+		foreach ( $this->plugin->brushes as $alias => $legacy ) {
+			$aliases[ $alias ] = is_string( $legacy ) && isset( $this->manifest['aliases'][ $legacy ] ) ? $this->manifest['aliases'][ $legacy ] : 'plain';
 		}
-		$name = strtolower( trim( $name ) );
-		$aliases = (array) apply_filters( 'syntaxhighlighter_prism_aliases', $this->manifest['aliases'] );
-		// Old alias filters map to brush IDs; resolve those IDs through the adapter.
-		$legacy = isset( $this->plugin->brushes[ $name ] ) ? $this->plugin->brushes[ $name ] : $name;
-		$id = isset( $aliases[ $name ] ) ? $aliases[ $name ] : ( isset( $aliases[ $legacy ] ) ? $aliases[ $legacy ] : 'plain' );
-		return is_string( $id ) && isset( $this->manifest['dependencies'][ $id ] ) ? $id : 'plain';
+		$aliases = (array) apply_filters( 'syntaxhighlighter_prism_aliases', $aliases );
+		foreach ( $aliases as $alias => $id ) {
+			if ( ! is_string( $id ) || ( 'plain' !== $id && ! isset( $this->manifest['dependencies'][ $id ] ) ) ) {
+				$aliases[ $alias ] = 'plain';
+			}
+		}
+		return $aliases;
+	}
+
+	public function language( $name ) {
+		$aliases = $this->aliases();
+		$name = is_string( $name ) ? strtolower( trim( $name ) ) : '';
+		return isset( $aliases[ $name ] ) ? $aliases[ $name ] : 'plain';
 	}
 
 	public static function boolean( $value ) {
