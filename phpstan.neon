@@ -1,0 +1,7 @@
+parameters:
+	level: 1
+	paths:
+		- syntaxhighlighter.php
+		- includes
+	scanFiles:
+		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php

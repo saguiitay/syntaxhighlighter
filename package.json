@@ -16,6 +16,7 @@
 		"test:browser": "playwright test",
 		"test:php": "node scripts/test-php.mjs",
 		"test:wordpress": "node scripts/test-wordpress.mjs",
+		"test:package": "node scripts/test-package.mjs",
 		"benchmark": "node scripts/benchmark.mjs",
 		"lint": "eslint src scripts tests --no-warn-ignored",
 		"format:check": "prettier --check src/frontend.js src/frontend.css scripts tests/unit tests/browser *.mjs package.json languages.json .github/workflows",

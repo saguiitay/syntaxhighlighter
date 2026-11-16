@@ -2,13 +2,15 @@
 require '/wordpress/wp-load.php';
 wp_set_current_user( 1 );
 $root = WP_PLUGIN_DIR . '/syntaxhighlighter-prism';
-require $root . '/tests/php/assertions.php';
+define( 'SH_TEST_PLUGIN_ROOT', $root );
+$suite = dirname( __DIR__ );
+require $suite . '/php/assertions.php';
 $plugin = $GLOBALS['SyntaxHighlighter'];
 $rendered = sh_run_tests( $plugin );
 $plugin->codeformat = false;
 $legacy_pre = $plugin->convert_legacy_pre( '<pre class="brush: js; first-line: 20; highlight: [20-21];">&lt;script&gt;literal&lt;/script&gt;</pre>' );
 sh_assert( '<script>literal</script>' === sh_source( $legacy_pre ) && false !== strpos( $legacy_pre, 'data-firstline="20"' ), 'Legacy direct pre adapter.' );
-$fixtures = json_decode( file_get_contents( $root . '/tests/fixtures/legacy-content.json' ), true );
+$fixtures = json_decode( file_get_contents( $suite . '/fixtures/legacy-content.json' ), true );
 $nested_source = '[js]<img src=x onerror=alert(1)>[/js] [code]&amp; literal[/code]';
 $nested_saved = '<!-- wp:syntaxhighlighter/code {"language":"plain"} -->' . "\n" . '<pre class="wp-block-syntaxhighlighter-code">' . htmlspecialchars( $nested_source, ENT_NOQUOTES, 'UTF-8' ) . '</pre>' . "\n" . '<!-- /wp:syntaxhighlighter/code -->';
 sh_assert( $nested_saved === $plugin->encode_shortcode_contents( $nested_saved ), 'Classic save filter must not re-encode serialized block source.' );

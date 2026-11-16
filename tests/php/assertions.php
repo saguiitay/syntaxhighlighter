@@ -10,7 +10,8 @@ function sh_source( $html ) {
 	return html_entity_decode( str_replace( '&#13;', "\r", $matches[1] ?? '' ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 }
 function sh_run_tests( $plugin ) {
-	$manifest = json_decode( file_get_contents( dirname( __DIR__, 2 ) . '/dist/manifest.json' ), true );
+	$plugin_root = defined( 'SH_TEST_PLUGIN_ROOT' ) ? SH_TEST_PLUGIN_ROOT : dirname( __DIR__, 2 );
+	$manifest = json_decode( file_get_contents( $plugin_root . '/dist/manifest.json' ), true );
 	foreach ( $manifest['aliases'] as $alias => $language ) {
 		sh_assert( $plugin->prism->language( $alias ) === $language, 'Alias: ' . $alias );
 	}
