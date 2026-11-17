@@ -3,6 +3,7 @@ import { chromium } from '@playwright/test';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
+import { verifySettingsPreview } from '../tests/browser/settings-preview.mjs';
 
 await mkdir('artifacts', { recursive: true });
 const wpVersion = process.env.WP_VERSION || '6.8.12';
@@ -268,6 +269,16 @@ try {
 		`artifacts/${artifactPrefix}wordpress-${wpVersion}-php-${phpVersion}.json`,
 		JSON.stringify(data, null, 2),
 	);
+	const previewResult = await instance.playground.run({
+		code: "<?php require '/test-suite/wordpress/settings-preview.php';",
+	});
+	assert.equal(
+		previewResult.exitCode,
+		0,
+		previewResult.errors + previewResult.text,
+	);
+	assert.equal(previewResult.errors, '');
+	await verifySettingsPreview(page, instance.serverUrl, instance.playground);
 	console.log(
 		'Classic and block themes, conditional assets, old/new Gutenberg serialization: passed.',
 	);

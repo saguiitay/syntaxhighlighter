@@ -54,6 +54,13 @@ await build({
 	outfile: 'dist/frontend.js',
 	target: 'es2020',
 });
+await build({
+	entryPoints: ['src/settings-preview.js'],
+	bundle: true,
+	minify: true,
+	outfile: 'dist/settings-preview.js',
+	target: 'es2020',
+});
 await writeFile(
 	'dist/runtime.js',
 	code + '\n' + (await readFile('dist/frontend.js', 'utf8')),

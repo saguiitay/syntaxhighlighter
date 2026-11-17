@@ -63,6 +63,8 @@ changes are in [compatibility](docs/compatibility.md).
 ## Appearance and interaction
 
 Choose the site-wide theme under **Settings > SyntaxHighlighter > Color Theme**.
+The settings preview follows unsaved form changes immediately; **Save Changes**
+applies them to the site. It uses the same renderer as published snippets.
 Available choices include **Coy** (light/dark/automatic), Prism Default, Prism
 Dark, Funky, Okaidia, Solarized Light, Tomorrow Night and Twilight.
 Blocks and shortcodes inherit it unless they specify their own theme, for

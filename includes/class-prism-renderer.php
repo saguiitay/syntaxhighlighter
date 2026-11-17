@@ -155,7 +155,8 @@ class SyntaxHighlighter_Prism_Renderer {
 		$escaped = str_replace( array( '[', "\r" ), array( '&#x5B;', '&#13;' ), htmlspecialchars( $source, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
 		$code = '<pre tabindex="0" class="' . esc_attr( implode( ' ', $classes ) ) . '"' . $data . '><code class="language-' . esc_attr( $language ) . '">' . $escaped . '</code></pre>';
 		$title = '' !== $options['title'] ? '<div class="sh-title">' . esc_html( $options['title'] ) . '</div>' : '';
-		$controls = $options['copy'] || $options['toolbar'] ? '<div class="sh-controls"><button type="button" class="sh-copy" hidden>' . esc_html__( 'Copy code', 'syntaxhighlighter' ) . '</button><span class="sh-status" role="status" aria-live="polite"></span></div>' : '';
+		$button = $options['copy'] ? '<button type="button" class="sh-copy" hidden>' . esc_html__( 'Copy code', 'syntaxhighlighter' ) . '</button>' : '';
+		$controls = $options['copy'] || $options['toolbar'] ? '<div class="sh-controls">' . $button . '<span class="sh-status" role="status" aria-live="polite"></span></div>' : '';
 		if ( $options['collapse'] ) {
 			$code = '<details class="sh-collapse"><summary>' . esc_html( $options['title'] ? $options['title'] : __( 'Show code', 'syntaxhighlighter' ) ) . '</summary>' . $controls . $code . '</details>';
 			$title = '';

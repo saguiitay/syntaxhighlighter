@@ -83,6 +83,8 @@ class SyntaxHighlighter {
 		// Admin hooks
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'register_settings_page' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_settings_assets' ) );
+		add_action( 'wp_ajax_syntaxhighlighter_preview', array( $this, 'ajax_settings_preview' ) );
 		add_filter( 'mce_external_plugins', array( $this, 'add_tinymce_plugin' ) );
 		add_filter( 'save_post', array( $this, 'mark_as_encoded' ), 10, 2 );
 		add_filter( 'plugin_action_links', array( $this, 'settings_link' ), 10, 2 );
@@ -1043,6 +1045,69 @@ class SyntaxHighlighter {
 	}
 
 
+	public function enqueue_settings_assets( $hook ) {
+		if ( 'settings_page_syntaxhighlighter' !== $hook ) {
+			return;
+		}
+		wp_enqueue_style( 'syntaxhighlighter-core' );
+		foreach ( $this->themes as $theme => $name ) {
+			$this->prism->enqueue_theme( $theme );
+		}
+		wp_enqueue_script( 'syntaxhighlighter-settings-preview', plugins_url( 'dist/settings-preview.js', __FILE__ ), array( 'syntaxhighlighter-prism-php' ), $this->pluginver, true );
+		wp_localize_script( 'syntaxhighlighter-settings-preview', 'syntaxHighlighterSettingsPreview', array(
+			'url' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'syntaxhighlighter-preview' ),
+			'updating' => __( 'Updating preview...', 'syntaxhighlighter' ),
+			'failed' => __( 'Preview could not be updated. The previous preview is still shown; try changing an option again.', 'syntaxhighlighter' ),
+		) );
+	}
+
+	public function ajax_settings_preview() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You cannot preview these settings.', 'syntaxhighlighter' ) ), 403 );
+		}
+		check_ajax_referer( 'syntaxhighlighter-preview', 'nonce' );
+		if ( ! isset( $_POST['syntaxhighlighter_settings'] ) || ! is_array( $_POST['syntaxhighlighter_settings'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'Preview settings are missing or invalid.', 'syntaxhighlighter' ) ), 400 );
+		}
+		wp_send_json_success( array( 'html' => $this->settings_preview( wp_unslash( $_POST['syntaxhighlighter_settings'] ) ) ) );
+	}
+
+	public function settings_preview( $settings = null ) {
+		$previous_settings = $this->settings;
+		$previous_format = $this->codeformat;
+		try {
+			if ( null !== $settings ) {
+				$this->settings = $this->validate_settings( $settings );
+			}
+			$this->codeformat = 1;
+			$democode = apply_filters( 'syntaxhighlighter_democode', '[sourcecode language="php"]<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>PHP Code Example</title>
+</head>
+<body>
+	<h1>' . __( 'PHP Code Example', 'syntaxhighlighter' ) . '</h1>
+
+	<p><?php echo \'' . __( 'Hello World!', 'syntaxhighlighter' ) . '\'; ?></p>
+
+	<div class="foobar">
+' . __( '		This	is	an
+		example	of	smart
+		tabs.', 'syntaxhighlighter' ) . '
+	</div>
+
+	<p><?php echo \'https://wordpress.org/\'; ?></p>
+</body>
+</html>[/sourcecode]' );
+			return $this->parse_shortcodes( $democode );
+		} finally {
+			$this->settings = $previous_settings;
+			$this->codeformat = $previous_format;
+		}
+	}
+
 	// Settings page
 	function settings_page() { ?>
 
@@ -1064,7 +1129,7 @@ class SyntaxHighlighter {
 <div class="wrap">
 	<h2><?php esc_html_e( 'SyntaxHighlighter Settings', 'syntaxhighlighter' ); ?></h2>
 
-	<form method="post" action="options.php">
+	<form method="post" action="options.php" id="syntaxhighlighter-settings">
 
 	<?php settings_fields('syntaxhighlighter_settings'); ?>
 
@@ -1203,44 +1268,17 @@ class SyntaxHighlighter {
 
 	<h3><?php esc_html_e( 'Preview', 'syntaxhighlighter' ); ?></h3>
 
-	<p><?php esc_html_e( 'Click &quot;Save Changes&quot; to update this preview.', 'syntaxhighlighter' ); ?>
+	<p><?php esc_html_e( 'Changes are previewed immediately. Click "Save Changes" to apply them to your site.', 'syntaxhighlighter' ); ?></p>
+	<p id="syntaxhighlighter-preview-status" role="status" aria-live="polite"></p>
 
 	<?php
 
-		echo '<div';
+		echo '<div id="syntaxhighlighter-settings-preview"';
 		if ( ! empty( $GLOBALS['content_width'] ) )
 			echo ' style="max-width:' . intval( $GLOBALS['content_width'] ) . 'px"';
 		echo '>';
 
-		$title = ( empty( $this->settings['title'] ) && 1 != $this->settings['collapse'] ) ? ' title="Code example: (this example was added using the title parameter)"' : '';
-
-		// Site owners may opt to disable the short tags, i.e. [php]
-		$democode = apply_filters( 'syntaxhighlighter_democode', '[sourcecode language="php" htmlscript="true" highlight="12"' . $title . ']<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>PHP Code Example</title>
-</head>
-<body>
-	<h1>' . __( 'PHP Code Example', 'syntaxhighlighter' ) . '</h1>
-
-	<p><?php echo \'' . __( 'Hello World!', 'syntaxhighlighter' ) . '\'; ?></p>
-
-	<p>' . __( 'This line is highlighted.', 'syntaxhighlighter' ) . '</p>
-
-	<div class="foobar">
-' . __( '		This	is	an
-		example	of	smart
-		tabs.', 'syntaxhighlighter' ) . '
-	</div>
-
-	<p><a href="http://wordpress.org/">' . __( 'WordPress' ) . '</a></p>
-</body>
-</html>[/sourcecode]' );
-
-		$this->codeformat = 1;
-		echo $this->parse_shortcodes( $democode );
-		$this->codeformat = false;
+		echo $this->settings_preview();
 
 		echo '</div>';
 ?>
@@ -1328,7 +1366,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Htmlscript parameter.
-					esc_html_x( "%s &#8212; Toggle highlighting any extra HTML/XML. Good for when you're mixing HTML/XML with another language, such as having PHP inside an HTML web page. The above preview has it enabled for example. This only works with certain languages.", 'htmlscript parameter', 'syntaxhighlighter' ),
+					esc_html_x( "%s &#8212; Toggle highlighting any extra HTML/XML. Good for when you're mixing HTML/XML with another language, such as having PHP inside an HTML web page. This only works with certain languages.", 'htmlscript parameter', 'syntaxhighlighter' ),
 					'<code>htmlscript</code>'
 				);
 			?>

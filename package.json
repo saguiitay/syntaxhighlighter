@@ -16,10 +16,11 @@
 		"test:browser": "playwright test",
 		"test:php": "node scripts/test-php.mjs",
 		"test:wordpress": "node scripts/test-wordpress.mjs",
+		"test:settings-preview": "node scripts/test-settings-preview.mjs",
 		"test:package": "node scripts/test-package.mjs",
 		"benchmark": "node scripts/benchmark.mjs",
 		"lint": "eslint src scripts tests --no-warn-ignored",
-		"format:check": "prettier --check src/frontend.js src/frontend.css scripts tests/unit tests/browser *.mjs package.json languages.json themes.json .github/workflows",
+		"format:check": "prettier --check src/frontend.js src/settings-preview.js src/frontend.css scripts tests/unit tests/browser *.mjs package.json languages.json themes.json .github/workflows",
 		"audit": "npm audit --omit=optional",
 		"check": "npm run build && npm test && npm run lint && npm run format:check && npm run test:php && npm run test:browser"
 	},

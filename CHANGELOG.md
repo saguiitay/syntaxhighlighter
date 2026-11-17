@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update the settings preview immediately from unsaved form options using the
+  production renderer. Remove forced demo options and honor the copy setting
+  independently of the legacy toolbar setting.
 - Add site-wide selection of local Prism themes: Coy light/dark/automatic,
   Prism Default, Prism Dark, Funky, Okaidia, Solarized Light, Tomorrow Night
   and Twilight. Blocks and shortcodes inherit the setting unless overridden.

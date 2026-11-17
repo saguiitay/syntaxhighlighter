@@ -23,6 +23,7 @@ const files = [
 	'docs/performance.md',
 	'docs/performance-results.json',
 	'dist/runtime.js',
+	'dist/settings-preview.js',
 	'dist/frontend.css',
 	'dist/manifest.json',
 	'dist/blocks.build.js',

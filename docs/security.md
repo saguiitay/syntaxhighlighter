@@ -42,7 +42,10 @@ vulnerability-free software or an audit of every third-party Prism grammar.
   original source, not decorated line numbers or token HTML.
 - Native Settings API `options.php` supplies WordPress nonce/capability checks.
   The sanitizer additionally requires `manage_options`, escapes title/classes
-  and normalizes values. No new public settings endpoint was introduced.
+  and normalizes values. The settings preview's authenticated AJAX handler also
+  requires `manage_options` and a dedicated WordPress nonce. It renders a fixed,
+  filterable sample using sanitized form options without saving them. No
+  unauthenticated preview handler exists; requests stay on the WordPress site.
 - Editor and TinyMCE inline configuration uses JSON, including HTML-sensitive
   character escaping for extensible data. Code source is never interpolated
   into inline scripts. No Flash, `eval`, CDN or remote grammar autoload exists.

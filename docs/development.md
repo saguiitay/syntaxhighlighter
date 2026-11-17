@@ -55,6 +55,10 @@ drives Chromium through the frontend and real Gutenberg editor. It installs
 official Twenty Twenty-One (classic) and Twenty Twenty-Five (block) themes,
 checks conditional assets, old/new serialization, language persistence,
 editable source, clipboard behavior and keyboard indentation.
+It also verifies the plugin settings preview, including unsaved edits and
+save/reload behavior. To run only those settings checks after a build, use
+`npm run test:settings-preview`; this skips the broader suite and extra theme
+installations.
 
 The site/browser are closed in `finally`; no background service is left running.
 Official WordPress/theme downloads are required on first use; no source snippets
