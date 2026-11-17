@@ -141,6 +141,9 @@ the extraction. Production requires no build tools.
 ## CI
 
 `.github/workflows/ci.yml` runs on pull requests and pushes to `master`.
+Browser jobs use `ubuntu-24.04`: the pinned Playwright 1.58.2 does not support
+Ubuntu 26.04, now used by `ubuntu-latest`. Update the runner image deliberately
+alongside Playwright rather than inheriting an unsupported operating system.
 Jobs cover JS/build/format/browser/audit/benchmark/package, the four WordPress/PHP
 combinations, and native PHP 8.2/8.5 lint/unit/Composer audit/static analysis.
 Node caching is lockfile-based; actions are SHA-pinned and permissions read-only.
