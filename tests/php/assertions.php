@@ -74,27 +74,37 @@ function sh_run_tests( $plugin ) {
 		sh_assert( in_array( $tag, $plugin->shortcodes, true ), 'New language shortcode missing.' );
 	}
 	sh_run_rust_tests( $plugin );
+	sh_run_markdown_tests( $plugin );
 	return $rendered;
 }
 
 function sh_run_rust_tests( $plugin ) {
+	sh_run_language_tests( $plugin, 'rust', array( 'rust' ), "fn main() {\n\tprintln!(\"<Rust>\");\n}" );
+}
+
+function sh_run_markdown_tests( $plugin ) {
+	sh_run_language_tests( $plugin, 'markdown', array( 'markdown', 'md' ), "# Guide\n\n**bold** and `code`\n\n[Docs](https://example.com)\n\n<script>alert(\"literal source\")</script>" );
+}
+
+function sh_run_language_tests( $plugin, $language, $aliases, $source ) {
 	$previous_format = $plugin->codeformat;
-	$source = "fn main() {\n\tprintln!(\"<Rust>\");\n}";
 	try {
 		$plugin->codeformat = 1;
-		sh_assert( in_array( 'rust', $plugin->shortcodes, true ), 'Rust shortcode was not registered.' );
-		foreach ( array(
-			array( array(), 'rust' ),
-			array( array( 'language' => 'rust' ), 'code' ),
-		) as $shortcode ) {
-			$html = $plugin->shortcode_callback( $shortcode[0], $source, $shortcode[1] );
-			sh_assert( false !== strpos( $html, 'language-rust' ), 'Rust shortcode did not select its grammar.' );
-			sh_assert( $source === sh_source( $html ), 'Rust shortcode source was changed.' );
+		foreach ( $aliases as $alias ) {
+			sh_assert( in_array( $alias, $plugin->shortcodes, true ), 'Language shortcode was not registered: ' . $alias );
+			foreach ( array(
+				array( array(), $alias ),
+				array( array( 'language' => $alias ), 'code' ),
+			) as $shortcode ) {
+				$html = $plugin->shortcode_callback( $shortcode[0], $source, $shortcode[1] );
+				sh_assert( false !== strpos( $html, 'language-' . $language ), 'Shortcode did not select its grammar: ' . $alias );
+				sh_assert( $source === sh_source( $html ), 'Shortcode source was changed: ' . $alias );
+			}
+			$html = $plugin->render_block( array( 'language' => $alias ), '<pre>' . htmlspecialchars( $source, ENT_QUOTES, 'UTF-8' ) . '</pre>' );
+			sh_assert( false !== strpos( $html, 'language-' . $language ), 'Block did not select its grammar: ' . $alias );
+			sh_assert( $source === sh_source( $html ), 'Block source was changed: ' . $alias );
 		}
-		$html = $plugin->render_block( array( 'language' => 'rust' ), '<pre>' . htmlspecialchars( $source, ENT_QUOTES, 'UTF-8' ) . '</pre>' );
-		sh_assert( false !== strpos( $html, 'language-rust' ), 'Rust block did not select its grammar.' );
-		sh_assert( $source === sh_source( $html ), 'Rust block source was changed.' );
-		sh_assert( wp_script_is( 'syntaxhighlighter-prism-rust', 'enqueued' ), 'Rust grammar was not enqueued.' );
+		sh_assert( wp_script_is( 'syntaxhighlighter-prism-' . $language, 'enqueued' ), 'Grammar was not enqueued: ' . $language );
 	} finally {
 		$plugin->codeformat = $previous_format;
 	}

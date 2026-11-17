@@ -44,6 +44,8 @@
 		"kql": "kusto",
 		"latex": "latex",
 		"tex": "latex",
+		"markdown": "markdown",
+		"md": "markdown",
 		"matlab": "matlab",
 		"matlabkey": "matlab",
 		"objc": "objectivec",

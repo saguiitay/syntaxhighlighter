@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add Markdown (`markdown` / `md`) to the editor selector and shortcodes,
+  using the bundled local Prism grammar.
 - Add Rust to the editor language selector and `[rust]` / `[code language="rust"]`,
   using the bundled local Prism grammar.
 - Update the settings preview immediately from unsaved form options using the

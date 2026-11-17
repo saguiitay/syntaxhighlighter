@@ -64,6 +64,39 @@ test('JSON highlights nested properties, strings and primitive values', () => {
 	assert.ok(flatten(tokens, 'number').join(' ').includes('3'));
 	assert.ok(flatten(tokens, 'null').join(' ').includes('null'));
 });
+test('Markdown aliases highlight headings, emphasis, links and code fences', () => {
+	for (const alias of ['markdown', 'md']) {
+		const language = manifest.aliases[alias];
+		load(language);
+		const tokens = prism.tokenize(
+			[
+				'# Guide',
+				'',
+				'**bold** and *italic* with `inline()`.',
+				'',
+				'[Docs](https://example.com)',
+				'',
+				'```rust',
+				'fn main() {}',
+				'```',
+			].join('\n'),
+			prism.languages[language],
+		);
+		for (const [type, text] of [
+			['title', 'Guide'],
+			['bold', 'bold'],
+			['italic', 'italic'],
+			['code-snippet', 'inline()'],
+			['url', 'https://example.com'],
+			['code-block', 'fn main() {}'],
+		]) {
+			assert.ok(
+				flatten(tokens, type).join(' ').includes(text),
+				`${alias}: ${type}`,
+			);
+		}
+	}
+});
 test('Rust highlights lifetimes, macros, raw strings and nested comments', () => {
 	const language = manifest.aliases.rust;
 	load(language);

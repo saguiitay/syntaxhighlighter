@@ -185,6 +185,8 @@ class SyntaxHighlighter {
 			'json'          => 'json',
 			'latex'         => 'latex', // Not used as a shortcode
 			'tex'           => 'latex',
+			'markdown'      => 'markdown',
+			'md'            => 'markdown',
 			'matlab'        => 'matlabkey',
 			'matlabkey'     => 'matlabkey',
 			'objc'          => 'objc',
@@ -243,6 +245,7 @@ class SyntaxHighlighter {
 			'jscript'    => __( 'JavaScript',                'syntaxhighlighter' ),
 			'json'       => __( 'JSON',                      'syntaxhighlighter' ),
 			'latex'      => __( 'LaTeX',                     'syntaxhighlighter' ),
+			'markdown'   => __( 'Markdown',                  'syntaxhighlighter' ),
 			'matlabkey'  => __( 'MATLAB',                    'syntaxhighlighter' ),
 			'objc'       => __( 'Objective-C',               'syntaxhighlighter' ),
 			'perl'       => __( 'Perl',                      'syntaxhighlighter' ),
