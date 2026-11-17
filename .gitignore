@@ -10,3 +10,4 @@ artifacts/
 .cache/
 playwright-report/
 test-results/
+/docs/blog/kql-syntax-highlighting-wordpress.md
