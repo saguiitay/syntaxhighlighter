@@ -49,6 +49,21 @@ test('TypeScript and TSX retain JavaScript as a distinct grammar', () => {
 	assert.ok(tsx.includes('token tag'));
 	assert.notEqual(prism.languages.javascript, prism.languages.typescript);
 });
+test('JSON highlights nested properties, strings and primitive values', () => {
+	const language = manifest.aliases.json;
+	load(language);
+	const tokens = prism.tokenize(
+		'{"name":"demo","enabled":true,"count":3,"options":null,"items":[1,{"label":"nested"}]}',
+		prism.languages[language],
+	);
+	const properties = flatten(tokens, 'property').join(' ');
+	assert.ok(properties.includes('"name"'));
+	assert.ok(properties.includes('"label"'));
+	assert.ok(flatten(tokens, 'string').join(' ').includes('"nested"'));
+	assert.ok(flatten(tokens, 'boolean').join(' ').includes('true'));
+	assert.ok(flatten(tokens, 'number').join(' ').includes('3'));
+	assert.ok(flatten(tokens, 'null').join(' ').includes('null'));
+});
 test('Kusto operators, functions, literals and upstream management commands', () => {
 	load('kusto');
 	const source = [

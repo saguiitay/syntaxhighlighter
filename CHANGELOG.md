@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add JSON to the editor language selector and `[json]` / `[code language="json"]`.
 - Tighten code font/line spacing, padding, gutters and the copy toolbar.
 - Keep blank-line numbers aligned, including wrapped snippets, without changing
   indentation, blank lines or copied source.

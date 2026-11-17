@@ -42,6 +42,7 @@ Valid UTF-8 is supported; invalid UTF-8 is replaced safely, not executed.
 
 `code`, `sourcecode`, `source`, all original language-specific tags, and new
 `ts`, `typescript`, `tsx`, `kql`, `kusto`, `sh`, `cs` tags are registered.
+`json` is also available as a language value and standalone shortcode.
 `latex` and `r` remain **language values but not standalone shortcodes**,
 matching the original collision exclusions; use `tex` and `splus` tags instead.
 `language`, `lang`, `type` and historical `[code="php"]` identify languages.
@@ -75,6 +76,7 @@ new canonical Prism identifiers. Original aliases are all retained:
 | haskell | haskell |
 | java, jfx, javafx | java |
 | js, jscript, javascript | javascript |
+| json | json |
 | ts, typescript | typescript |
 | tsx | tsx, with jsx/typescript dependencies |
 | kql, kusto | kusto |

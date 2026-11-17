@@ -36,6 +36,7 @@
 		"js": "javascript",
 		"jscript": "javascript",
 		"javascript": "javascript",
+		"json": "json",
 		"typescript": "typescript",
 		"ts": "typescript",
 		"tsx": "tsx",

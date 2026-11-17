@@ -180,6 +180,7 @@ class SyntaxHighlighter {
 			'js'            => 'jscript',
 			'jscript'       => 'jscript',
 			'javascript'    => 'jscript',
+			'json'          => 'json',
 			'latex'         => 'latex', // Not used as a shortcode
 			'tex'           => 'latex',
 			'matlab'        => 'matlabkey',
@@ -237,6 +238,7 @@ class SyntaxHighlighter {
 			'java'       => __( 'Java',                      'syntaxhighlighter' ),
 			'javafx'     => __( 'JavaFX',                    'syntaxhighlighter' ),
 			'jscript'    => __( 'JavaScript',                'syntaxhighlighter' ),
+			'json'       => __( 'JSON',                      'syntaxhighlighter' ),
 			'latex'      => __( 'LaTeX',                     'syntaxhighlighter' ),
 			'matlabkey'  => __( 'MATLAB',                    'syntaxhighlighter' ),
 			'objc'       => __( 'Objective-C',               'syntaxhighlighter' ),
