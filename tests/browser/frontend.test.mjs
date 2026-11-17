@@ -237,9 +237,13 @@ test('compact layout keeps blank-line numbers aligned without changing source wh
 	].join('\n');
 	await setup(
 		page,
-		`<div class="sh-prism sh-theme-light"><div class="sh-controls"><button class="sh-copy" hidden>Copy code</button><span class="sh-status" role="status"></span></div><pre class="syntaxhighlighter-code language-typescript" data-gutter="true"><code class="language-typescript">${source}</code></pre></div>`,
+		`<div class="sh-prism sh-theme-light"><div class="sh-controls"><button class="sh-copy" hidden>Copy code</button><span class="sh-status" role="status"></span></div><pre class="syntaxhighlighter-code language-typescript" data-gutter="true" data-padlinenumbers="2"><code class="language-typescript">${source}</code></pre></div>`,
 	);
 	expect(await page.locator('.sh-prism code').textContent()).toBe(source);
+	await expect(page.locator('.sh-line').nth(2)).toHaveAttribute(
+		'data-line',
+		'03',
+	);
 	const metrics = await page.locator('.sh-line').evaluateAll((lines) =>
 		lines.map((line) => ({
 			top: line.getBoundingClientRect().top,
