@@ -43,9 +43,12 @@ function wp_register_style( $handle, $src, ...$args ) {
 function wp_enqueue_script( $handle, ...$args ) { $GLOBALS['sh_scripts'][ $handle ]['enqueued'] = true; }
 function wp_enqueue_style( $handle, ...$args ) { $GLOBALS['sh_styles'][ $handle ]['enqueued'] = true; }
 function wp_localize_script( ...$args ) {}
+function wp_add_inline_script( $handle, $data, $position = 'after' ) { $GLOBALS['sh_inline_scripts'][ $handle ][] = $data; }
 function wp_script_is( $handle, $state ) { return ! empty( $GLOBALS['sh_scripts'][ $handle ]['enqueued'] ); }
-function wp_style_is( $handle, $state ) { return isset( $GLOBALS['sh_styles'][ $handle ] ); }
-function wp_print_styles( $handles ) {}
+function wp_style_is( $handle, $state ) {
+	return 'registered' === $state ? isset( $GLOBALS['sh_styles'][ $handle ] ) : ! empty( $GLOBALS['sh_styles'][ $handle ]['enqueued'] );
+}
+function wp_print_styles( $handles ) { $GLOBALS['sh_printed_styles'] = $handles; }
 function current_user_can( $cap ) { return $GLOBALS['sh_capability']; }
 function wp_json_encode( $data, $flags = 0 ) { return json_encode( $data, $flags ); }
 function is_admin() { return false; }

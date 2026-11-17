@@ -62,10 +62,14 @@ changes are in [compatibility](docs/compatibility.md).
 
 ## Appearance and interaction
 
-Use the site setting or `theme="light"`, `"dark"` or `"auto"`. Automatic follows
-`prefers-color-scheme`; themes can override scoped `--sh-*` CSS variables.
-The light appearance uses Prism's **Coy** theme: striped paper, a blue accent
-and its original token palette. Dark/automatic modes retain a dark adaptation.
+Choose the site-wide theme under **Settings > SyntaxHighlighter > Color Theme**.
+Available choices include **Coy** (light/dark/automatic), Prism Default, Prism
+Dark, Funky, Okaidia, Solarized Light, Tomorrow Night and Twilight.
+Blocks and shortcodes inherit it unless they specify their own theme, for
+example `theme="prism-okaidia"` or `theme="light"`.
+Automatic follows `prefers-color-scheme`; Coy remains the default appearance.
+Themes keep the compact layout, gutters and copying controls. Only themes used
+on the page load additional local CSS; the editor loads all choices for preview.
 Old theme choices map to light/dark equivalents rather than pixel-identical
 SyntaxHighlighter skins. `theme="none"` disables token colors.
 

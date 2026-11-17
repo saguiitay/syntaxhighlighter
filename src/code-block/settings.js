@@ -149,9 +149,7 @@ export default ( { attributes, setAttributes } ) => {
 					value={ attributes.theme || '' }
 					options={ [
 						{ label: __( 'Site setting', 'syntaxhighlighter' ), value: '' },
-						{ label: __( 'Automatic', 'syntaxhighlighter' ), value: 'auto' },
-						{ label: __( 'Light', 'syntaxhighlighter' ), value: 'light' },
-						{ label: __( 'Dark', 'syntaxhighlighter' ), value: 'dark' },
+						...Object.entries( window.syntaxHighlighterData.themes ).map( ( [ value, label ] ) => ( { value, label } ) ),
 					] }
 					onChange={ ( theme ) => setAttributes( { theme: theme || undefined } ) }
 				/>

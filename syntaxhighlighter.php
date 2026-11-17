@@ -286,10 +286,8 @@ class SyntaxHighlighter {
 
 		// Create list of themes and their human readable names
 		// Plugins can add to this list: http://www.viper007bond.com/wordpress-plugins/syntaxhighlighter/adding-a-new-theme/
-		$this->themes = (array) apply_filters( 'syntaxhighlighter_themes', array(
-			'auto'       => __( 'Automatic (system)', 'syntaxhighlighter' ),
-			'light'      => __( 'Light', 'syntaxhighlighter' ),
-			'dark'       => __( 'Dark', 'syntaxhighlighter' ),
+		$this->prism = new SyntaxHighlighter_Prism_Renderer( $this );
+		$this->themes = (array) apply_filters( 'syntaxhighlighter_themes', array_merge( $this->prism->themes(), array(
 			'default'    => __( 'Default',      'syntaxhighlighter' ),
 			'django'     => __( 'Django',       'syntaxhighlighter' ),
 			'eclipse'    => __( 'Eclipse',      'syntaxhighlighter' ),
@@ -297,14 +295,12 @@ class SyntaxHighlighter {
 			'fadetogrey' => __( 'Fade to Grey', 'syntaxhighlighter' ),
 			'midnight'   => __( 'Midnight',     'syntaxhighlighter' ),
 			'rdark'      => __( 'RDark',        'syntaxhighlighter' ),
-			'none'       => __( '[None]',       'syntaxhighlighter' ),
-		) );
+		) ) );
 
 		// Other special characters that need to be encoded before going into the database (namely to work around kses)
 		$this->specialchars = (array) apply_filters( 'syntaxhighlighter_specialchars', array(
 			'\0' => '&#92;&#48;',
 		) );
-		$this->prism = new SyntaxHighlighter_Prism_Renderer( $this );
 	}
 
 
@@ -340,6 +336,9 @@ class SyntaxHighlighter {
 		);
 		wp_enqueue_script( 'syntaxhighlighter-core' );
 		wp_enqueue_style( 'syntaxhighlighter-core' );
+		foreach ( $this->prism->themes() as $theme => $name ) {
+			$this->prism->enqueue_theme( $theme );
+		}
 		$manifest = json_decode( file_get_contents( __DIR__ . '/dist/manifest.json' ), true );
 		$grammars = array();
 		foreach ( $manifest['dependencies'] as $id => $dependencies ) {
@@ -397,12 +396,14 @@ class SyntaxHighlighter {
 					grammars: %s,
 					aliases: %s,
 					theme: %s,
+					themes: %s,
 				};',
 				wp_json_encode( $this->brush_names, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ),
 				wp_json_encode( $settings, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ),
 				wp_json_encode( $grammars ),
 				wp_json_encode( $this->prism->aliases(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ),
-				wp_json_encode( $this->prism->options( array() )['theme'] )
+				wp_json_encode( $this->prism->options( array() )['theme'] ),
+				wp_json_encode( $this->prism->themes(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT )
 			),
 			'before'
 		);
@@ -1082,11 +1083,24 @@ class SyntaxHighlighter {
 			<td>
 				<select name="syntaxhighlighter_settings[theme]" id="syntaxhighlighter-theme" class="postform">
 <?php
-					foreach ( $this->themes as $theme => $name ) {
-						echo '					<option value="' . esc_attr( $theme ) . '"' . selected( $this->settings['theme'], $theme, false ) . '>' . esc_html( $name ) . "&nbsp;</option>\n";
+					$modern = $this->prism->themes();
+					$groups = array(
+						__( 'Prism themes', 'syntaxhighlighter' ) => array_intersect_key( $this->themes, $modern ),
+						__( 'Legacy and custom themes', 'syntaxhighlighter' ) => array_diff_key( $this->themes, $modern ),
+					);
+					foreach ( $groups as $label => $choices ) {
+						if ( empty( $choices ) ) {
+							continue;
+						}
+						echo '<optgroup label="' . esc_attr( $label ) . '">';
+						foreach ( $choices as $theme => $name ) {
+							echo '<option value="' . esc_attr( $theme ) . '"' . selected( $this->settings['theme'], $theme, false ) . '>' . esc_html( $name ) . '</option>';
+						}
+						echo '</optgroup>';
 					}
 ?>
 				</select>
+				<p class="description"><?php esc_html_e( 'The default for all code blocks and shortcodes, unless a block selects its own theme. Legacy theme names retain their Coy light/dark mappings.', 'syntaxhighlighter' ); ?></p>
 			</td>
 		</tr>
 		<tr valign="top">

@@ -108,6 +108,7 @@
 	max-height: none;
 	overflow: visible;
 	font: inherit;
+	text-shadow: inherit;
 	color: inherit;
 	background-color: var(--sh-bg);
 	background-image: linear-gradient(transparent 50%, var(--sh-stripe) 50%);
@@ -126,6 +127,10 @@
 }
 .sh-prism pre.sh-wrap code {
 	width: auto;
+}
+.sh-prism:where([class*='sh-theme-prism-']) pre.syntaxhighlighter-code code {
+	border-left: 0;
+	box-shadow: none;
 }
 .sh-prism .sh-line {
 	position: relative;
@@ -207,13 +212,18 @@
 	outline: 2px solid var(--sh-keyword);
 	outline-offset: -2px;
 }
-.sh-prism .token:is(.comment, .block-comment, .prolog, .doctype, .cdata) {
-	color: var(--sh-muted);
-}
-.sh-prism .token.punctuation {
-	color: var(--sh-punctuation);
-}
-.sh-prism
+.sh-prism:where(
+	.sh-theme-auto,
+	.sh-theme-light,
+	.sh-theme-dark,
+	.sh-theme-none
+) {
+	.token:is(.comment, .block-comment, .prolog, .doctype, .cdata) {
+		color: var(--sh-muted);
+	}
+	.token.punctuation {
+		color: var(--sh-punctuation);
+	}
 	.token:is(
 		.property,
 		.tag,
@@ -224,26 +234,26 @@
 		.symbol,
 		.deleted
 	) {
-	color: var(--sh-symbol);
-}
-.sh-prism .token:is(.atrule, .attr-value, .keyword, .class-name) {
-	color: var(--sh-keyword);
-}
-.sh-prism
+		color: var(--sh-symbol);
+	}
+	.token:is(.atrule, .attr-value, .keyword, .class-name) {
+		color: var(--sh-keyword);
+	}
 	.token:is(.selector, .attr-name, .string, .char, .builtin, .inserted) {
-	color: var(--sh-string);
-}
-.sh-prism .token.function {
-	color: var(--sh-function);
-}
-.sh-prism .token:is(.operator, .entity, .url, .variable),
-.sh-prism .language-css .token.string,
-.sh-prism .style .token.string {
-	color: var(--sh-operator);
-	background: var(--sh-operator-bg);
-}
-.sh-prism .token:is(.regex, .important) {
-	color: var(--sh-important);
+		color: var(--sh-string);
+	}
+	.token.function {
+		color: var(--sh-function);
+	}
+	.token:is(.operator, .entity, .url, .variable),
+	.language-css .token.string,
+	.style .token.string {
+		color: var(--sh-operator);
+		background: var(--sh-operator-bg);
+	}
+	.token:is(.regex, .important) {
+		color: var(--sh-important);
+	}
 }
 .sh-prism a {
 	color: inherit;

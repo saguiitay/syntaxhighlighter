@@ -22,6 +22,76 @@ async function setup(page, html, languages = ['typescript', 'kusto', 'tsx']) {
 	for (const id of languages) await load(id);
 	await page.addScriptTag({ path: 'dist/frontend.js' });
 }
+test('selectable Prism themes have isolated palettes and preserve compact gutters', async ({
+	page,
+}) => {
+	const themes = JSON.parse(readFileSync('themes.json', 'utf8'));
+	const source = 'const message = "theme";\n\nconst answer = 42;';
+	const blocks = Object.keys(themes)
+		.map(
+			(id) =>
+				`<div id="${id}" class="sh-prism sh-theme-${id}"><pre class="syntaxhighlighter-code" data-gutter="true"><code class="language-typescript">${source}</code></pre></div>`,
+		)
+		.join('');
+	await setup(
+		page,
+		`${blocks}<pre id="unrelated"><code class="language-typescript"><span class="token keyword">Unrelated</span></code></pre>`,
+		['typescript'],
+	);
+	for (const id of Object.keys(themes).reverse()) {
+		await page.addStyleTag({ path: `dist/themes/${id}.css` });
+	}
+	for (const [id, theme] of Object.entries(themes)) {
+		const code = page.locator(`#${id} code`);
+		await expect(code).toHaveText(source);
+		const expectedBackground = await page.evaluate((color) => {
+			const sample = document.createElement('span');
+			sample.style.color = color;
+			document.body.append(sample);
+			const result = getComputedStyle(sample).color;
+			sample.remove();
+			return result;
+		}, theme.background);
+		await expect(code).toHaveCSS('background-color', expectedBackground);
+		const heights = await code
+			.locator('.sh-line')
+			.evaluateAll((lines) =>
+				lines.map((line) => line.getBoundingClientRect().height),
+			);
+		expect(heights).toHaveLength(3);
+		expect(heights[1]).toBeGreaterThan(0);
+		expect(heights[1]).toBeCloseTo(heights[0], 1);
+		await expect(code).toHaveCSS('border-left-width', '0px');
+		await expect(code).toHaveCSS('line-height', '19.6px');
+	}
+	await expect(page.locator('#prism-okaidia .token.keyword').first()).toHaveCSS(
+		'color',
+		'rgb(102, 217, 239)',
+	);
+	await expect(
+		page.locator('#prism-tomorrow .token.keyword').first(),
+	).toHaveCSS('color', 'rgb(204, 153, 205)');
+	await expect(page.locator('#prism-default .token.keyword').first()).toHaveCSS(
+		'color',
+		'rgb(0, 119, 170)',
+	);
+	await expect(page.locator('#unrelated .token')).toHaveCSS(
+		'color',
+		'rgb(0, 0, 0)',
+	);
+	await page.setViewportSize({ width: 375, height: 812 });
+	for (const id of Object.keys(themes)) {
+		await page.locator(`#${id} pre`).evaluate((pre) => {
+			pre.classList.add('sh-wrap');
+			pre.querySelector('code').append('x'.repeat(250));
+		});
+	}
+	expect(
+		await page.evaluate(
+			() => document.documentElement.scrollWidth <= window.innerWidth,
+		),
+	).toBe(true);
+});
 test('all PHP-rendered fixtures preserve literal source and never execute code', async ({
 	page,
 }) => {

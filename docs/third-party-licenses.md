@@ -9,6 +9,7 @@ contributors for their respective work. This fork is not an Automattic release.
 |---|---|---|---|
 | Prism.js core and 41 grammar/dependency files | 1.30.0 | Local frontend/editor highlighting | MIT, full notice in `dist/PRISM-LICENSE` |
 | Prism Coy theme by Tim Shedor | 1.30.0 | Build-time scoped frontend/editor styling, with plugin adaptations | MIT, attribution in `dist/frontend.css`; full notice in `dist/PRISM-LICENSE` |
+| Prism Default, Dark, Funky, Okaidia, Solarized Light, Tomorrow Night and Twilight themes | 1.30.0 | Scoped upstream token rules with compact plugin layout and controls | MIT, attribution in each `dist/themes/*.css`; full notice in `dist/PRISM-LICENSE` |
 | WordPress packages | Provided by the supported WordPress installation | Block editor APIs, not copied into the editor bundle | GPL-2.0-or-later |
 | SyntaxHighlighter 2 and 3, third-party brushes | Original repository versions | Source-only baseline benchmarks; **excluded from ZIP** | See original notices and license files in their directories |
 | TinyMCE shortcode adapters | Original plugin, with integration hardening | Classic editor preservation | Original plugin GPL license/notices |

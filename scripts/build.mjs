@@ -5,7 +5,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const components = require('prismjs/components.json').languages;
 const { aliases } = JSON.parse(await readFile('languages.json', 'utf8'));
+const themes = JSON.parse(await readFile('themes.json', 'utf8'));
 await mkdir('dist/grammars', { recursive: true });
+await mkdir('dist/themes', { recursive: true });
 const grammarIds = new Set();
 function visit(id) {
 	if (id === 'plain' || grammarIds.has(id)) return;
@@ -14,7 +16,13 @@ function visit(id) {
 	grammarIds.add(id);
 }
 Object.values(aliases).forEach(visit);
-const manifest = { aliases, dependencies: {} };
+const manifest = {
+	aliases,
+	dependencies: {},
+	themes: Object.fromEntries(
+		Object.entries(themes).map(([id, theme]) => [id, theme.name]),
+	),
+};
 for (const id of grammarIds) {
 	manifest.dependencies[id] = [components[id].require || []].flat();
 	let source = await readFile(
@@ -66,6 +74,38 @@ await build({
 	minify: true,
 	outfile: 'dist/frontend.css',
 });
+for (const [id, theme] of Object.entries(themes)) {
+	const filename = id === 'prism-default' ? 'prism' : id;
+	const css = await readFile(
+		require.resolve(`prismjs/themes/${filename}.css`),
+		'utf8',
+	);
+	// Keep upstream token rules without replacing the compact code/gutter layout.
+	const tokenStart = css.search(/^\.token[.\s,{]/m);
+	if (tokenStart < 0) throw new Error(`Missing token rules in ${filename}`);
+	await build({
+		stdin: {
+			contents: `.sh-prism.sh-theme-${id} {
+				--sh-bg: ${theme.background};
+				--sh-ink: ${theme.foreground};
+				--sh-muted: ${theme.muted};
+				--sh-rule: ${theme.muted}66;
+				--sh-keyword: ${theme.foreground};
+				--sh-stripe: transparent;
+				--sh-shadow: transparent;
+				.token { color: inherit; background: transparent; opacity: 1; }
+				${css.slice(tokenStart)}
+			}`,
+			loader: 'css',
+		},
+		supported: { nesting: false },
+		banner: {
+			css: `/*! ${theme.name} theme from Prism.js. MIT; see PRISM-LICENSE. */`,
+		},
+		minify: true,
+		outfile: `dist/themes/${id}.css`,
+	});
+}
 await build({
 	entryPoints: ['src/index.js'],
 	bundle: true,

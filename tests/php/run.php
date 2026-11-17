@@ -6,8 +6,10 @@ set_error_handler( static function ( $severity, $message, $file, $line ) {
 require __DIR__ . '/stubs.php';
 require dirname( __DIR__, 2 ) . '/syntaxhighlighter.php';
 require __DIR__ . '/assertions.php';
+require __DIR__ . '/themes.php';
 SyntaxHighlighter();
 $rendered = sh_run_tests( $SyntaxHighlighter );
+sh_run_theme_tests( $SyntaxHighlighter );
 $sh_capability = false;
 sh_assert( $SyntaxHighlighter->validate_settings( array( 'title' => 'changed' ) ) === $SyntaxHighlighter->settings, 'Capability bypass.' );
 $sh_capability = true;

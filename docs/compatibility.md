@@ -124,7 +124,7 @@ Colors and token classification necessarily differ from SyntaxHighlighter.
 | tabsize | Native tab stops; clamped 1-16 |
 | smarttabs | true uses tab stops; false uses fixed-width tab spans, retaining literal tab text |
 | htmlscript | PHP's native mixed-markup grammar; JS/CSS use local markup with embedded script/style grammar. Other languages retain native highlighting, not a general mixed-language parser |
-| theme | default/eclipse -> light; django/emacs/fadetogrey/midnight/rdark -> dark; auto follows system; none removes token colors |
+| theme | Site-wide Prism theme selection, inherited unless overridden per block/shortcode. default/eclipse -> Coy light; django/emacs/fadetogrey/midnight/rdark -> Coy dark; auto follows system; none removes token colors |
 | shversion | Stored unchanged for rollback; no old engine is shipped/selected |
 | loadallbrushes | Explicit opt-out of conditional loading: queues all bundled grammars |
 

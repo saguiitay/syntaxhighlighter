@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add site-wide selection of local Prism themes: Coy light/dark/automatic,
+  Prism Default, Prism Dark, Funky, Okaidia, Solarized Light, Tomorrow Night
+  and Twilight. Blocks and shortcodes inherit the setting unless overridden.
+- Keep legacy saved theme values and expose the same choices in the block
+  editor, including its preview. Load only used theme styles on the frontend.
+
 ## 4.0.2 - unreleased fork
 
 - Add JSON to the editor language selector and `[json]` / `[code language="json"]`.

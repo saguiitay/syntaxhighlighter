@@ -1,0 +1,44 @@
+{
+	"prism-default": {
+		"name": "Prism Default",
+		"background": "#f5f2f0",
+		"foreground": "#000000",
+		"muted": "#708090"
+	},
+	"prism-dark": {
+		"name": "Prism Dark",
+		"background": "hsl(30, 20%, 25%)",
+		"foreground": "#ffffff",
+		"muted": "#998066"
+	},
+	"prism-funky": {
+		"name": "Funky",
+		"background": "#000000",
+		"foreground": "#ffffff",
+		"muted": "#aaaaaa"
+	},
+	"prism-okaidia": {
+		"name": "Okaidia",
+		"background": "#272822",
+		"foreground": "#f8f8f2",
+		"muted": "#8292a2"
+	},
+	"prism-solarizedlight": {
+		"name": "Solarized Light",
+		"background": "#fdf6e3",
+		"foreground": "#657b83",
+		"muted": "#93a1a1"
+	},
+	"prism-tomorrow": {
+		"name": "Tomorrow Night",
+		"background": "#2d2d2d",
+		"foreground": "#cccccc",
+		"muted": "#999999"
+	},
+	"prism-twilight": {
+		"name": "Twilight",
+		"background": "#141414",
+		"foreground": "#ffffff",
+		"muted": "#777777"
+	}
+}

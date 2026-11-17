@@ -8,6 +8,7 @@ class SyntaxHighlighter_Prism_Renderer {
 	private $plugin;
 	private $manifest;
 	private $assets_printed = false;
+	private $theme_styles = array();
 
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
@@ -23,11 +24,26 @@ class SyntaxHighlighter_Prism_Renderer {
 		}
 		wp_register_script( 'syntaxhighlighter-prism', false, array( 'syntaxhighlighter-core' ), $plugin->pluginver, true );
 		wp_register_style( 'syntaxhighlighter-core', apply_filters( 'syntaxhighlighter_csscoreurl', $url . 'frontend.css' ), array(), $plugin->pluginver );
+		foreach ( $this->manifest['themes'] as $id => $name ) {
+			wp_register_style( 'syntaxhighlighter-theme-' . $id, $url . 'themes/' . $id . '.css', array( 'syntaxhighlighter-core' ), $plugin->pluginver );
+		}
 		wp_localize_script( 'syntaxhighlighter-core', 'syntaxHighlighterPrismLabels', array(
 			'copy' => __( 'Copy code', 'syntaxhighlighter' ),
 			'copied' => __( 'Code copied.', 'syntaxhighlighter' ),
 			'failed' => __( 'Copy failed. Select the code and copy it manually.', 'syntaxhighlighter' ),
 		) );
+	}
+
+	public function themes() {
+		return array_merge(
+			array(
+				'auto' => __( 'Automatic (Coy light/dark)', 'syntaxhighlighter' ),
+				'light' => __( 'Coy (light)', 'syntaxhighlighter' ),
+				'dark' => __( 'Coy (dark)', 'syntaxhighlighter' ),
+			),
+			$this->manifest['themes'],
+			array( 'none' => __( 'No syntax colors', 'syntaxhighlighter' ) )
+		);
 	}
 
 	public function aliases() {
@@ -70,7 +86,7 @@ class SyntaxHighlighter_Prism_Renderer {
 		$options['padlinenumbers'] = in_array( $padding, array( 'true', 'false' ), true ) ? $padding : max( 0, min( 12, (int) $padding ) );
 		$theme = isset( $options['theme'] ) && is_string( $options['theme'] ) ? $options['theme'] : 'auto';
 		$themes = array( 'default' => 'light', 'django' => 'dark', 'eclipse' => 'light', 'emacs' => 'dark', 'fadetogrey' => 'dark', 'midnight' => 'dark', 'rdark' => 'dark' );
-		$options['theme'] = isset( $themes[ $theme ] ) ? $themes[ $theme ] : ( in_array( $theme, array( 'light', 'dark', 'auto', 'none' ), true ) ? $theme : 'auto' );
+		$options['theme'] = isset( $themes[ $theme ] ) ? $themes[ $theme ] : ( isset( $this->themes()[ $theme ] ) ? $theme : 'auto' );
 		if ( $options['light'] ) {
 			$options['gutter'] = false;
 			$options['toolbar'] = false;
@@ -79,15 +95,24 @@ class SyntaxHighlighter_Prism_Renderer {
 		return $options;
 	}
 
-	public function enqueue( $language = 'plain' ) {
+	public function enqueue_theme( $theme ) {
+		if ( is_string( $theme ) && wp_style_is( 'syntaxhighlighter-theme-' . $theme, 'registered' ) ) {
+			$handle = 'syntaxhighlighter-theme-' . $theme;
+			wp_enqueue_style( $handle );
+			$this->theme_styles[ $handle ] = $handle;
+		}
+	}
+
+	public function enqueue( $language = 'plain', $theme = null ) {
 		if ( 'plain' !== $language ) {
 			wp_enqueue_script( 'syntaxhighlighter-prism-' . $language );
 		}
 		wp_enqueue_script( 'syntaxhighlighter-prism' );
 		wp_enqueue_style( 'syntaxhighlighter-core' );
-		$theme = $this->plugin->settings['theme'];
-		if ( is_string( $theme ) && wp_style_is( 'syntaxhighlighter-theme-' . $theme, 'registered' ) ) {
-			wp_enqueue_style( 'syntaxhighlighter-theme-' . $theme );
+		$this->enqueue_theme( null === $theme ? $this->options( array() )['theme'] : $theme );
+		$legacy = $this->plugin->settings['theme'];
+		if ( is_string( $legacy ) && ! isset( $this->manifest['themes'][ $legacy ] ) ) {
+			$this->enqueue_theme( $legacy );
 		}
 	}
 
@@ -103,7 +128,7 @@ class SyntaxHighlighter_Prism_Renderer {
 		if ( wp_script_is( 'syntaxhighlighter-prism', 'enqueued' ) ) {
 			// Render-time discovery may happen after wp_head (widgets, patterns, templates).
 			// Print real stylesheet links, not JS-inserted links, including when JS is off.
-			wp_print_styles( array( 'syntaxhighlighter-core', 'syntaxhighlighter-theme-' . $this->plugin->settings['theme'] ) );
+			wp_print_styles( array_merge( array( 'syntaxhighlighter-core' ), array_values( $this->theme_styles ) ) );
 			$this->assets_printed = true;
 			do_action( 'syntaxhighlighter_after_script_output' );
 		}
@@ -112,9 +137,9 @@ class SyntaxHighlighter_Prism_Renderer {
 	public function render( $source, $language, $attributes ) {
 		$options = $this->options( $attributes );
 		if ( $options['htmlscript'] ) {
-			$this->enqueue( 'markup' );
+			$this->enqueue( 'markup', $options['theme'] );
 		}
-		$this->enqueue( $language );
+		$this->enqueue( $language, $options['theme'] );
 		$this->plugin->usedbrushes[ $language ] = true;
 		$classes = array( 'syntaxhighlighter-code', 'language-' . $language, 'notranslate', $options['classname'] );
 		if ( $options['wraplines'] ) {

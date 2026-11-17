@@ -32,6 +32,10 @@ const files = [
 for (const name of (await readdir('dist/grammars')).sort()) {
 	if (name.endsWith('.js')) files.push(join('dist/grammars', name));
 }
+const manifest = JSON.parse(await readFile('dist/manifest.json', 'utf8'));
+for (const id of Object.keys(manifest.themes)) {
+	files.push(join('dist/themes', `${id}.css`));
+}
 const archive = {};
 const hashes = {};
 for (const file of files.sort()) {
@@ -60,13 +64,16 @@ for (const [name, content] of Object.entries(unpacked)) {
 		`Source-only file in ZIP: ${name}`,
 	);
 }
-const manifest = JSON.parse(
+const packagedManifest = JSON.parse(
 	new TextDecoder().decode(
 		unpacked['syntaxhighlighter-prism/dist/manifest.json'],
 	),
 );
-for (const id of Object.keys(manifest.dependencies)) {
+for (const id of Object.keys(packagedManifest.dependencies)) {
 	assert.ok(unpacked[`syntaxhighlighter-prism/dist/grammars/${id}.js`]);
+}
+for (const id of Object.keys(packagedManifest.themes)) {
+	assert.ok(unpacked[`syntaxhighlighter-prism/dist/themes/${id}.css`]);
 }
 await mkdir('artifacts', { recursive: true });
 const filename = `artifacts/syntaxhighlighter-prism-${pkg.version}.zip`;
