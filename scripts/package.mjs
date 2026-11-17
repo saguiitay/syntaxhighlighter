@@ -22,7 +22,6 @@ const files = [
 	'docs/security.md',
 	'docs/performance.md',
 	'docs/performance-results.json',
-	'docs/blog/kql-syntax-highlighting-wordpress.md',
 	'dist/runtime.js',
 	'dist/frontend.css',
 	'dist/manifest.json',
