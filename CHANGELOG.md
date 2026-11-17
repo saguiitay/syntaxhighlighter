@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove unsupported TinyMCE 3/pre-block-editor branches and unused legacy
+  brush scanners/helpers; retain the current Classic editor and stored content.
 - Remove obsolete SyntaxHighlighter 2/3 engines, Flash assets and third-party
   brushes. Benchmark the current Prism renderer only; retain historical results.
 - Add Power Query (M), with `powerquery`, `pq` and `mscript` aliases, to the

@@ -68,6 +68,9 @@ Line decoration and copying must never mutate the original code text.
 
 Identity: **SyntaxHighlighter Prism for WordPress**, distributable
 slug `syntaxhighlighter-prism`, version 4.0.2. Minimum WordPress 6.8.12 / PHP 8.2:
-a contemporary WordPress baseline and security-supported PHP, avoiding obsolete
-editor compatibility shims. Actual tested versions, not aspirational claims,
+a contemporary WordPress baseline and security-supported PHP. TinyMCE 3 and
+pre-block-editor fallbacks are removed; the current Classic editor adapter,
+serialized blocks, old shortcodes and encoding metadata remain supported.
+Unused brush-discovery scanners are removed because the renderer discovers
+assets when content is rendered. Actual tested versions, not aspirational claims,
 are recorded in development/security/performance documentation.

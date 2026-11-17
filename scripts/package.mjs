@@ -10,7 +10,6 @@ const files = [
 	'includes/class-prism-renderer.php',
 	'syntaxhighlighter.js',
 	'syntaxhighlighter_mce-4.js',
-	'syntaxhighlighter_mce.js',
 	'README.md',
 	'readme.txt',
 	'LICENSE',

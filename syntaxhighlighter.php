@@ -52,9 +52,6 @@ class SyntaxHighlighter {
 	public $specialchars         = array(); // Array of special characters to be encoded.
 
 	function __construct() {
-		if ( ! function_exists( 'do_shortcodes_in_html_tags' ) )
-			return;
-
 		// Load localization domain
 		load_plugin_textdomain( 'syntaxhighlighter' );
 
@@ -90,18 +87,13 @@ class SyntaxHighlighter {
 		add_filter( 'plugin_action_links', array( $this, 'settings_link' ), 10, 2 );
 
 		// Editor Blocks
-		if (
-			function_exists( 'parse_blocks' ) // WordPress 5.0+
-			|| function_exists( 'the_gutenberg_project' ) // Gutenberg plugin for older WordPress
-		) {
-			add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
-			register_block_type(
-				'syntaxhighlighter/code',
-				array(
-					'render_callback' => array( $this, 'render_block' ),
-				)
-			);
-		}
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
+		register_block_type(
+			'syntaxhighlighter/code',
+			array(
+				'render_callback' => array( $this, 'render_block' ),
+			)
+		);
 
 		// Register widget hooks
 		add_filter( 'widget_text', array( $this, 'widget_text_output' ), 7, 2 );
@@ -432,100 +424,6 @@ class SyntaxHighlighter {
 	  *
 	 * @return string Unmodified $content.
 	 */
-	function enable_brushes_used_in_blocks( $content ) {
-		/*
-		 * Return early on the backend because SyntaxHighlighting is only active on the front end, see
-		 * `syntaxHighlighterCode::edit()` block for details.
-		 */
-		if ( is_admin() ) {
-			return $content;
-		}
-
-		// Lower overhead than a full parse.
-		if (
-			! has_block( 'syntaxhighlighter/code', $content )
-			&& ! has_block( 'core/block', $content ) // Reusable
-		) {
-			return $content;
-		}
-
-		if ( function_exists( 'parse_blocks' ) ) { // WP 5.0+
-			$blocks = parse_blocks( $content );
-		} elseif ( Function_exists( 'gutenberg_parse_blocks' ) ) { // Gutenberg plugin
-			$blocks = gutenberg_parse_blocks( $content );
-		} else {
-			return $content;
-		}
-
-		foreach ( $blocks as $block ) {
-			if ( empty( $block['blockName'] ) ) {
-				continue;
-			}
-
-			switch ( $block['blockName'] ) {
-				// Normal block usage
-				case 'syntaxhighlighter/code':
-					$language = ( ! empty( $block['attrs']['language'] ) ) ? $block['attrs']['language'] : 'plain';
-
-					if ( in_array( $language, $this->brushes, true ) ) {
-						$this->usedbrushes[ $this->brushes[ $language ] ] = true;
-					}
-
-					break;
-
-				// But the block could also be used inside of a reusable block
-				case 'core/block':
-					/**
-					 * Rather than going down the block parsing rabbit hole of dynamic blocks,
-					 * let's just hook in post-render and look for our HTML.
- 					 */
-					add_filter( 'the_content', array( $this, 'enable_brushes_via_raw_html_parsing' ), 10 );
-
-					break;
-			}
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Parses raw HTML looking for SyntaxHighlighter's <pre> tags and queues brushes
-	 * for the languages used.
-	 *
-	 * This filter only runs when a reusable block is used in a post.
-	 * It was easier to implement than loading the block, which then could
-	 * have child blocks and so forth. Technically this means that we're
-	 * parsing any regular SyntaxHighlighter blocks again, but oh well. :)
-	 *
-	 * @since 3.4.2
-	 *
-	* @param string $content The post content.
-	 *
-	 * @return string Unmodified $content.
-	 */
-	public function enable_brushes_via_raw_html_parsing( $content ) {
-		if ( false === strpos( $content,'<pre class="wp-block-syntaxhighlighter-code' ) ) {
-			return $content;
-		}
-
-		preg_match_all(
-			'/<pre class="wp-block-syntaxhighlighter-code brush: ([^;]+);/',
-			$content,
-			$languages,
-			PREG_PATTERN_ORDER
-		);
-
-		if ( is_array( $languages ) ) {
-			foreach ( $languages[1] as $language ) {
-				if ( in_array( $language, $this->brushes, true ) ) {
-					$this->usedbrushes[ $this->brushes[ $language ] ] = true;
-				}
-			}
-		}
-
-		return $content;
-	}
-
 	/**
 	 * Renders the content of the Gutenberg block on the front end
 	 * using the shortcode callback. This ensures one source of truth
@@ -567,24 +465,11 @@ class SyntaxHighlighter {
 
 	// Add the custom TinyMCE plugin which wraps plugin shortcodes in <pre> in TinyMCE
 	function add_tinymce_plugin( $plugins ) {
-		global $tinymce_version;
-
 		add_action( 'admin_print_footer_scripts', array( $this, 'output_shortcodes_for_tinymce' ), 9 );
-
-		if ( substr( $tinymce_version, 0, 1 ) < 4 ) {
-			$plugins['syntaxhighlighter'] = plugins_url( 'syntaxhighlighter_mce.js', __FILE__ );
-		} else {
-			$plugins['syntaxhighlighter'] = add_query_arg( 'ver', $this->pluginver, plugins_url( 'syntaxhighlighter_mce-4.js', __FILE__ ) );
-			wp_enqueue_script( 'syntaxhighlighter', plugins_url( 'syntaxhighlighter.js', __FILE__ ), array(), false, true );
-		}
+		$plugins['syntaxhighlighter'] = add_query_arg( 'ver', $this->pluginver, plugins_url( 'syntaxhighlighter_mce-4.js', __FILE__ ) );
+		wp_enqueue_script( 'syntaxhighlighter', plugins_url( 'syntaxhighlighter.js', __FILE__ ), array(), false, true );
 
 		return $plugins;
-	}
-
-
-	// Break the TinyMCE cache
-	function break_tinymce_cache( $version ) {
-		return $version . '-sh' . $this->pluginver;
 	}
 
 
@@ -993,12 +878,6 @@ class SyntaxHighlighter {
 			$strings[] = ( $quotes ) ? $key . '="' . esc_attr( $value ) . '"' : $key . '=' . esc_attr( $value );
 
 		return ' ' . implode( ' ', $strings );
-	}
-
-
-	// Simple function for escaping just single quotes (the original js_escape() escapes more than we need)
-	function js_escape_singlequotes( $string ) {
-		return str_replace( "'", "\'", $string );
 	}
 
 

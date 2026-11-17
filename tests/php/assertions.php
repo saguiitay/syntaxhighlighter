@@ -114,3 +114,11 @@ function sh_run_language_tests( $plugin, $language, $aliases, $source ) {
 		$plugin->codeformat = $previous_format;
 	}
 }
+
+function sh_run_editor_adapter_tests( $plugin ) {
+	$plugins = $plugin->add_tinymce_plugin( array( 'other-plugin' => '/other.js' ) );
+	sh_assert( '/other.js' === $plugins['other-plugin'], 'Classic adapter replaced another editor plugin.' );
+	sh_assert( false !== strpos( $plugins['syntaxhighlighter'], 'syntaxhighlighter_mce-4.js?ver=' ), 'Classic editor did not select the supported TinyMCE adapter.' );
+	sh_assert( wp_script_is( 'syntaxhighlighter', 'enqueued' ), 'Classic shortcode preservation script was not enqueued.' );
+	sh_assert( 9 === has_action( 'admin_print_footer_scripts', array( $plugin, 'output_shortcodes_for_tinymce' ) ), 'Classic editor shortcode configuration hook was lost.' );
+}

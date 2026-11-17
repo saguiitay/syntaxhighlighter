@@ -5,7 +5,7 @@ $sh_filters = array();
 $sh_scripts = array();
 $sh_styles = array();
 $sh_capability = true;
-function do_shortcodes_in_html_tags() {}
+function register_block_type( $name, $args ) {}
 function load_plugin_textdomain( $domain ) {}
 function add_action( ...$args ) { add_filter( ...$args ); }
 function add_filter( $tag, $callback, $priority = 10, $accepted = 1 ) {

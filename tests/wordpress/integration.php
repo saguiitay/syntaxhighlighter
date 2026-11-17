@@ -6,6 +6,7 @@ define( 'SH_TEST_PLUGIN_ROOT', $root );
 $suite = dirname( __DIR__ );
 require $suite . '/php/assertions.php';
 $plugin = $GLOBALS['SyntaxHighlighter'];
+sh_run_editor_adapter_tests( $plugin );
 $rendered = sh_run_tests( $plugin );
 $plugin->codeformat = false;
 $legacy_pre = $plugin->convert_legacy_pre( '<pre class="brush: js; first-line: 20; highlight: [20-21];">&lt;script&gt;literal&lt;/script&gt;</pre>' );
