@@ -60,16 +60,13 @@ function decorate(pre, code, source, Prism) {
 	}
 	const fragment = document.createDocumentFragment();
 	const first = Number(pre.dataset.firstline || 1);
+	const last = first + source.split(/\r\n|\r|\n/).length - 1;
+	const numberWidth = Math.max(String(first).length, String(last).length);
 	let number = first;
 	const padding = pre.dataset.padlinenumbers;
 	const width =
-		padding === 'true'
-			? String(first + source.split(/\r\n|\r|\n/).length - 1).length
-			: Math.min(12, Number(padding) || 0);
-	pre.style.setProperty(
-		'--sh-gutter',
-		`${Math.max(3, width, String(first + source.split(/\r\n|\r|\n/).length - 1).length) + 1}ch`,
-	);
+		padding === 'true' ? numberWidth : Math.min(12, Number(padding) || 0);
+	pre.style.setProperty('--sh-gutter', `${Math.max(2, width, numberWidth)}ch`);
 	let line;
 	function newLine() {
 		line = document.createElement('span');

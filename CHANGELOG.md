@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Tighten code font/line spacing, padding, gutters and the copy toolbar.
+- Keep blank-line numbers aligned, including wrapped snippets, without changing
+  indentation, blank lines or copied source.
+
 ## 4.0.1 - unreleased fork
 
 - Replace the custom light presentation with upstream Prism Coy, scoped to the

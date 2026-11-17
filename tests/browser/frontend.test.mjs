@@ -142,7 +142,14 @@ test('Coy is scoped, preserves its paper and palette, and supports scrolling and
 	await expect(code).toHaveCSS('border-left-width', '10px');
 	await expect(code).toHaveCSS('border-left-color', 'rgb(53, 140, 203)');
 	await expect(code).toHaveCSS('background-color', 'rgb(253, 253, 253)');
-	await expect(code).toHaveCSS('background-size', '48px 48px');
+	const stripes = await code.evaluate((node) => {
+		const style = getComputedStyle(node);
+		return {
+			period: Number.parseFloat(style.backgroundSize.split(' ')[1]),
+			lineHeight: Number.parseFloat(style.lineHeight),
+		};
+	});
+	expect(stripes.period).toBeCloseTo(stripes.lineHeight * 2, 1);
 	await expect(code.locator('.token.keyword').first()).toHaveCSS(
 		'color',
 		'rgb(25, 144, 184)',
@@ -206,4 +213,82 @@ test('Coy is scoped, preserves its paper and palette, and supports scrolling and
 		'background-color',
 		'rgba(0, 0, 0, 0)',
 	);
+});
+test('compact layout keeps blank-line numbers aligned without changing source whitespace', async ({
+	page,
+}) => {
+	const source = [
+		'import OpenAI from "openai";',
+		'import { observeOpenAI } from "observability/openai";',
+		'',
+		'const observer = observeOpenAI(new OpenAI(), {',
+		'  serviceName: "openai-demo",',
+		'});',
+		'try {',
+		'  await observer.client.responses.create({',
+		'    model: "gpt-4.1-mini",',
+		'    input: "Explain why 12 squared is 144.",',
+		'  });',
+		'} finally {',
+		'  await observer.shutdown();',
+		'}',
+		'  ',
+		'',
+	].join('\n');
+	await setup(
+		page,
+		`<div class="sh-prism sh-theme-light"><div class="sh-controls"><button class="sh-copy" hidden>Copy code</button><span class="sh-status" role="status"></span></div><pre class="syntaxhighlighter-code language-typescript" data-gutter="true"><code class="language-typescript">${source}</code></pre></div>`,
+	);
+	expect(await page.locator('.sh-prism code').textContent()).toBe(source);
+	const metrics = await page.locator('.sh-line').evaluateAll((lines) =>
+		lines.map((line) => ({
+			top: line.getBoundingClientRect().top,
+			height: line.getBoundingClientRect().height,
+			lineHeight: Number.parseFloat(getComputedStyle(line).lineHeight),
+			gutter: Number.parseFloat(getComputedStyle(line).paddingLeft),
+		})),
+	);
+	expect(metrics).toHaveLength(source.split('\n').length);
+	for (const [index, metric] of metrics.entries()) {
+		expect(metric.height).toBeCloseTo(metric.lineHeight, 0);
+		if (index) {
+			expect(metric.top - metrics[index - 1].top).toBeCloseTo(
+				metric.lineHeight,
+				0,
+			);
+		}
+	}
+	expect(metrics[0].lineHeight).toBeLessThanOrEqual(21);
+	expect(metrics[0].gutter).toBeLessThan(35);
+	const controls = await page.locator('.sh-controls').boundingBox();
+	expect(controls.height).toBeLessThanOrEqual(32);
+	await page.evaluate(() => {
+		Object.defineProperty(navigator, 'clipboard', {
+			value: { writeText: async (text) => (window.copied = text) },
+		});
+	});
+	await page.getByRole('button', { name: 'Copy code' }).click();
+	expect(await page.evaluate(() => window.copied)).toBe(source);
+	await page.screenshot({ path: 'artifacts/compact-code-desktop.png' });
+	await page.setViewportSize({ width: 375, height: 812 });
+	await page.locator('pre').evaluate((node) => node.classList.add('sh-wrap'));
+	const wrapped = await page.locator('.sh-line').evaluateAll((lines) =>
+		lines.map((line) => ({
+			top: line.getBoundingClientRect().top,
+			height: line.getBoundingClientRect().height,
+		})),
+	);
+	expect(wrapped[1].height).toBeGreaterThan(wrapped[2].height);
+	for (let index = 1; index < wrapped.length; index++) {
+		expect(wrapped[index].top - wrapped[index - 1].top).toBeCloseTo(
+			wrapped[index - 1].height,
+			0,
+		);
+	}
+	expect(
+		await page.evaluate(
+			() => document.documentElement.scrollWidth <= window.innerWidth,
+		),
+	).toBe(true);
+	await page.screenshot({ path: 'artifacts/compact-code-mobile.png' });
 });

@@ -15,17 +15,18 @@
 	--sh-stripe: #458ed10a;
 	--sh-shadow: #979797;
 	--sh-highlight: #ee990022;
+	--sh-line-height: 1.4;
 	position: relative;
 	isolation: isolate;
 	min-width: 0;
 	max-width: 100%;
-	margin-block: 1.5em;
+	margin-block: 1em;
 	border: 0;
 	border-radius: 0;
 	background: var(--sh-bg);
 	color: var(--sh-ink);
 	box-shadow: 0 0 0 1px var(--sh-rule);
-	font-size: 1rem;
+	font-size: 0.875rem;
 }
 .sh-prism::before,
 .sh-prism::after {
@@ -90,7 +91,7 @@
 	color: inherit;
 	text-shadow: none;
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	line-height: 1.5;
+	line-height: var(--sh-line-height);
 	white-space: pre;
 	text-align: left;
 	direction: ltr;
@@ -110,10 +111,11 @@
 	color: inherit;
 	background-color: var(--sh-bg);
 	background-image: linear-gradient(transparent 50%, var(--sh-stripe) 50%);
-	background-size: 3em 3em;
+	background-size: calc(2em * var(--sh-line-height))
+		calc(2em * var(--sh-line-height));
 	background-origin: content-box;
 	background-attachment: local;
-	padding: 0.75em 1em;
+	padding: 0.5em 0.75em;
 	border: 0;
 	border-left: 10px solid var(--sh-accent);
 	box-shadow:
@@ -129,13 +131,16 @@
 	position: relative;
 	display: inline-block;
 	min-width: 100%;
+	min-height: calc(1em * var(--sh-line-height));
 	box-sizing: border-box;
+	vertical-align: top;
 }
 .sh-prism [data-gutter='true'] .sh-line {
 	padding-left: calc(var(--sh-gutter, 4ch) + 1ch);
 }
 .sh-prism [data-gutter='true'] .sh-line::before {
 	position: absolute;
+	top: 0;
 	left: 0;
 	width: var(--sh-gutter, 4ch);
 	content: attr(data-line);
@@ -160,22 +165,26 @@
 .sh-prism .sh-controls,
 .sh-prism summary,
 .sh-prism .sh-large-notice {
-	padding: 0.35rem 1rem;
+	padding: 0.25rem 0.75rem;
 	font: inherit;
 }
 .sh-prism .sh-controls {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	gap: 0.75rem;
-	font-size: 0.8rem;
+	gap: 0.5rem;
+	padding: 0.125rem 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1.2;
 	border-bottom: 1px solid var(--sh-rule);
 }
 .sh-prism .sh-copy {
+	box-sizing: border-box;
+	min-height: 24px;
 	font: inherit;
 	color: inherit;
 	background: transparent;
-	padding: 0.25rem 0.6rem;
+	padding: 0.1rem 0.5rem;
 	border: 1px solid var(--sh-rule);
 	border-radius: 0.2rem;
 	cursor: pointer;
@@ -243,9 +252,9 @@
 }
 @media (max-width: 480px) {
 	.sh-prism {
-		font-size: 0.875rem;
+		font-size: 0.8125rem;
 	}
 	.sh-prism pre.syntaxhighlighter-code code {
-		padding: 0.6em;
+		padding: 0.5em 0.6em;
 	}
 }
