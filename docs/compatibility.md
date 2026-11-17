@@ -44,6 +44,7 @@ Valid UTF-8 is supported; invalid UTF-8 is replaced safely, not executed.
 `ts`, `typescript`, `tsx`, `kql`, `kusto`, `sh`, `cs` tags are registered.
 `json` and `rust` are also available as language values and standalone shortcodes.
 Markdown supports both `markdown` and `md` language values and standalone tags.
+Power Query (M) supports `powerquery`, `pq` and `mscript` values and tags.
 `latex` and `r` remain **language values but not standalone shortcodes**,
 matching the original collision exclusions; use `tex` and `splus` tags instead.
 `language`, `lang`, `type` and historical `[code="php"]` identify languages.
@@ -88,6 +89,7 @@ new canonical Prism identifiers. Original aliases are all retained:
 | perl, pl | perl |
 | php | php |
 | plain, text, none | escaped plaintext |
+| powerquery, pq, mscript | powerquery |
 | ps, powershell | powershell |
 | py, python | python |
 | r, splus | r |

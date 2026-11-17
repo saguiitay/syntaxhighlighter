@@ -97,6 +97,39 @@ test('Markdown aliases highlight headings, emphasis, links and code fences', () 
 		}
 	}
 });
+test('Power Query aliases highlight M queries, quoted identifiers and escaped strings', () => {
+	for (const alias of ['powerquery', 'pq', 'mscript']) {
+		const language = manifest.aliases[alias];
+		load(language);
+		const tokens = prism.tokenize(
+			[
+				'let',
+				'    // Keep active rows.',
+				'    #"Source Table" = #table(type table [Name = text, Active = logical], {{"Hello ""M""", true}}),',
+				'    Result = Table.SelectRows(#"Source Table", each [Active] = true)',
+				'in',
+				'    Result',
+			].join('\n'),
+			prism.languages[language],
+		);
+		for (const [type, text] of [
+			['keyword', 'let'],
+			['keyword', '#table'],
+			['keyword', 'each'],
+			['quoted-identifier', '#"Source Table"'],
+			['function', 'Table.SelectRows'],
+			['data-type', 'text'],
+			['string', '"Hello ""M"""'],
+			['boolean', 'true'],
+			['comment', 'Keep active rows.'],
+		]) {
+			assert.ok(
+				flatten(tokens, type).join(' ').includes(text),
+				`${alias}: ${type}`,
+			);
+		}
+	}
+});
 test('Rust highlights lifetimes, macros, raw strings and nested comments', () => {
 	const language = manifest.aliases.rust;
 	load(language);

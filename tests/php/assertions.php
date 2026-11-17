@@ -75,6 +75,7 @@ function sh_run_tests( $plugin ) {
 	}
 	sh_run_rust_tests( $plugin );
 	sh_run_markdown_tests( $plugin );
+	sh_run_powerquery_tests( $plugin );
 	return $rendered;
 }
 
@@ -84,6 +85,10 @@ function sh_run_rust_tests( $plugin ) {
 
 function sh_run_markdown_tests( $plugin ) {
 	sh_run_language_tests( $plugin, 'markdown', array( 'markdown', 'md' ), "# Guide\n\n**bold** and `code`\n\n[Docs](https://example.com)\n\n<script>alert(\"literal source\")</script>" );
+}
+
+function sh_run_powerquery_tests( $plugin ) {
+	sh_run_language_tests( $plugin, 'powerquery', array( 'powerquery', 'pq', 'mscript' ), "let\n    Source = #table({\"Name\"}, {{\"<Power Query>\"}}),\n    #\"Filtered Rows\" = Table.SelectRows(Source, each [Name] <> null)\nin\n    #\"Filtered Rows\"" );
 }
 
 function sh_run_language_tests( $plugin, $language, $aliases, $source ) {

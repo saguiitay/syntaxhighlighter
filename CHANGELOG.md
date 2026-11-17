@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add Power Query (M), with `powerquery`, `pq` and `mscript` aliases, to the
+  editor selector and shortcodes using the bundled local Prism grammar.
 - Add Markdown (`markdown` / `md`) to the editor selector and shortcodes,
   using the bundled local Prism grammar.
 - Add Rust to the editor language selector and `[rust]` / `[code language="rust"]`,
