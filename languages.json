@@ -65,6 +65,7 @@
 		"rb": "ruby",
 		"ror": "ruby",
 		"ruby": "ruby",
+		"rust": "rust",
 		"scala": "scala",
 		"sql": "sql",
 		"swift": "swift",

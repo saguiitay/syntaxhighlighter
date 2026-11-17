@@ -64,6 +64,31 @@ test('JSON highlights nested properties, strings and primitive values', () => {
 	assert.ok(flatten(tokens, 'number').join(' ').includes('3'));
 	assert.ok(flatten(tokens, 'null').join(' ').includes('null'));
 });
+test('Rust highlights lifetimes, macros, raw strings and nested comments', () => {
+	const language = manifest.aliases.rust;
+	load(language);
+	const tokens = prism.tokenize(
+		[
+			"fn greet<'a>(name: &'a str) {",
+			'\t/* outer /* nested */ comment */',
+			'\tlet message = r#"Hello, "Rust"!"#;',
+			'\tprintln!("{}", name);',
+			'}',
+		].join('\n'),
+		prism.languages[language],
+	);
+	assert.ok(flatten(tokens, 'keyword').join(' ').includes('fn'));
+	assert.ok(flatten(tokens, 'lifetime-annotation').join(' ').includes("'a"));
+	assert.ok(flatten(tokens, 'macro').join(' ').includes('println!'));
+	assert.ok(
+		flatten(tokens, 'string').join(' ').includes('r#"Hello, "Rust"!"#'),
+	);
+	assert.ok(
+		flatten(tokens, 'comment')
+			.join(' ')
+			.includes('/* outer /* nested */ comment */'),
+	);
+});
 test('Kusto operators, functions, literals and upstream management commands', () => {
 	load('kusto');
 	const source = [

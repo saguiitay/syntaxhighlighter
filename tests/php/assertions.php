@@ -73,5 +73,29 @@ function sh_run_tests( $plugin ) {
 	foreach ( array( 'ts', 'typescript', 'tsx', 'kql', 'kusto' ) as $tag ) {
 		sh_assert( in_array( $tag, $plugin->shortcodes, true ), 'New language shortcode missing.' );
 	}
+	sh_run_rust_tests( $plugin );
 	return $rendered;
+}
+
+function sh_run_rust_tests( $plugin ) {
+	$previous_format = $plugin->codeformat;
+	$source = "fn main() {\n\tprintln!(\"<Rust>\");\n}";
+	try {
+		$plugin->codeformat = 1;
+		sh_assert( in_array( 'rust', $plugin->shortcodes, true ), 'Rust shortcode was not registered.' );
+		foreach ( array(
+			array( array(), 'rust' ),
+			array( array( 'language' => 'rust' ), 'code' ),
+		) as $shortcode ) {
+			$html = $plugin->shortcode_callback( $shortcode[0], $source, $shortcode[1] );
+			sh_assert( false !== strpos( $html, 'language-rust' ), 'Rust shortcode did not select its grammar.' );
+			sh_assert( $source === sh_source( $html ), 'Rust shortcode source was changed.' );
+		}
+		$html = $plugin->render_block( array( 'language' => 'rust' ), '<pre>' . htmlspecialchars( $source, ENT_QUOTES, 'UTF-8' ) . '</pre>' );
+		sh_assert( false !== strpos( $html, 'language-rust' ), 'Rust block did not select its grammar.' );
+		sh_assert( $source === sh_source( $html ), 'Rust block source was changed.' );
+		sh_assert( wp_script_is( 'syntaxhighlighter-prism-rust', 'enqueued' ), 'Rust grammar was not enqueued.' );
+	} finally {
+		$plugin->codeformat = $previous_format;
+	}
 }

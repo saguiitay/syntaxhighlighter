@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add Rust to the editor language selector and `[rust]` / `[code language="rust"]`,
+  using the bundled local Prism grammar.
 - Update the settings preview immediately from unsaved form options using the
   production renderer. Remove forced demo options and honor the copy setting
   independently of the legacy toolbar setting.
