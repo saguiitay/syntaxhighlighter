@@ -296,3 +296,46 @@ test('compact layout keeps blank-line numbers aligned without changing source wh
 	).toBe(true);
 	await page.screenshot({ path: 'artifacts/compact-code-mobile.png' });
 });
+test('gutter typography stays aligned with code despite surrounding theme styles', async ({
+	page,
+}) => {
+	await setup(
+		page,
+		'<section class="entry-content"><div class="sh-prism sh-theme-light"><pre class="syntaxhighlighter-code" data-gutter="true" data-firstline="8"><code class="language-plain">first\n\nthird\nfourth</code></pre></div></section>',
+		[],
+	);
+	await page.addStyleTag({
+		content:
+			'.entry-content span::before { font: bold 22px/2 Georgia, serif; letter-spacing: 3px; text-indent: 8px; box-sizing: border-box; }',
+	});
+	const metrics = await page.locator('.sh-line').evaluateAll((lines) =>
+		lines.map((line) => {
+			const text = getComputedStyle(line);
+			const gutter = getComputedStyle(line, '::before');
+			return {
+				label: line.dataset.line,
+				textFont: text.fontFamily,
+				gutterFont: gutter.fontFamily,
+				textSize: text.fontSize,
+				gutterSize: gutter.fontSize,
+				textHeight: text.lineHeight,
+				gutterHeight: gutter.lineHeight,
+				textSpacing: text.letterSpacing,
+				gutterSpacing: gutter.letterSpacing,
+				gutterRight:
+					Number.parseFloat(gutter.width) +
+					Number.parseFloat(gutter.paddingRight) +
+					Number.parseFloat(gutter.borderRightWidth),
+				textLeft: Number.parseFloat(text.paddingLeft),
+			};
+		}),
+	);
+	expect(metrics.map((metric) => metric.label)).toEqual(['8', '9', '10', '11']);
+	for (const metric of metrics) {
+		expect(metric.gutterFont).toBe(metric.textFont);
+		expect(metric.gutterSize).toBe(metric.textSize);
+		expect(metric.gutterHeight).toBe(metric.textHeight);
+		expect(metric.gutterSpacing).toBe(metric.textSpacing);
+		expect(metric.gutterRight).toBeLessThan(metric.textLeft);
+	}
+});

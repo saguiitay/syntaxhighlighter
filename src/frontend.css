@@ -136,16 +136,26 @@
 	vertical-align: top;
 }
 .sh-prism [data-gutter='true'] .sh-line {
-	padding-left: calc(var(--sh-gutter, 4ch) + 1ch);
+	padding-left: calc(var(--sh-gutter, 4ch) + 1.5ch);
 }
 .sh-prism [data-gutter='true'] .sh-line::before {
 	position: absolute;
 	top: 0;
 	left: 0;
+	box-sizing: content-box;
 	width: var(--sh-gutter, 4ch);
+	height: 100%;
+	padding: 0 0.75ch 0 0;
+	border-right: 1px solid var(--sh-rule);
 	content: attr(data-line);
+	font: inherit;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: inherit;
 	text-align: right;
+	text-indent: 0;
+	white-space: pre;
 	color: var(--sh-muted);
+	pointer-events: none;
 	user-select: none;
 }
 .sh-prism .sh-highlight {

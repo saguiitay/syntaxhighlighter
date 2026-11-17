@@ -6,6 +6,8 @@
 - Tighten code font/line spacing, padding, gutters and the copy toolbar.
 - Keep blank-line numbers aligned, including wrapped snippets, without changing
   indentation, blank lines or copied source.
+- Align gutter typography with the code and isolate it from surrounding theme
+  styles; add consistent column spacing and a subtle separator.
 
 ## 4.0.1 - unreleased fork
 
