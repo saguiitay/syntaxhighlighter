@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove obsolete SyntaxHighlighter 2/3 engines, Flash assets and third-party
+  brushes. Benchmark the current Prism renderer only; retain historical results.
 - Add Power Query (M), with `powerquery`, `pq` and `mscript` aliases, to the
   editor selector and shortcodes using the bundled local Prism grammar.
 - Add Markdown (`markdown` / `md`) to the editor selector and shortcodes,

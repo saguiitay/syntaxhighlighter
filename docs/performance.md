@@ -6,10 +6,12 @@ Run the benchmark again to measure the current build.
 
 Run `npm run build`, then `npm run benchmark`. Raw samples are written to
 `artifacts/benchmark.json`; the delivery snapshot is `performance-results.json`.
+The current benchmark measures Prism only. The obsolete engines have been
+removed from the source tree; historical comparison data below is unchanged.
 
 ## Method
 
-Five fresh Chromium contexts per engine/scenario, loopback HTTP with gzip and
+Five fresh Chromium contexts per scenario, loopback HTTP with gzip and
 cache disabled. Report medians of synchronous DOMContentLoaded initialization,
 not estimates. Byte counts are the actual gzipped JS/CSS response bodies
 (HTTP headers and the HTML document excluded). CDP ScriptDuration samples are
@@ -17,8 +19,8 @@ also recorded in the JSON. There is no network throttling. This is a repeatable
 renderer microbenchmark, **not** a production Core Web Vitals or TTFB claim.
 Environment, Chromium/Node versions and CPU are included with the raw samples.
 
-The legacy baseline uses the unchanged 3.0.9b core, brushes and default styles
-from commit `60d9239`. It has no TypeScript or Kusto grammar: the baseline uses
+The historical legacy baseline used the unchanged 3.0.9b core, brushes and default styles
+from commit `60d9239`, still available in Git history. It had no TypeScript or Kusto grammar: the baseline used
 JScript for TypeScript and Plain for KQL, as a site owner would have to do.
 Therefore large-KQL CPU timings compare **plaintext decoration against real
 Kusto tokenization**, not equivalent grammar accuracy. SyntaxHighlighter 2 is
