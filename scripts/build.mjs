@@ -50,8 +50,19 @@ await writeFile(
 	'dist/runtime.js',
 	code + '\n' + (await readFile('dist/frontend.js', 'utf8')),
 );
+const coy = await readFile(
+	require.resolve('prismjs/themes/prism-coy.css'),
+	'utf8',
+);
 await build({
-	entryPoints: ['src/frontend.css'],
+	stdin: {
+		contents: `.sh-prism {\n${coy}\n}\n${await readFile('src/frontend.css', 'utf8')}`,
+		loader: 'css',
+	},
+	supported: { nesting: false },
+	banner: {
+		css: '/*! Prism.js Coy theme by Tim Shedor. MIT; see PRISM-LICENSE. */',
+	},
 	minify: true,
 	outfile: 'dist/frontend.css',
 });

@@ -1,5 +1,9 @@
 # Performance measurements
 
+The recorded delivery snapshot below is from **4.0.0**, before the 4.0.1 Coy
+stylesheet update. Its byte counts do not describe the newer stylesheet.
+Run the benchmark again to measure the current build.
+
 Run `npm run build`, then `npm run benchmark`. Raw samples are written to
 `artifacts/benchmark.json`; the delivery snapshot is `performance-results.json`.
 

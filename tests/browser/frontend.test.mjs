@@ -130,3 +130,80 @@ test('mobile, automatic/light/dark modes and literal safe HTTP links', async ({
 		),
 	).toBe(true);
 });
+test('Coy is scoped, preserves its paper and palette, and supports scrolling and wrapping', async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1000, height: 500 });
+	await setup(
+		page,
+		'<div class="sh-prism sh-theme-light"><pre class="syntaxhighlighter-code" data-gutter="true" data-highlight="2"><code class="language-typescript">const greeting = "Coy";\nconst total = 42;</code></pre></div><pre id="unrelated"><code class="language-typescript"><span class="token keyword">Unrelated code</span></code></pre>',
+	);
+	const code = page.locator('.sh-prism code');
+	await expect(code).toHaveCSS('border-left-width', '10px');
+	await expect(code).toHaveCSS('border-left-color', 'rgb(53, 140, 203)');
+	await expect(code).toHaveCSS('background-color', 'rgb(253, 253, 253)');
+	await expect(code).toHaveCSS('background-size', '48px 48px');
+	await expect(code.locator('.token.keyword').first()).toHaveCSS(
+		'color',
+		'rgb(25, 144, 184)',
+	);
+	await expect(code.locator('.token.string')).toHaveCSS(
+		'color',
+		'rgb(47, 156, 10)',
+	);
+	await expect(code.locator('.token.number')).toHaveCSS(
+		'color',
+		'rgb(201, 44, 44)',
+	);
+	await expect(page.locator('#unrelated code')).toHaveCSS(
+		'border-left-width',
+		'0px',
+	);
+	await expect(page.locator('#unrelated .token')).toHaveCSS(
+		'color',
+		'rgb(0, 0, 0)',
+	);
+	await page.screenshot({ path: 'artifacts/coy-light-desktop.png' });
+	await page.locator('.sh-prism').evaluate((node) => {
+		node.classList.replace('sh-theme-light', 'sh-theme-dark');
+	});
+	await expect(code).toHaveCSS('background-color', 'rgb(24, 36, 51)');
+	await expect(code.locator('.token.keyword').first()).toHaveCSS(
+		'color',
+		'rgb(128, 205, 229)',
+	);
+	await page.screenshot({ path: 'artifacts/coy-dark-desktop.png' });
+	await page.setViewportSize({ width: 375, height: 812 });
+	await code.evaluate((node) => {
+		node.textContent = 'x'.repeat(250);
+	});
+	const pre = page.locator('.sh-prism pre');
+	expect(
+		await pre.evaluate((node) => node.scrollWidth > node.clientWidth),
+	).toBe(true);
+	expect(
+		await page.evaluate(
+			() => document.documentElement.scrollWidth <= window.innerWidth,
+		),
+	).toBe(true);
+	await pre.evaluate((node) => node.classList.add('sh-wrap'));
+	expect(
+		await pre.evaluate((node) => node.scrollWidth <= node.clientWidth),
+	).toBe(true);
+	await page.screenshot({ path: 'artifacts/coy-mobile-wrapped.png' });
+	await page.locator('.sh-prism').evaluate((node) => {
+		node.classList.replace('sh-theme-dark', 'sh-theme-none');
+	});
+	await code.evaluate((node) => {
+		node.className = 'language-css';
+		const token = document.createElement('span');
+		token.className = 'token string';
+		token.textContent = '"Coy"';
+		node.replaceChildren(token);
+	});
+	await expect(code.locator('.token')).toHaveCSS('color', 'rgb(0, 0, 0)');
+	await expect(code.locator('.token')).toHaveCSS(
+		'background-color',
+		'rgba(0, 0, 0, 0)',
+	);
+});

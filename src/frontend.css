@@ -1,28 +1,66 @@
 .sh-prism {
-	--sh-bg: #f5f8fc;
-	--sh-ink: #223047;
-	--sh-muted: #52657e;
-	--sh-rule: #cad5e4;
-	--sh-keyword: #185abd;
-	--sh-string: #14665e;
-	--sh-function: #7657b1;
-	--sh-highlight: #c58b1f22;
+	--sh-bg: #fdfdfd;
+	--sh-ink: #000;
+	--sh-muted: #7d8b99;
+	--sh-rule: #dfdfdf;
+	--sh-accent: #358ccb;
+	--sh-keyword: #1990b8;
+	--sh-string: #2f9c0a;
+	--sh-function: #2f9c0a;
+	--sh-symbol: #c92c2c;
+	--sh-operator: #a67f59;
+	--sh-operator-bg: #ffffff80;
+	--sh-punctuation: #5f6364;
+	--sh-important: #e90;
+	--sh-stripe: #458ed10a;
+	--sh-shadow: #979797;
+	--sh-highlight: #ee990022;
+	position: relative;
+	isolation: isolate;
+	min-width: 0;
+	max-width: 100%;
 	margin-block: 1.5em;
-	border: 1px solid var(--sh-rule);
-	border-radius: 0.35rem;
+	border: 0;
+	border-radius: 0;
 	background: var(--sh-bg);
 	color: var(--sh-ink);
-	overflow: hidden;
+	box-shadow: 0 0 0 1px var(--sh-rule);
 	font-size: 1rem;
+}
+.sh-prism::before,
+.sh-prism::after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	pointer-events: none;
+	bottom: 0.75em;
+	left: 0.18em;
+	width: 40%;
+	height: 20%;
+	max-height: 13em;
+	box-shadow: 0 13px 8px var(--sh-shadow);
+	transform: rotate(-2deg);
+}
+.sh-prism::after {
+	right: 0.75em;
+	left: auto;
+	transform: rotate(2deg);
 }
 .sh-prism.sh-theme-dark {
 	--sh-bg: #182433;
 	--sh-ink: #e4ecf7;
 	--sh-muted: #a4b7ce;
 	--sh-rule: #43536b;
-	--sh-keyword: #8dbaff;
-	--sh-string: #8bd5c5;
-	--sh-function: #d0b4ff;
+	--sh-keyword: #80cde5;
+	--sh-string: #9fdc86;
+	--sh-function: #9fdc86;
+	--sh-symbol: #f08d8d;
+	--sh-operator: #d9b795;
+	--sh-operator-bg: #ffffff08;
+	--sh-punctuation: #a4b7ce;
+	--sh-important: #ffc266;
+	--sh-stripe: #ffffff08;
+	--sh-shadow: #0006;
 }
 @media (prefers-color-scheme: dark) {
 	.sh-prism.sh-theme-auto {
@@ -30,34 +68,62 @@
 		--sh-ink: #e4ecf7;
 		--sh-muted: #a4b7ce;
 		--sh-rule: #43536b;
-		--sh-keyword: #8dbaff;
-		--sh-string: #8bd5c5;
-		--sh-function: #d0b4ff;
+		--sh-keyword: #80cde5;
+		--sh-string: #9fdc86;
+		--sh-function: #9fdc86;
+		--sh-symbol: #f08d8d;
+		--sh-operator: #d9b795;
+		--sh-operator-bg: #ffffff08;
+		--sh-punctuation: #a4b7ce;
+		--sh-important: #ffc266;
+		--sh-stripe: #ffffff08;
+		--sh-shadow: #0006;
 	}
 }
 .sh-prism pre.syntaxhighlighter-code {
 	box-sizing: border-box;
 	margin: 0;
-	padding: 1rem;
+	padding: 1px;
 	overflow: auto;
 	max-height: 75vh;
 	background: transparent;
 	color: inherit;
 	text-shadow: none;
-	font-family: Consolas, 'Liberation Mono', monospace;
-	line-height: 1.65;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	line-height: 1.5;
 	white-space: pre;
 	text-align: left;
 	direction: ltr;
 }
+.sh-prism pre.syntaxhighlighter-code::before,
+.sh-prism pre.syntaxhighlighter-code::after {
+	display: none;
+}
 .sh-prism pre.syntaxhighlighter-code code {
 	display: block;
+	box-sizing: border-box;
+	min-width: 100%;
+	width: max-content;
+	max-height: none;
+	overflow: visible;
 	font: inherit;
 	color: inherit;
-	background: transparent;
-	padding: 0;
+	background-color: var(--sh-bg);
+	background-image: linear-gradient(transparent 50%, var(--sh-stripe) 50%);
+	background-size: 3em 3em;
+	background-origin: content-box;
+	background-attachment: local;
+	padding: 0.75em 1em;
 	border: 0;
+	border-left: 10px solid var(--sh-accent);
+	box-shadow:
+		-1px 0 0 var(--sh-accent),
+		0 0 0 1px var(--sh-rule);
 	white-space: inherit;
+	overflow-wrap: inherit;
+}
+.sh-prism pre.sh-wrap code {
+	width: auto;
 }
 .sh-prism .sh-line {
 	position: relative;
@@ -79,7 +145,7 @@
 }
 .sh-prism .sh-highlight {
 	background: var(--sh-highlight);
-	box-shadow: inset 3px 0 #c58b1f;
+	box-shadow: inset 3px 0 var(--sh-important);
 }
 .sh-prism .sh-tab {
 	display: inline-block;
@@ -94,7 +160,7 @@
 .sh-prism .sh-controls,
 .sh-prism summary,
 .sh-prism .sh-large-notice {
-	padding: 0.5rem 1rem;
+	padding: 0.35rem 1rem;
 	font: inherit;
 }
 .sh-prism .sh-controls {
@@ -122,33 +188,64 @@
 	outline: 2px solid var(--sh-keyword);
 	outline-offset: -2px;
 }
-.sh-prism .token {
-	background: transparent;
-}
-.sh-prism .token:is(.comment, .prolog, .doctype) {
+.sh-prism .token:is(.comment, .block-comment, .prolog, .doctype, .cdata) {
 	color: var(--sh-muted);
 }
-.sh-prism .token:is(.keyword, .operator, .boolean, .tag) {
+.sh-prism .token.punctuation {
+	color: var(--sh-punctuation);
+}
+.sh-prism
+	.token:is(
+		.property,
+		.tag,
+		.boolean,
+		.number,
+		.function-name,
+		.constant,
+		.symbol,
+		.deleted
+	) {
+	color: var(--sh-symbol);
+}
+.sh-prism .token:is(.atrule, .attr-value, .keyword, .class-name) {
 	color: var(--sh-keyword);
 }
-.sh-prism .token:is(.string, .attr-value, .char) {
+.sh-prism
+	.token:is(.selector, .attr-name, .string, .char, .builtin, .inserted) {
 	color: var(--sh-string);
 }
-.sh-prism .token:is(.function, .class-name, .number, .regex) {
+.sh-prism .token.function {
 	color: var(--sh-function);
+}
+.sh-prism .token:is(.operator, .entity, .url, .variable),
+.sh-prism .language-css .token.string,
+.sh-prism .style .token.string {
+	color: var(--sh-operator);
+	background: var(--sh-operator-bg);
+}
+.sh-prism .token:is(.regex, .important) {
+	color: var(--sh-important);
 }
 .sh-prism a {
 	color: inherit;
 	text-decoration: underline;
 }
-.sh-prism.sh-theme-none .token {
+.sh-prism.sh-theme-none .token,
+.sh-prism.sh-theme-none :is(.language-css, .style) .token {
 	color: inherit;
+	background: transparent;
+}
+@media (max-width: 767px) {
+	.sh-prism::before,
+	.sh-prism::after {
+		box-shadow: none;
+	}
 }
 @media (max-width: 480px) {
 	.sh-prism {
 		font-size: 0.875rem;
 	}
-	.sh-prism pre.syntaxhighlighter-code {
-		padding: 0.6rem;
+	.sh-prism pre.syntaxhighlighter-code code {
+		padding: 0.6em;
 	}
 }

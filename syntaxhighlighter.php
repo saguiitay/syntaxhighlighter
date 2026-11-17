@@ -4,7 +4,7 @@
 
 Plugin Name:  SyntaxHighlighter Prism for WordPress
 Plugin URI:   https://github.com/saguiitay/syntaxhighlighter
-Version:      4.0.0
+Version:      4.0.1
 Description:  Backward-compatible local Prism highlighting, with TypeScript, TSX and Kusto Query Language. Replaces SyntaxHighlighter Evolved.
 Author:       SyntaxHighlighter Prism contributors; Alex Mills (Viper007Bond), Automattic
 Author URI:   https://github.com/saguiitay/syntaxhighlighter
@@ -35,7 +35,7 @@ require_once __DIR__ . '/includes/class-prism-renderer.php';
 
 class SyntaxHighlighter {
 	// All of these variables are private. Filters are provided for things that can be modified.
-	public $pluginver            = '4.0.0';  // Plugin version
+	public $pluginver            = '4.0.1';  // Plugin version
 	public $prism;
 	public $agshver              = false;    // Alex Gorbatchev's SyntaxHighlighter version (dynamically set below due to v2 vs v3)
 	public $shfolder             = false;    // Controls what subfolder to load SyntaxHighlighter from (v2 or v3)

@@ -10,7 +10,7 @@ settings. Not maintained or released by Automattic.
 1. Back up the site and test on staging.
 2. Deactivate **SyntaxHighlighter Evolved**. Do not run both plugins together:
    they intentionally share the class, block, shortcode and option identifiers.
-3. Upload `artifacts/syntaxhighlighter-prism-4.0.0.zip` using **Plugins > Add
+3. Upload `artifacts/syntaxhighlighter-prism-4.0.1.zip` using **Plugins > Add
    New > Upload Plugin**, then activate **SyntaxHighlighter Prism for WordPress**.
 4. Review **Settings > SyntaxHighlighter**, existing posts and any custom brush
    integrations. No content migration, resave or database operation is required.
@@ -64,6 +64,8 @@ changes are in [compatibility](docs/compatibility.md).
 
 Use the site setting or `theme="light"`, `"dark"` or `"auto"`. Automatic follows
 `prefers-color-scheme`; themes can override scoped `--sh-*` CSS variables.
+The light appearance uses Prism's **Coy** theme: striped paper, a blue accent
+and its original token palette. Dark/automatic modes retain a dark adaptation.
 Old theme choices map to light/dark equivalents rather than pixel-identical
 SyntaxHighlighter skins. `theme="none"` disables token colors.
 

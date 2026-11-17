@@ -89,10 +89,12 @@ Validated endpoints before delivery:
 All four combinations completed locally: 147 PHP integration assertions per
 combination, plus actual browser clipboard/editor/keyboard/conditional-asset
 checks. The extracted production ZIP also passed on WordPress 7.1.4/PHP 8.5.12.
-Standalone suites passed seven grammar tests, 124 PHP assertions and five
+Standalone suites passed seven grammar tests, 124 PHP assertions and six
 frontend browser tests. Native lint, PHPStan, Composer strict validation and
 dependency audits passed. Delivery validation JSON/screenshots in `artifacts`
 record the WordPress/benchmark evidence. These local runs are not hosted CI.
+The four-corner matrix above was run for 4.0.0. The 4.0.1 Coy update repeats the
+standalone checks and the extracted-ZIP WordPress 7.1.4/PHP 8.5.12 validation.
 
 ## Build and grammars
 
@@ -102,6 +104,9 @@ private (`SyntaxHighlighterPrism`), with no automatic scanning/worker loader.
 The core/controller share `runtime.js`; grammar files are generated from
 upstream components and an explicit dependency graph in `dist/manifest.json`.
 The Kusto extension is appended only to its own grammar.
+The build also scopes Prism's upstream Coy stylesheet beneath `.sh-prism`;
+`src/frontend.css` adapts its scrolling, controls and dark mode. No global
+Prism theme selectors or runtime nesting support are required.
 
 To add a language: update `languages.json`, its PHP/editor label if appropriate,
 add a focused fixture and run all checks. The build rejects unknown grammar
@@ -115,7 +120,7 @@ requires explicit legacy fixtures and a Gutenberg deprecation strategy.
 
 `npm run archive` writes:
 
-- `artifacts/syntaxhighlighter-prism-4.0.0.zip` and its SHA-256 file.
+- `artifacts/syntaxhighlighter-prism-4.0.1.zip` and its SHA-256 file.
 - `artifacts/package-manifest.json`, hashing every packaged file.
 - `artifacts/dependency-inventory.json`, listing locked npm packages/licenses.
 

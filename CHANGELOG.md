@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.1 - unreleased fork
+
+- Replace the custom light presentation with upstream Prism Coy, scoped to the
+  plugin: blue accent, striped paper, lifted shadows and original token colors.
+- Adapt the theme to existing scrolling, wrapping, line decorations, controls
+  and dark/automatic modes without styling unrelated code on the page.
+- Bump the asset version so updated styles do not reuse cached 4.0.0 URLs.
+
 ## 4.0.0 - unreleased fork
 
 - Replace frontend SyntaxHighlighter 2/3 with local, pinned Prism.js 1.30.0.
