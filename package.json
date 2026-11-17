@@ -1,6 +1,6 @@
 {
 	"name": "syntaxhighlighter-prism",
-	"version": "4.0.1",
+	"version": "4.0.2",
 	"private": true,
 	"description": "Backward-compatible WordPress code highlighting with local Prism grammars, TypeScript and Kusto.",
 	"license": "GPL-2.0-or-later",

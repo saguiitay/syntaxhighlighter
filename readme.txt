@@ -5,7 +5,7 @@ Tags: code, syntax highlighting, typescript, kusto, prism
 Requires at least: 6.8.12
 Requires PHP: 8.2
 Tested up to: 7.1.4
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 License: GPL-2.0-or-later
 
 Replacement fork with local Prism highlighting, TypeScript, TSX and Kusto Query Language, retaining existing content.
@@ -39,6 +39,12 @@ Try excluding this plugin's Javascript from any performance optimizations your s
 2. An example use of the editor block.
 
 == ChangeLog ==
+
+= Version 4.0.2 (unreleased fork) =
+
+- Add JSON to the editor selector and shortcode languages.
+- Compact code spacing and fix empty-line numbering.
+- Align gutter typography and isolate it from surrounding theme styles.
 
 = Version 4.0.1 (unreleased fork) =
 

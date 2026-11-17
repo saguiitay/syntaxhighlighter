@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.0.2 - unreleased fork
 
 - Add JSON to the editor language selector and `[json]` / `[code language="json"]`.
 - Tighten code font/line spacing, padding, gutters and the copy toolbar.

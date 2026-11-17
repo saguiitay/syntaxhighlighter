@@ -10,7 +10,7 @@ settings. Not maintained or released by Automattic.
 1. Back up the site and test on staging.
 2. Deactivate **SyntaxHighlighter Evolved**. Do not run both plugins together:
    they intentionally share the class, block, shortcode and option identifiers.
-3. Upload `artifacts/syntaxhighlighter-prism-4.0.1.zip` using **Plugins > Add
+3. Upload `artifacts/syntaxhighlighter-prism-4.0.2.zip` using **Plugins > Add
    New > Upload Plugin**, then activate **SyntaxHighlighter Prism for WordPress**.
 4. Review **Settings > SyntaxHighlighter**, existing posts and any custom brush
    integrations. No content migration, resave or database operation is required.

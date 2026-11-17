@@ -95,6 +95,8 @@ dependency audits passed. Delivery validation JSON/screenshots in `artifacts`
 record the WordPress/benchmark evidence. These local runs are not hosted CI.
 The four-corner matrix above was run for 4.0.0. The 4.0.1 Coy update repeats the
 standalone checks and the extracted-ZIP WordPress 7.1.4/PHP 8.5.12 validation.
+The 4.0.2 update has focused JSON and desktop/mobile gutter/layout checks;
+its ZIP is rebuilt without rerunning the full suite or WordPress matrix.
 
 ## Build and grammars
 
@@ -120,7 +122,7 @@ requires explicit legacy fixtures and a Gutenberg deprecation strategy.
 
 `npm run archive` writes:
 
-- `artifacts/syntaxhighlighter-prism-4.0.1.zip` and its SHA-256 file.
+- `artifacts/syntaxhighlighter-prism-4.0.2.zip` and its SHA-256 file.
 - `artifacts/package-manifest.json`, hashing every packaged file.
 - `artifacts/dependency-inventory.json`, listing locked npm packages/licenses.
 
