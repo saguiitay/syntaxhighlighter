@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove ignored/empty SCSS sources and unused JSDoc, PHPCS, PHPUnit and Travis
+  setup files; keep the current build, editor CSS and maintained test suites.
 - Remove unsupported TinyMCE 3/pre-block-editor branches and unused legacy
   brush scanners/helpers; retain the current Classic editor and stored content.
 - Remove obsolete SyntaxHighlighter 2/3 engines, Flash assets and third-party

@@ -215,7 +215,6 @@ class SyntaxHighlighter {
 			'yml'           => 'yaml',
 		) );
 
-		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 		$this->brush_names = (array) apply_filters( 'syntaxhighlighter_brush_names', array(
 			'typescript' => __( 'TypeScript', 'syntaxhighlighter' ),
 			'tsx'        => __( 'TypeScript JSX (TSX)', 'syntaxhighlighter' ),
@@ -259,7 +258,6 @@ class SyntaxHighlighter {
 			'xml'        => __( 'HTML / XHTML / XML / XSLT', 'syntaxhighlighter' ),
 			'yaml'        => __( 'YAML',                     'syntaxhighlighter' ),
 		) );
-		// phpcs:enable
 
 		// Add any custom brushes that aren't making use of the newer "syntaxhighlighter_brush_names" filter.
 		foreach ( $this->brushes as $slug => $language ) {

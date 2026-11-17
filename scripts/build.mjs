@@ -118,7 +118,7 @@ await build({
 	bundle: true,
 	minify: true,
 	outfile: 'dist/blocks.build.js',
-	loader: { '.js': 'jsx', '.scss': 'empty' },
+	loader: { '.js': 'jsx' },
 	jsxFactory: 'wp.element.createElement',
 	jsxFragment: 'wp.element.Fragment',
 	plugins: [

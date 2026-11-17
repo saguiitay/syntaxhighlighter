@@ -2,8 +2,6 @@ import { __ } from '@wordpress/i18n';
 import edit from './edit';
 import save from './save';
 import transforms from './transforms';
-import './editor.scss';
-import './style.scss';
 
 const { settings } = window.syntaxHighlighterData;
 

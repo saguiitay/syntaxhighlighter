@@ -43,9 +43,9 @@ php -l includes/class-prism-renderer.php
 php tests/php/run.php
 ```
 
-The old external MySQL/PHPUnit bootstrap is retained for contributors using
-WordPress's unit-test infrastructure; the mandatory self-contained suites do
-not rely on the original trivial PHPUnit smoke test.
+The obsolete MySQL/PHPUnit bootstrap, trivial upstream smoke test and Travis
+installation scripts have been removed. The maintained suites use the native
+PHP boundary and self-contained WordPress Playground integration.
 
 ## Actual WordPress testing
 
