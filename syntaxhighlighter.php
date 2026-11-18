@@ -1156,14 +1156,9 @@ class SyntaxHighlighter {
 
 	<p class="submit">
 <?php
-		if ( function_exists( 'submit_button' ) ) {
-			submit_button( null, 'primary', 'syntaxhighlighter-submit', false );
-			echo ' ';
-			submit_button( __( 'Reset to Defaults', 'syntaxhighlighter-prism' ), 'primary', 'syntaxhighlighter-defaults', false );
-		} else {
-			echo '<input type="submit" name="syntaxhighlighter-submit" class="button-primary" value="' . __( 'Save Changes') . '" />' . "\n";
-			echo '<input type="submit" name="syntaxhighlighter-defaults" id="syntaxhighlighter-defaults" class="button-primary" value="' . __( 'Reset to Defaults', 'syntaxhighlighter-prism' ) . '" />' . "\n";
-		}
+		submit_button( null, 'primary', 'syntaxhighlighter-submit', false );
+		echo ' ';
+		submit_button( __( 'Reset to Defaults', 'syntaxhighlighter-prism' ), 'primary', 'syntaxhighlighter-defaults', false );
 ?>
 	</p>
 
@@ -1181,14 +1176,23 @@ class SyntaxHighlighter {
 			echo ' style="max-width:' . intval( $GLOBALS['content_width'] ) . 'px"';
 		echo '>';
 
-		echo $this->settings_preview();
+		$preview_allowed_html = wp_kses_allowed_html( 'post' );
+		$preview_allowed_html['button'] = array( 'type' => true, 'class' => true, 'hidden' => true );
+		$preview_allowed_html['pre']['tabindex'] = true;
+		echo wp_kses( $this->settings_preview(), $preview_allowed_html );
 
 		echo '</div>';
 ?>
 
 	<h3 style="margin-top:30px"><?php esc_html_e( 'Shortcode Parameters', 'syntaxhighlighter-prism' ); ?></h3>
 
-	<p><?php printf( __( 'These are the parameters you can pass to the shortcode and what they do. For the booleans (i.e. on/off), pass %1$s/%2$s or %3$s/%4$s.', 'syntaxhighlighter-prism' ), '<code>true</code>', '<code>1</code>', '<code>false</code>', '<code>0</code>' ); ?></p>
+	<p><?php
+		printf(
+			// translators: 1: true, 2: 1, 3: false, 4: 0. Each value is formatted as code.
+			esc_html__( 'These are the parameters you can pass to the shortcode and what they do. For the booleans (i.e. on/off), pass %1$s/%2$s or %3$s/%4$s.', 'syntaxhighlighter-prism' ),
+			'<code>true</code>', '<code>1</code>', '<code>false</code>', '<code>0</code>'
+		);
+	?></p>
 
 	<ul class="ul-disc">
 		<li>

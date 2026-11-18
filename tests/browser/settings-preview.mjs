@@ -18,6 +18,8 @@ export async function verifySettingsPreview(page, baseUrl, playground) {
 	);
 	const preview = page.locator('#syntaxhighlighter-settings-preview');
 	await expect(preview.locator('.token').first()).toBeVisible();
+	await expect(preview.locator('.sh-copy')).toBeVisible();
+	await expect(preview.locator('pre')).toHaveAttribute('tabindex', '0');
 	await expect(preview.locator('.sh-title')).toHaveCount(0);
 	await expect(preview.locator('pre')).toHaveAttribute('data-highlight', '');
 	await expect(preview.locator('pre')).toHaveAttribute(

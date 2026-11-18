@@ -57,6 +57,37 @@ try {
 		remove_filter( 'syntaxhighlighter_democode', $filter );
 	}
 	sh_assert( 2 === $plugin->codeformat && $original === $plugin->settings, 'Failed preview leaked rendering state.' );
+
+	require_once ABSPATH . 'wp-admin/includes/admin.php';
+	$plugin->settings = array_merge( $original, array( 'collapse' => 1, 'copy' => 1, 'toolbar' => 1, 'title' => 'Filtered preview' ) );
+	$source = '<?php echo "<script>literal & [gallery]</script>"; ?>';
+	$demo_filter = static function () use ( $source ) {
+		return '<img src="x" onerror="shPreviewInjected()"><script data-preview-unsafe>shPreviewInjected()</script>'
+			. '[sourcecode language="php"]' . $source . '[/sourcecode]';
+	};
+	$translation_filter = static function ( $translation, $text ) {
+		return 0 === strpos( $text, 'These are the parameters you can pass' ) ? '<img src=x onerror=shTranslationInjected()>' . $text : $translation;
+	};
+	add_filter( 'syntaxhighlighter_democode', $demo_filter );
+	add_filter( 'gettext_syntaxhighlighter-prism', $translation_filter, 10, 2 );
+	ob_start();
+	try {
+		$plugin->settings_page();
+		$page = ob_get_contents();
+	} finally {
+		ob_end_clean();
+		remove_filter( 'syntaxhighlighter_democode', $demo_filter );
+		remove_filter( 'gettext_syntaxhighlighter-prism', $translation_filter, 10 );
+	}
+	sh_assert( false === strpos( $page, '<script data-preview-unsafe' ) && false === strpos( $page, 'onerror="shPreviewInjected()"' ), 'Settings preview emitted executable filtered HTML.' );
+	preg_match( '#<pre\b[^>]*>[\s\S]*?</pre>#', $page, $preview_markup );
+	sh_assert( $source === sh_source( $preview_markup[0] ?? '' ), 'Late preview escaping changed literal code.' );
+	sh_assert( false !== strpos( $page, '<details class="sh-collapse"><summary>Filtered preview</summary>' ), 'Late preview escaping removed collapse controls.' );
+	sh_assert( false !== strpos( $page, '<button type="button" class="sh-copy" hidden>' ), 'Late preview escaping removed the copy button.' );
+	sh_assert( false !== strpos( $page, 'tabindex="0"' ) && false !== strpos( $page, 'role="status" aria-live="polite"' ), 'Late preview escaping removed keyboard or status accessibility.' );
+	sh_assert( false !== strpos( $page, 'data-firstline="' . $original['firstline'] . '"' ) && false !== strpos( $page, 'data-htmlscript="false"' ), 'Late preview escaping removed runtime options.' );
+	sh_assert( false !== strpos( $page, '&lt;img src=x onerror=shTranslationInjected()&gt;' ), 'Shortcode help translation was not escaped.' );
+	sh_assert( false !== strpos( $page, '<code>true</code>/<code>1</code>' ), 'Shortcode help lost its formatted examples.' );
 } finally {
 	$plugin->settings = $original;
 	$plugin->codeformat = $original_format;
