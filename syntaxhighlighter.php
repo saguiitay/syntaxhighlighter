@@ -50,9 +50,6 @@ class SyntaxHighlighter {
 	public $specialchars         = array(); // Array of special characters to be encoded.
 
 	function __construct() {
-		// Load localization domain
-		load_plugin_textdomain( 'syntaxhighlighter-prism' );
-
 		// Display hooks
 		add_filter( 'the_content', array( $this, 'parse_shortcodes' ), 7 ); // Posts
 		add_filter( 'the_content', array( $this, 'convert_legacy_pre' ), 10 );
