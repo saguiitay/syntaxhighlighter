@@ -122,6 +122,44 @@ export async function verifySettingsPreview(page, baseUrl, playground) {
 		form: { action: 'syntaxhighlighter_preview', nonce: config.nonce },
 	});
 	assert.equal(missing.status(), 400, 'Missing settings were accepted.');
+	const invalid = await page.request.post(config.url, {
+		form: {
+			action: 'syntaxhighlighter_preview',
+			nonce: config.nonce,
+			syntaxhighlighter_settings: 'invalid',
+		},
+	});
+	assert.equal(invalid.status(), 400, 'Non-array settings were accepted.');
+	const sanitized = await page.request.post(config.url, {
+		form: {
+			action: 'syntaxhighlighter_preview',
+			nonce: config.nonce,
+			'syntaxhighlighter_settings[title]': 'Preview %20 "quoted" <b>title</b>',
+			'syntaxhighlighter_settings[firstline]': '-10000000',
+			'syntaxhighlighter_settings[tabsize]': '100',
+		},
+	});
+	assert.equal(sanitized.status(), 200);
+	const sanitizedResult = await sanitized.json();
+	assert.equal(sanitizedResult.success, true);
+	const normalized = await page.evaluate((html) => {
+		const document = new DOMParser().parseFromString(html, 'text/html');
+		return {
+			title: document.querySelector('.sh-title').textContent,
+			firstline: document.querySelector('pre').dataset.firstline,
+			tabsize: document.querySelector('pre').dataset.tabsize,
+		};
+	}, sanitizedResult.data.html);
+	assert.deepEqual(normalized, {
+		title: 'Preview %20 "quoted" title',
+		firstline: '-1000000',
+		tabsize: '16',
+	});
+	assert.deepEqual(
+		await readSettings(),
+		saved,
+		'Preview sanitization saved options.',
+	);
 	const unauthorized = await playground.run({
 		code: "<?php require '/wordpress/wp-load.php'; wp_set_current_user(0); $GLOBALS['SyntaxHighlighter']->ajax_settings_preview();",
 	});
@@ -147,4 +185,38 @@ export async function verifySettingsPreview(page, baseUrl, playground) {
 		/sh-theme-prism-okaidia/,
 	);
 	assert.equal((await readSettings()).theme, 'prism-okaidia');
+
+	const beforeReset = await readSettings();
+	const form = await page
+		.locator('#syntaxhighlighter-settings')
+		.evaluate((element) => Object.fromEntries(new FormData(element)));
+	const deniedReset = await page.request.post(
+		`${baseUrl}/wp-admin/options.php`,
+		{
+			form: {
+				...form,
+				_wpnonce: 'invalid',
+				'syntaxhighlighter_settings[reset]': '1',
+			},
+		},
+	);
+	assert.equal(deniedReset.status(), 403, 'Reset accepted an invalid nonce.');
+	assert.deepEqual(
+		await readSettings(),
+		beforeReset,
+		'Rejected reset modified saved settings.',
+	);
+	page.once('dialog', (dialog) => dialog.accept());
+	await Promise.all([
+		page.waitForNavigation({ waitUntil: 'networkidle' }),
+		page.locator('#syntaxhighlighter-defaults').click(),
+	]);
+	await expect(page.locator('#syntaxhighlighter-theme')).toHaveValue('auto');
+	await expect(page.locator('#syntaxhighlighter-title')).toHaveValue('');
+	await expect(preview.locator('.sh-title')).toHaveCount(0);
+	const reset = await readSettings();
+	assert.equal(reset.theme, 'auto');
+	assert.equal(reset.title, '');
+	assert.equal(reset.firstline, 1);
+	assert.equal(reset.copy, 1);
 }

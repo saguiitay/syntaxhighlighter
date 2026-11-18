@@ -970,7 +970,8 @@ class SyntaxHighlighter {
 		if ( ! isset( $_POST['syntaxhighlighter_settings'] ) || ! is_array( $_POST['syntaxhighlighter_settings'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Preview settings are missing or invalid.', 'syntaxhighlighter-prism' ) ), 400 );
 		}
-		wp_send_json_success( array( 'html' => $this->settings_preview( wp_unslash( $_POST['syntaxhighlighter_settings'] ) ) ) );
+		$settings = sanitize_option( 'syntaxhighlighter_settings', wp_unslash( $_POST['syntaxhighlighter_settings'] ) );
+		wp_send_json_success( array( 'html' => $this->settings_preview( $settings ) ) );
 	}
 
 	public function settings_preview( $settings = null ) {
@@ -1019,9 +1020,6 @@ class SyntaxHighlighter {
 			var areyousure = confirm("<?php echo esc_js( __( 'Are you sure you want to reset your settings to the defaults?', 'syntaxhighlighter-prism' ) ); ?>");
 			if ( true != areyousure ) return false;
 		});
-		<?php if ( ! empty( $_GET['defaults'] ) ) : ?>
-		$("#message p strong").text("<?php echo esc_js( __( 'Settings reset to defaults.', 'syntaxhighlighter-prism' ) ); ?>");
-		<?php endif; ?>
 	});
 // ]]>
 </script>
@@ -1155,7 +1153,7 @@ class SyntaxHighlighter {
 <?php
 		submit_button( null, 'primary', 'syntaxhighlighter-submit', false );
 		echo ' ';
-		submit_button( __( 'Reset to Defaults', 'syntaxhighlighter-prism' ), 'primary', 'syntaxhighlighter-defaults', false );
+		submit_button( __( 'Reset to Defaults', 'syntaxhighlighter-prism' ), 'primary', 'syntaxhighlighter_settings[reset]', false, array( 'id' => 'syntaxhighlighter-defaults' ) );
 ?>
 	</p>
 
@@ -1354,10 +1352,10 @@ class SyntaxHighlighter {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return $this->settings;
 		}
-		if ( ! empty( $_POST['syntaxhighlighter-defaults'] ) ) {
+		$settings = is_array( $settings ) ? $settings : array();
+		if ( ! empty( $settings['reset'] ) ) {
 			return $this->defaultsettings;
 		}
-		$settings = is_array( $settings ) ? $settings : array();
 		$normalized = $this->prism->options( array_merge( $this->defaultsettings, $settings ) );
 		$normalized['theme'] = isset( $settings['theme'] ) && is_string( $settings['theme'] ) && isset( $this->themes[ $settings['theme'] ] ) ? $settings['theme'] : $this->defaultsettings['theme'];
 		foreach ( array( 'loadallbrushes', 'autolinks', 'collapse', 'gutter', 'light', 'smarttabs', 'toolbar', 'wraplines', 'quickcode', 'copy' ) as $key ) {

@@ -14,7 +14,18 @@ sh_run_theme_tests( $SyntaxHighlighter );
 sh_run_translation_tests( $SyntaxHighlighter );
 $sh_capability = false;
 sh_assert( $SyntaxHighlighter->validate_settings( array( 'title' => 'changed' ) ) === $SyntaxHighlighter->settings, 'Capability bypass.' );
+sh_assert( $SyntaxHighlighter->validate_settings( array( 'reset' => 1 ) ) === $SyntaxHighlighter->settings, 'Unauthorized defaults reset.' );
 $sh_capability = true;
+$validated = $SyntaxHighlighter->validate_settings( array( 'reset' => 1 ) );
+sh_assert( $SyntaxHighlighter->defaultsettings === $validated, 'Defaults reset did not use the submitted settings.' );
+$original_post = $_POST;
+try {
+	$_POST['syntaxhighlighter-defaults'] = 'Reset to Defaults';
+	$validated = $SyntaxHighlighter->validate_settings( array( 'title' => 'Preview settings' ) );
+	sh_assert( 'Preview settings' === $validated['title'], 'Unrelated POST data changed settings validation.' );
+} finally {
+	$_POST = $original_post;
+}
 $validated = $SyntaxHighlighter->validate_settings( array( 'theme' => 'dark', 'title' => '<script>x</script>', 'copy' => 'false' ) );
 sh_assert( 'dark' === $validated['theme'] && 'x' === $validated['title'] && 0 === $validated['copy'], 'Settings sanitization.' );
 $validated = $SyntaxHighlighter->validate_settings( array( 'theme' => 'midnight', 'shversion' => 2 ) );
