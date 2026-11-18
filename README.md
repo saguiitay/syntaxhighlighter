@@ -17,7 +17,7 @@ are retained. Not maintained or released by Automattic.
 4. Review **Settings > SyntaxHighlighter**, existing posts and any custom brush
    integrations. No content migration or post resave is required.
 
-The ZIP is self-contained: production needs WordPress **6.8.12+** and PHP
+The ZIP is self-contained: production needs WordPress **7.0+** and PHP
 **8.2+**, not Node.js, npm or Composer. Its folder/update identity is
 `syntaxhighlighter-prism`, not the upstream WordPress.org slug. Standard
 WordPress.org updates are enabled once this plugin is approved and published

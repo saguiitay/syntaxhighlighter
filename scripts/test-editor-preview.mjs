@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { verifyEditorPreview } from '../tests/browser/editor-preview.mjs';
 
 await mkdir('artifacts', { recursive: true });
-const wpVersion = process.env.WP_VERSION || '6.8.12';
+const wpVersion = process.env.WP_VERSION || '7.1.4';
 const phpVersion = process.env.PHP_VERSION || '8.2';
 const instance = await runCLI({
 	command: 'server',

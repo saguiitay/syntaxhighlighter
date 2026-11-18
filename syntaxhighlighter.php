@@ -11,7 +11,7 @@ Author URI:   https://github.com/saguiitay/syntaxhighlighter
 Text Domain:  syntaxhighlighter-prism
 License:      GPL2+
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
-Requires at least: 6.8.12
+Requires at least: 7.0
 Requires PHP: 8.2
 
 **************************************************************************/

@@ -80,29 +80,30 @@ npm run test:wordpress
 ```
 
 On a POSIX shell, use `WP_VERSION=7.1.4 PHP_VERSION=8.5 npm run test:wordpress`.
-Default minimum is WordPress 6.8.12 with PHP 8.2. These exact versions, rather
-than floating `latest`, are pinned in CI. Update them deliberately as supported
-branches receive security releases.
+All local WordPress runners default to WordPress 7.1.4 with PHP 8.2. CI covers
+only WordPress 7.1.4, with PHP 8.2 and 8.5. WordPress 7.0 is the declared minimum,
+not an additional CI target; earlier major versions are outside the support and
+test policy. These exact versions, rather than floating `latest`, are pinned in
+CI. Update them deliberately as supported branches receive security releases.
 
-Validated endpoints before delivery:
+Previously validated WordPress 7 endpoints:
 
 | WordPress | PHP | Environment |
 |---|---|---|
-| 6.8.12 | 8.2.35 | WordPress Playground / Chromium; both themes |
-| 6.8.12 | 8.5.12 | WordPress Playground / Chromium; both themes |
 | 7.1.4 | 8.2.35 | WordPress Playground / Chromium; both themes |
 | 7.1.4 | 8.5.12 | WordPress Playground / Chromium; both themes |
 | PHP units and lint | 8.5.12 | Native Windows PHP |
 | PHP units and syntax | 8.2.35 | PHP.wasm |
 
-All four combinations completed locally: 147 PHP integration assertions per
-combination, plus actual browser clipboard/editor/keyboard/conditional-asset
-checks. The extracted production ZIP also passed on WordPress 7.1.4/PHP 8.5.12.
+Both WordPress 7.1.4 combinations completed locally during the original delivery:
+147 PHP integration assertions per combination, plus actual browser
+clipboard/editor/keyboard/conditional-asset checks. The extracted production ZIP
+also passed on WordPress 7.1.4/PHP 8.5.12.
 Standalone suites passed seven grammar tests, 124 PHP assertions and six
 frontend browser tests. Native lint, PHPStan, Composer strict validation and
 dependency audits passed. Delivery validation JSON/screenshots in `artifacts`
 record the WordPress/benchmark evidence. These local runs are not hosted CI.
-The four-corner matrix above was run for 4.0.0. The 4.0.1 Coy update repeats the
+The WordPress 7.1.4 checks above were run for 4.0.0. The 4.0.1 Coy update repeats the
 standalone checks and the extracted-ZIP WordPress 7.1.4/PHP 8.5.12 validation.
 The 4.0.2 update has focused JSON and desktop/mobile gutter/layout checks;
 its ZIP is rebuilt without rerunning the full suite or WordPress matrix.
@@ -149,8 +150,9 @@ the extraction. Production requires no build tools.
 Browser jobs use `ubuntu-24.04`: the pinned Playwright 1.58.2 does not support
 Ubuntu 26.04, now used by `ubuntu-latest`. Update the runner image deliberately
 alongside Playwright rather than inheriting an unsupported operating system.
-Jobs cover JS/build/format/browser/audit/benchmark/package, the four WordPress/PHP
-combinations, and native PHP 8.2/8.5 lint/unit/Composer audit/static analysis.
+Jobs cover JS/build/format/browser/audit/benchmark/package, WordPress 7.1.4
+with PHP 8.2/8.5, and native PHP 8.2/8.5
+lint/unit/Composer audit/static analysis.
 Node caching is lockfile-based; actions are SHA-pinned and permissions read-only.
 Artifacts include test JSON, screenshots, benchmark samples and the ZIP.
 

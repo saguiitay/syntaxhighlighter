@@ -2,7 +2,7 @@
 Contributors: Viper007Bond, automattic, donncha
 Donate link: https://alex.blog/2019/03/13/in-memory-of-alex-donation-link-update/
 Tags: code, syntax highlighting, typescript, kusto, prism
-Requires at least: 6.8.12
+Requires at least: 7.0
 Requires PHP: 8.2
 Tested up to: 7.1.4
 Stable tag: 4.0.2

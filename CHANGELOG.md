@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Require WordPress 7.0+ and focus CI/local WordPress testing on 7.1.4 only,
+  retaining PHP 8.2/8.5 coverage.
 - Load preview styles and Prism themes inside the block editor's iframe so
   live syntax previews show colors, layout and theme changes correctly.
 - Use the `syntaxhighlighter-prism` translation domain in PHP and the block
@@ -73,7 +75,7 @@
   WordPress/Chromium compatibility checks, benchmarks and deterministic ZIPs.
 - Use a distinct displayed/update identity and refuse fork activation while
   the original class is already loaded.
-- Target WordPress 6.8.12+ and PHP 8.2+. Colors/layout differ from legacy themes;
+- Require PHP 8.2+. Colors/layout differ from legacy themes;
   obsolete engine-specific extensions need adaptation. See compatibility docs.
 
 Earlier upstream releases and attribution remain documented in `readme.txt`
