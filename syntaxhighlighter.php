@@ -613,8 +613,7 @@ class SyntaxHighlighter {
 			// Normal, safe parsing
 			$content = do_shortcode( $content, true );
 		} else {
-			// Extra escape escaped shortcodes because do_shortcode_tag() called by do_shortcode() is going to strip a pair of square brackets when it runs.
-			// Then call do_shortcode_tag(). This is basically do_shortcode() without calling do_shortcodes_in_html_tags() which breaks things.
+			// Dispatch storage callbacks without interpreting literal PHP/HTML in code as HTML tags.
 			// For context, see https://wordpress.org/support/topic/php-opening-closing-tags-break-code-blocks
 			$content = preg_replace_callback(
 				$regex,
@@ -668,17 +667,30 @@ class SyntaxHighlighter {
 	}
 
 	/**
-	 * This is a combination of this class's shortcode_hack_extra_escape_escaped_shortcodes()
-  	 * and do_shortcode_tag() for performance reasons so that we don't have to run some regex twice.
- 	 *
+	 * Process a storage-format shortcode without WordPress's HTML preprocessing.
+	 * Preserve escaped examples and the public shortcode filters.
+	 *
 	 * @param array $match Regular expression match array.
 	 *
-	 * @return string|false False on failure, otherwise a parse shortcode tag.
+	 * @return string The processed shortcode or unchanged escaped example.
 	 */
 	function shortcode_hack_extra_escape_escaped_shortcodes_and_parse( $match ) {
-		$match[0] = $this->shortcode_hack_extra_escape_escaped_shortcodes( $match );
+		global $shortcode_tags;
 
-		return do_shortcode_tag( $match );
+		if ( '[' === $match[1] && ']' === $match[6] ) {
+			return $match[0];
+		}
+
+		$tag = $match[2];
+		$atts = shortcode_parse_atts( $match[3] );
+		$pre = apply_filters( 'pre_do_shortcode_tag', false, $tag, $atts, $match );
+		if ( false !== $pre ) {
+			return $pre;
+		}
+
+		$content = isset( $match[5] ) ? $match[5] : null;
+		$output = $match[1] . call_user_func( $shortcode_tags[ $tag ], $atts, $content, $tag ) . $match[6];
+		return apply_filters( 'do_shortcode_tag', $output, $tag, $atts, $match );
 	}
 
 	// The main filter for the post contents. The regular shortcode filter can't be used as it's post-wpautop().

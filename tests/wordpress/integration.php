@@ -33,6 +33,47 @@ $plugin->codeformat = 1;
 $encoded = $plugin->encode_shortcode_contents( '[code language="html"]<script>alert(1)</script> &amp; [gallery][/code]' );
 $plugin->codeformat = 2;
 sh_assert( '<script>alert(1)</script> &amp; [gallery]' === sh_source( $plugin->parse_shortcodes( $encoded ) ), 'Classic encode/decode storage boundary.' );
+$classic_sources = array(
+	'<?php echo "[gallery] <strong>literal</strong>"; ?>',
+	'<div data-template="<?php echo $value; ?>">[gallery] &amp;</div>',
+);
+foreach ( $classic_sources as $source ) {
+	$shortcode = '[code language="php"]' . $source . '[/code]';
+	$encoded = $plugin->encode_shortcode_contents( $shortcode );
+	$decoded = $plugin->decode_shortcode_contents( $encoded );
+	preg_match( '/' . get_shortcode_regex( array( 'code' ) ) . '/', $decoded, $decoded_match );
+	sh_assert( $source === ( $decoded_match[5] ?? null ), 'Classic PHP/HTML save and edit round trip.' );
+	$plugin->codeformat = 2;
+	sh_assert( $source === sh_source( $plugin->parse_shortcodes( $encoded ) ), 'Classic PHP/HTML rendered source changed.' );
+	$escaped = '[' . $shortcode . ']';
+	sh_assert( $escaped === $plugin->encode_shortcode_contents( $escaped ) && $escaped === $plugin->decode_shortcode_contents( $escaped ), 'Escaped Classic examples must remain literal.' );
+}
+$other_calls = 0;
+$other_callback = static function () use ( &$other_calls ) { ++$other_calls; return 'Other shortcode executed'; };
+add_shortcode( 'sh_other', $other_callback );
+try {
+	$other = '[sh_other][code]literal example[/code][/sh_other]';
+	$encoded = $plugin->encode_shortcode_contents( $other . '[code]real code[/code]' );
+	sh_assert( 0 === $other_calls && 0 === strpos( $encoded, $other ), 'Classic encoding executed or modified another shortcode.' );
+	sh_assert( 'Other shortcode executed' === do_shortcode( '[sh_other]test[/sh_other]' ) && 1 === $other_calls, 'Classic encoding did not restore another shortcode handler.' );
+} finally {
+	remove_shortcode( 'sh_other' );
+}
+$pre_filter = static function ( $output, $tag, $atts, $match ) {
+	return 'code' === $tag && 'pre-hook' === ( $match[5] ?? null ) ? 'Handled before encoding' : $output;
+};
+$post_filter = static function ( $output, $tag ) {
+	return 'code' === $tag ? $output . '<!-- shortcode hook -->' : $output;
+};
+add_filter( 'pre_do_shortcode_tag', $pre_filter, 10, 4 );
+add_filter( 'do_shortcode_tag', $post_filter, 10, 2 );
+try {
+	sh_assert( 'Handled before encoding' === $plugin->encode_shortcode_contents( '[code]pre-hook[/code]' ), 'Classic encoding ignored the pre-shortcode hook.' );
+	sh_assert( '[code]post-hook[/code]<!-- shortcode hook -->' === $plugin->encode_shortcode_contents( '[code]post-hook[/code]' ), 'Classic encoding ignored the post-shortcode hook.' );
+} finally {
+	remove_filter( 'pre_do_shortcode_tag', $pre_filter, 10 );
+	remove_filter( 'do_shortcode_tag', $post_filter, 10 );
+}
 $plugin->codeformat = false;
 $plugin->settings['theme'] = 'auto';
 $post_content = '<!-- wp:group --><div class="wp-block-group">' . $fixtures['blocks'][0]['serialized'] . '</div><!-- /wp:group -->';
