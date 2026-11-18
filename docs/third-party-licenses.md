@@ -14,7 +14,11 @@ contributors for their respective work. This fork is not an Automattic release.
 | TinyMCE shortcode adapters | Original plugin, with integration hardening | Classic editor preservation | Original plugin GPL license/notices |
 
 The Kusto grammar is upstream Prism work, not invented by this fork.
-`src/kusto-extension.js` is the fork's small integration-time extension.
+`src/kusto-extension.js` backports the fixes in
+[RunDevelopment/prism#3](https://github.com/RunDevelopment/prism/pull/3)
+at commit `7df2d65a518a5a5f84ef25a1bea623e19a5a8e53` onto Prism 1.30.0,
+alongside the plugin's verbatim-string token and extended timespan units.
+That pull request is not assumed to be merged into the pinned npm release.
 The build copies Prism's complete license, including its contributors notice,
 alongside the runtime.
 The obsolete SyntaxHighlighter engines and third-party brushes have been removed;

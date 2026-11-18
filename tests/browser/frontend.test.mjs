@@ -133,6 +133,53 @@ test('line ranges, first line, safe tokens and repeated initialization', async (
 	await expect(page.locator('.sh-line')).toHaveCount(3);
 	await expect(page.locator('body > pre')).toHaveText('Unrelated');
 });
+test('Kusto PR 3 tokens preserve displayed and copied source', async ({
+	page,
+}) => {
+	const source = [
+		'let Source = datatable(Message:string, Count:int32)["<tag>", 1];',
+		'Source | where Message in~ ("A") and Message hasprefix "x"',
+		'| extend Secret = h@"secret ""value""", Active = TRUE',
+		'| project Property = "text".property, Duration = 2milliseconds',
+		'.show tables',
+		'.set-or-append Results <| print value = 1 <> 2',
+	].join('\n');
+	const escaped = source
+		.replaceAll('&', '&amp;')
+		.replaceAll('<', '&lt;')
+		.replaceAll('>', '&gt;');
+	await setup(
+		page,
+		`<div class="sh-prism sh-theme-light"><div class="sh-controls"><button class="sh-copy" hidden>Copy code</button><span class="sh-status" role="status"></span></div><pre class="syntaxhighlighter-code"><code class="language-kusto">${escaped}</code></pre></div>`,
+		['kusto'],
+	);
+	await expect(page.locator('code')).toHaveText(source);
+	expect(await page.locator('.token.command').allTextContents()).toEqual([
+		'.show',
+		'.set-or-append',
+	]);
+	await expect(
+		page.locator('.token.keyword').filter({ hasText: /^in~$/ }),
+	).toHaveCount(1);
+	await expect(page.locator('.token.verbatim-string')).toHaveText(
+		'h@"secret ""value"""',
+	);
+	await expect(
+		page.locator('.token.number').filter({ hasText: /^2milliseconds$/ }),
+	).toHaveCount(1);
+	await page.evaluate(() => {
+		Object.defineProperty(navigator, 'clipboard', {
+			configurable: true,
+			value: {
+				writeText: async (text) => {
+					window.copied = text;
+				},
+			},
+		});
+	});
+	await page.getByRole('button', { name: 'Copy code' }).click();
+	expect(await page.evaluate(() => window.copied)).toBe(source);
+});
 test('copy uses exact original source, announces success and errors', async ({
 	page,
 }) => {

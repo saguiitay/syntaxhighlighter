@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Backport KQL fixes from RunDevelopment/prism#3: query/graph keywords, string
+  operators, scalar aliases, boolean spellings, verbatim strings and correct
+  management-command/operator boundaries. Retain extended timespan support.
 - Remove ignored/empty SCSS sources and unused JSDoc, PHPCS, PHPUnit and Travis
   setup files; keep the current build, editor CSS and maintained test suites.
 - Remove unsupported TinyMCE 3/pre-block-editor branches and unused legacy

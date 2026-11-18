@@ -107,6 +107,17 @@ CFScript; tag-based CFML will not have identical coloring. MATLAB/R/LaTeX and
 the other third-party legacy brush languages have native Prism equivalents.
 Colors and token classification necessarily differ from SyntaxHighlighter.
 
+### KQL grammar updates
+
+The local Kusto extension backports
+[RunDevelopment/prism#3](https://github.com/RunDevelopment/prism/pull/3),
+revision `7df2d65a518a5a5f84ef25a1bea623e19a5a8e53`, without upgrading
+Prism 1.30.0 or downloading code at runtime. It includes query/graph keywords,
+correct string operators and `in~`/`!in~`, escaped and obfuscated verbatim
+strings, scalar type aliases, boolean spellings, uppercase function names,
+line-leading management commands and complete `<|`/`<>` operators.
+The plugin's extended timespan units remain supported.
+
 ## Legacy option matrix
 
 | Option / setting | Prism behavior / difference |
