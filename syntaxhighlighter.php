@@ -740,6 +740,7 @@ class SyntaxHighlighter {
 
 		// Post quick edits aren't decoded for display, so we don't need to encode them (again)
 		// This also aborts for (un)trashing to avoid extra encoding.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Read-only save context; the calling WordPress endpoint owns nonce and capability checks.
 		if ( empty( $_POST ) || ( ! empty( $_POST['action'] ) && 'inline-save' == $_POST['action'] ) ) {
 			return $content;
 		}
