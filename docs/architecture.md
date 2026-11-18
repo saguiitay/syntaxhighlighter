@@ -66,7 +66,7 @@ plain textarea, with an opt-in preview sharing frontend tokens/styles. No Monaco
 Native details/summary supplies collapse without JS; code is readable without JS.
 Line decoration and copying must never mutate the original code text.
 
-Identity: **SyntaxHighlighter Prism for WordPress**, distributable
+Identity: **SyntaxHighlighter Prism**, distributable
 slug `syntaxhighlighter-prism`, version 4.0.2. Minimum WordPress 7.0 / PHP 8.2:
 a contemporary WordPress baseline and security-supported PHP. TinyMCE 3 and
 pre-block-editor fallbacks are removed; the current Classic editor adapter,

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Use SyntaxHighlighter Prism as the display name, removing the restricted
+  WordPress term without changing the plugin slug or compatibility identifiers.
 - Require WordPress 7.0+ and focus CI/local WordPress testing on 7.1.4 only,
   retaining PHP 8.2/8.5 coverage.
 - Load preview styles and Prism themes inside the block editor's iframe so

@@ -2,7 +2,7 @@
 
 **************************************************************************
 
-Plugin Name:  SyntaxHighlighter Prism for WordPress
+Plugin Name:  SyntaxHighlighter Prism
 Plugin URI:   https://github.com/saguiitay/syntaxhighlighter
 Version:      4.0.2
 Description:  Backward-compatible local Prism highlighting, with TypeScript, TSX and Kusto Query Language. Replaces SyntaxHighlighter Evolved.

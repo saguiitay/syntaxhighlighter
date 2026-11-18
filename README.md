@@ -1,4 +1,4 @@
-# SyntaxHighlighter Prism for WordPress
+# SyntaxHighlighter Prism
 
 A replacement fork of **SyntaxHighlighter Evolved**, using local Prism.js
 1.30.0 instead of the old SyntaxHighlighter engines. Supports TypeScript, TSX,
@@ -13,7 +13,7 @@ are retained. Not maintained or released by Automattic.
    they intentionally share the class, block, shortcode and option identifiers.
 3. Build a current ZIP using the [development commands](#development) below.
    Upload it using **Plugins > Add New > Upload Plugin**, then activate
-   **SyntaxHighlighter Prism for WordPress**.
+   **SyntaxHighlighter Prism**.
 4. Review **Settings > SyntaxHighlighter**, existing posts and any custom brush
    integrations. No content migration or post resave is required.
 

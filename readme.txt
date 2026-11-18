@@ -1,4 +1,4 @@
-=== SyntaxHighlighter Prism for WordPress ===
+=== SyntaxHighlighter Prism ===
 Contributors: saguiitay, Viper007Bond, automattic, donncha
 Tags: code, syntax highlighting, typescript, kusto, prism
 Requires at least: 7.0
@@ -51,7 +51,7 @@ Human-readable source, build instructions and issue tracking are available in th
 
 1. Back up your site and test the replacement on staging.
 2. If SyntaxHighlighter Evolved is installed, deactivate it before activating this plugin. Do not run both together.
-3. Upload the plugin ZIP through Plugins > Add New > Upload Plugin, install it, then activate SyntaxHighlighter Prism for WordPress.
+3. Upload the plugin ZIP through Plugins > Add New > Upload Plugin, install it, then activate SyntaxHighlighter Prism.
 4. Review Settings > SyntaxHighlighter and check existing posts. No content migration or post resave is needed.
 
 == Frequently Asked Questions ==
