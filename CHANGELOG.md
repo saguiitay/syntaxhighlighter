@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 1.0.0
+
+Initial standalone release. Previously unreleased development builds are
+consolidated into this release.
 
 - Use SyntaxHighlighter Prism as the display name, removing the restricted
   WordPress term without changing the plugin slug or compatibility identifiers.
@@ -42,7 +45,7 @@
 - Keep legacy saved theme values and expose the same choices in the block
   editor, including its preview. Load only used theme styles on the frontend.
 
-## 4.0.2 - unreleased fork
+### Layout and JSON
 
 - Add JSON to the editor language selector and `[json]` / `[code language="json"]`.
 - Tighten code font/line spacing, padding, gutters and the copy toolbar.
@@ -51,15 +54,15 @@
 - Align gutter typography with the code and isolate it from surrounding theme
   styles; add consistent column spacing and a subtle separator.
 
-## 4.0.1 - unreleased fork
+### Coy theme
 
 - Replace the custom light presentation with upstream Prism Coy, scoped to the
   plugin: blue accent, striped paper, lifted shadows and original token colors.
 - Adapt the theme to existing scrolling, wrapping, line decorations, controls
   and dark/automatic modes without styling unrelated code on the page.
-- Bump the asset version so updated styles do not reuse cached 4.0.0 URLs.
+- Version asset URLs so updated styles do not reuse cached development builds.
 
-## 4.0.0 - unreleased fork
+### Prism migration and compatibility
 
 - Replace frontend SyntaxHighlighter 2/3 with local, pinned Prism.js 1.30.0.
 - Add TypeScript, TSX and Kusto Query Language (`kql`/`kusto`) in blocks,

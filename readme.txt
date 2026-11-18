@@ -4,7 +4,7 @@ Tags: code, syntax highlighting, kusto, prism
 Requires at least: 7.0
 Requires PHP: 8.2
 Tested up to: 7.1
-Stable tag: 4.0.2
+Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,31 +87,22 @@ Deactivate this plugin, then reactivate SyntaxHighlighter Evolved. Existing cont
 
 == Changelog ==
 
-= 4.0.2 =
+= 1.0.0 =
 
-* Add JSON, Rust, Markdown and Power Query (M) to the language selector and shortcodes.
+* Initial standalone release as SyntaxHighlighter Prism, using locally bundled Prism.js 1.30.0.
+* Support KQL, TypeScript, TSX, JSON, Rust, Markdown and Power Query (M), alongside existing languages.
 * Refine KQL strings, operators, numbers and durations against the official language lexer.
+* Preserve stored blocks, shortcodes and settings without a migration.
 * Add selectable local Prism themes and a settings preview that follows unsaved changes.
-* Fix live preview styling inside the block editor's iframe.
-* Improve code spacing, blank-line numbering and gutter alignment.
+* Include optional live syntax preview in the block editor, including iframe styling.
+* Add source copying, wrapping, collapse and configurable line numbers and highlights.
+* Use scoped Coy styling with light, dark and automatic appearance, compact spacing and aligned gutters.
 * Use the syntaxhighlighter-prism translation domain and remove the external GitHub update override.
 * Require WordPress 7.0+ and PHP 8.2+.
 
-= 4.0.1 =
-
-* Use locally bundled Prism Coy styling, scoped to this plugin.
-* Retain line controls, scrolling, wrapping and dark/automatic appearance.
-
-= 4.0.0 =
-
-* Replace the old highlighting engines with locally bundled Prism.js 1.30.0.
-* Add TypeScript, TSX and Kusto Query Language support.
-* Preserve stored blocks, shortcodes and settings without a migration.
-* Add optional editor preview, source copying and configurable line controls.
-
 == Upgrade Notice ==
 
-= 4.0.2 =
+= 1.0.0 =
 
 Deactivate SyntaxHighlighter Evolved before activating this plugin. Existing content is retained, but themes and custom legacy brushes should be checked on staging.
 

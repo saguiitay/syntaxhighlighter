@@ -88,6 +88,9 @@ CI. Update them deliberately as supported branches receive security releases.
 
 Previously validated WordPress 7 endpoints:
 
+These historical results used internal 4.0.x development labels, not public
+WordPress.org releases. They are not a new full-matrix validation of 1.0.0.
+
 | WordPress | PHP | Environment |
 |---|---|---|
 | 7.1.4 | 8.2.35 | WordPress Playground / Chromium; both themes |
@@ -132,7 +135,7 @@ requires explicit legacy fixtures and a Gutenberg deprecation strategy.
 
 `npm run archive` writes:
 
-- `artifacts/syntaxhighlighter-prism-4.0.2.zip` and its SHA-256 file.
+- `artifacts/syntaxhighlighter-prism-1.0.0.zip` and its SHA-256 file.
 - `artifacts/package-manifest.json`, hashing every packaged file.
 - `artifacts/dependency-inventory.json`, listing locked npm packages/licenses.
 

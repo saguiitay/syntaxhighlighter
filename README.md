@@ -126,7 +126,7 @@ npm run build
 npm run archive
 ```
 
-The archive is written to `artifacts/syntaxhighlighter-prism-4.0.2.zip`.
+The archive is written to `artifacts/syntaxhighlighter-prism-1.0.0.zip`.
 Building alone updates `dist`; archiving creates the ZIP. No build tool is
 required on the WordPress server.
 
