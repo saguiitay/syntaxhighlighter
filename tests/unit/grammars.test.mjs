@@ -226,7 +226,7 @@ test('Kusto PR 3 recognizes query keywords outside pipes without identifier pref
 		keywords,
 	);
 });
-test('Kusto PR 3 fixes string operators and consumes case-insensitive membership tildes', () => {
+test('Kusto word operators include their negation and case-insensitive membership tildes', () => {
 	assert.deepEqual(
 		kustoTokens(
 			'hasprefix hasprefix_cs !hasprefix !hasprefix_cs has_any has_all in~ !in~ ' +
@@ -238,24 +238,31 @@ test('Kusto PR 3 fixes string operators and consumes case-insensitive membership
 		[
 			'hasprefix',
 			'hasprefix_cs',
-			'hasprefix',
-			'hasprefix_cs',
+			'!hasprefix',
+			'!hasprefix_cs',
 			'has_any',
 			'has_all',
 			'in~',
-			'in~',
-			'between',
-			'contains',
-			'contains_cs',
-			'endswith',
-			'endswith_cs',
-			'has',
-			'has_cs',
-			'hassuffix',
-			'hassuffix_cs',
-			'startswith',
-			'startswith_cs',
+			'!in~',
+			'!between',
+			'!contains',
+			'!contains_cs',
+			'!endswith',
+			'!endswith_cs',
+			'!has',
+			'!has_cs',
+			'!hassuffix',
+			'!hassuffix_cs',
+			'!startswith',
+			'!startswith_cs',
 		],
+	);
+	assert.deepEqual(
+		kustoTokens(
+			'T | where Message!contains"x" and Message!in~("a")',
+			'keyword',
+		),
+		['where', '!contains', 'and', '!in~'],
 	);
 });
 test('Kusto PR 3 keeps obfuscated verbatim strings and their embedded comments intact', () => {
@@ -272,7 +279,7 @@ test('Kusto PR 3 keeps obfuscated verbatim strings and their embedded comments i
 	assert.deepEqual(kustoTokens(source, 'string'), strings);
 	assert.deepEqual(kustoTokens(source, 'comment'), []);
 });
-test('Kusto PR 3 adds scalar aliases and boolean spellings without matching identifiers', () => {
+test('Kusto scalar aliases and boolean spellings keep null distinct from booleans', () => {
 	const source =
 		'date double int32 int64 time\ntrue True TRUE false False FALSE null\n' +
 		'trueValue TrueValue TRUE_VALUE falseValue FalseValue FALSE_VALUE\n' +
@@ -291,8 +298,8 @@ test('Kusto PR 3 adds scalar aliases and boolean spellings without matching iden
 		'false',
 		'False',
 		'FALSE',
-		'null',
 	]);
+	assert.deepEqual(kustoTokens(source, 'keyword'), ['null']);
 	assert.deepEqual(kustoTokens(source, 'function'), [
 		'MyFunction',
 		'_MyFunction',
@@ -341,14 +348,168 @@ test('real Kusto examples include joins, dynamic data, query parameters and cros
 	assert.ok(html.includes('token datetime'));
 	assert.ok(html.includes('token verbatim-string'));
 });
+test('Kusto lexer multiline strings retain prefixes and protect embedded commands and comments', () => {
+	const strings = [
+		'```plain\n.show tables\n```',
+		'h```hidden\n// not a comment\n```',
+		'~~~alternate\n| where x == 1\n~~~',
+		'H~~~hidden alternate\n.show tables\n~~~',
+	];
+	const source = strings.join('\n');
+	assert.deepEqual(kustoTokens(source, 'string'), strings);
+	assert.deepEqual(kustoTokens(source, 'command'), []);
+	assert.deepEqual(kustoTokens(source, 'comment'), []);
+	assert.deepEqual(kustoTokens('nameh"ordinary" $h"also ordinary"', 'string'), [
+		'"ordinary"',
+		'"also ordinary"',
+	]);
+});
+test('Kusto lexer typed scalar literals stay whole without pretending raw dates are datetime literals', () => {
+	for (const [type, literals] of [
+		[
+			'datetime',
+			['datetime(2007-01-01T10:00:00Z)', 'date(2007-01-01)', 'datetime(null)'],
+		],
+		['timespan', ['time(1.02:03:04.5)', 'timespan(null)']],
+		['typed-boolean', ['bool(null)', 'bool(TRUE)']],
+		[
+			'typed-number',
+			[
+				'int(-1)',
+				'int32(1)',
+				'long(0xFF)',
+				'int64(null)',
+				'real(nan)',
+				'double(+inf)',
+				'decimal(1.25)',
+			],
+		],
+		[
+			'guid',
+			[
+				'guid(12345678-1234-1234-1234-123456789abc)',
+				'guid(null)',
+				'12345678-1234-1234-1234-123456789abc',
+				'abcdefab-cdef-abcd-efab-cdefabcdefab',
+			],
+		],
+	]) {
+		assert.deepEqual(kustoTokens(literals.join('\n'), type), literals, type);
+	}
+	assert.deepEqual(
+		kustoTokens(
+			'2007-01-01 10:20:30 mydatetime(2007-01-01) $datetime(2007-01-01)',
+			'datetime',
+		),
+		[],
+	);
+});
+test('Kusto lexer numbers respect hexadecimal case, trailing dots, exponents and identifier boundaries', () => {
+	assert.deepEqual(kustoTokens('0XDEAD 0xff 1. 1.e3 1e-3 42 1..2', 'number'), [
+		'0XDEAD',
+		'0xff',
+		'1.',
+		'1.e3',
+		'1e-3',
+		'42',
+		'1',
+		'2',
+	]);
+	assert.deepEqual(
+		kustoTokens('123column 1efoo 0xNOPE 2dollars inf -inf +inf nan', 'number'),
+		[],
+	);
+});
+test('Kusto lexer timespans use supported suffixes without consuming identifier prefixes', () => {
+	const units = (
+		'm min minute minutes s sec second seconds d day days h hr hrs hour hours ' +
+		'ms milli millis millisec millisecond milliseconds ' +
+		'micro micros microsec microsecond microseconds ' +
+		'nano nanos nanosec nanosecond nanoseconds tick ticks'
+	).split(' ');
+	const literals = units.map((unit, index) => `${index + 1}.5${unit}`);
+	assert.deepEqual(kustoTokens(literals.join(' '), 'timespan'), literals);
+	assert.deepEqual(
+		kustoTokens(
+			'1minutes_count 2millisecondsExtra 3hours_column 1us 1ns 1\u00b5s 1e3s',
+			'timespan',
+		),
+		[],
+	);
+});
+test('Kusto lexer recognizes query aliases and options without coloring arbitrary pipe words', () => {
+	const keywords = (
+		'filter mvapply mvexpand entity_group toscalar totable typeof ' +
+		'datascope with_source with_step_name isfuzzy best_effort ' +
+		'timechart barchart columnchart scatterchart'
+	).split(' ');
+	assert.deepEqual(kustoTokens(keywords.join(' '), 'keyword'), keywords);
+	assert.deepEqual(
+		kustoTokens(
+			'T | pretend-operator value\nT | WHERE x\nT | hasprefix_column',
+			'keyword',
+		),
+		[],
+	);
+	const operators =
+		'containscs notcontains notcontainscs likecs notlike notlikecs';
+	assert.deepEqual(kustoTokens(operators, 'keyword'), operators.split(' '));
+});
+test('Kusto lexer dollar identifiers, dotted properties and hints do not become scalar keywords', () => {
+	const source = [
+		'T | join kind=leftouter hint.strategy=shuffle hint.shufflekey=Key (U)',
+		'on $left.Key == $right.Key',
+		'| project A=Metadata.string, B=Metadata.true, C=Metadata.count, D=$123',
+	].join('\n');
+	assert.deepEqual(kustoTokens(source, 'variable'), [
+		'$left',
+		'$right',
+		'$123',
+	]);
+	assert.deepEqual(kustoTokens(source, 'property'), [
+		'Key',
+		'Key',
+		'string',
+		'true',
+		'count',
+	]);
+	assert.deepEqual(kustoTokens(source, 'parameter'), [
+		'hint.strategy',
+		'hint.shufflekey',
+	]);
+	assert.deepEqual(kustoTokens(source, 'class-name'), []);
+	assert.deepEqual(kustoTokens(source, 'boolean'), []);
+});
+test('Kusto callable count and range differ from bare query operators', () => {
+	const source = [
+		'T | where (Flag) | summarize Events=count(), Values=make_list(Value)',
+		'range x from 1 to 3 step 1',
+		'print Samples=range(1,3,1), Data=database("db").table("Events")',
+	].join('\n');
+	for (const name of ['count', 'range', 'database', 'table', 'make_list']) {
+		assert.ok(kustoTokens(source, 'function').includes(name), name);
+	}
+	assert.ok(kustoTokens(source, 'keyword').includes('where'));
+	assert.ok(kustoTokens(source, 'keyword').includes('range'));
+	assert.ok(!kustoTokens(source, 'function').includes('where'));
+});
 test(
 	'adversarial grammar fixtures terminate within a bounded test timeout',
 	{ timeout: 5000 },
 	() => {
-		vm.runInContext(
-			`window.SyntaxHighlighterPrism.tokenize('@"' + '""'.repeat(20000), window.SyntaxHighlighterPrism.languages.kusto);`,
-			sandbox,
-			{ timeout: 3000 },
-		);
+		load('kusto');
+		for (const source of [
+			'@"' + '""'.repeat(20000),
+			'datetime('.repeat(15000),
+			'long('.repeat(20000),
+			'h~~~' + '// where\n'.repeat(10000),
+		]) {
+			sandbox.adversarialKusto = source;
+			vm.runInContext(
+				`window.SyntaxHighlighterPrism.tokenize(adversarialKusto, window.SyntaxHighlighterPrism.languages.kusto);`,
+				sandbox,
+				{ timeout: 3000 },
+			);
+		}
 	},
 );

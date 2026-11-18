@@ -133,7 +133,7 @@ test('line ranges, first line, safe tokens and repeated initialization', async (
 	await expect(page.locator('.sh-line')).toHaveCount(3);
 	await expect(page.locator('body > pre')).toHaveText('Unrelated');
 });
-test('Kusto PR 3 tokens preserve displayed and copied source', async ({
+test('Kusto lexer tokens preserve displayed and copied source', async ({
 	page,
 }) => {
 	const source = [
@@ -141,6 +141,9 @@ test('Kusto PR 3 tokens preserve displayed and copied source', async ({
 		'Source | where Message in~ ("A") and Message hasprefix "x"',
 		'| extend Secret = h@"secret ""value""", Active = TRUE',
 		'| project Property = "text".property, Duration = 2milliseconds',
+		'| extend Started = datetime(2007-01-01), RequestId = guid(null)',
+		'| join hint.strategy=shuffle (Other) on $left.Key == $right.Key',
+		'| extend Message = h~~~line one\n.show not_a_command\n// <script>text</script>\n~~~',
 		'.show tables',
 		'.set-or-append Results <| print value = 1 <> 2',
 	].join('\n');
@@ -167,6 +170,15 @@ test('Kusto PR 3 tokens preserve displayed and copied source', async ({
 	await expect(
 		page.locator('.token.number').filter({ hasText: /^2milliseconds$/ }),
 	).toHaveCount(1);
+	await expect(page.locator('.token.datetime')).toHaveText(
+		'datetime(2007-01-01)',
+	);
+	await expect(page.locator('.token.guid')).toHaveText('guid(null)');
+	expect(await page.locator('.token.variable').allTextContents()).toEqual([
+		'$left',
+		'$right',
+	]);
+	await expect(page.locator('code script')).toHaveCount(0);
 	await page.evaluate(() => {
 		Object.defineProperty(navigator, 'clipboard', {
 			configurable: true,

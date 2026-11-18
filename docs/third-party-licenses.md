@@ -21,6 +21,10 @@ alongside the plugin's verbatim-string token and extended timespan units.
 That pull request is not assumed to be merged into the pinned npm release.
 The build copies Prism's complete license, including its contributors notice,
 alongside the runtime.
+Additional KQL tokenization refinements are informed by the lexical behavior
+of Microsoft's [Kusto.Language](https://github.com/microsoft/Kusto-Query-Language).
+The official parser is a reference, not a runtime dependency; its source and
+binaries are not bundled with the plugin.
 The obsolete SyntaxHighlighter engines and third-party brushes have been removed;
 their original sources and license notices remain available in Git history.
 

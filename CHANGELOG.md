@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Refine KQL highlighting against the official lexer: whole typed literals,
+  both multiline string forms, accurate number/duration boundaries, negated
+  operators, query aliases/options, join variables, hints and dotted properties.
+  Distinguish bare `null` and callable `count()`/`range()`; stop treating arbitrary
+  pipe words or unsupported `us`/`ns` duration suffixes as language tokens.
 - Backport KQL fixes from RunDevelopment/prism#3: query/graph keywords, string
   operators, scalar aliases, boolean spellings, verbatim strings and correct
   management-command/operator boundaries. Retain extended timespan support.

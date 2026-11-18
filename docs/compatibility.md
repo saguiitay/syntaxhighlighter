@@ -109,14 +109,38 @@ Colors and token classification necessarily differ from SyntaxHighlighter.
 
 ### KQL grammar updates
 
-The local Kusto extension backports
+The local Kusto extension builds on
 [RunDevelopment/prism#3](https://github.com/RunDevelopment/prism/pull/3),
 revision `7df2d65a518a5a5f84ef25a1bea623e19a5a8e53`, without upgrading
 Prism 1.30.0 or downloading code at runtime. It includes query/graph keywords,
 correct string operators and `in~`/`!in~`, escaped and obfuscated verbatim
 strings, scalar type aliases, boolean spellings, uppercase function names,
 line-leading management commands and complete `<|`/`<>` operators.
-The plugin's extended timespan units remain supported.
+Further refinements follow the official Kusto.Language
+[lexer](https://github.com/microsoft/Kusto-Query-Language/blob/master/src/Kusto.Language/Parser/TokenParser.cs)
+and [syntax facts](https://github.com/microsoft/Kusto-Query-Language/blob/master/src/Kusto.Language/Syntax/SyntaxFacts.cs):
+
+- Both multiline string delimiters (triple backticks and triple tildes),
+  including `h`/`H` prefixes, protect their contents from other token rules.
+- Typed datetime, timespan, numeric, boolean and GUID literals stay whole;
+  raw GUIDs, uppercase hexadecimal prefixes, trailing decimal dots and
+  exponents are recognized without coloring parts of identifiers.
+- Query aliases such as `filter`, `mvapply` and `mvexpand`, additional query
+  options/render modes, complete negated word operators and known `hint.*`
+  parameters have explicit rules. Arbitrary words after a pipe are not keywords.
+- `$left`/`$right` and other dollar identifiers, dotted properties and callable
+  `count()`/`range()` are distinguished from ordinary scalar keywords.
+  Bare `null` is a keyword, not a boolean literal.
+- Timespan suffixes follow the lexer, including `hr`, `hrs`, `milli`, `micros`
+  and `nanos`. Previously colored `us`, `ns` and micro-sign `s` abbreviations
+  are not lexer suffixes and no longer receive timespan coloring; use
+  `microsecond`/`nanosecond` spellings instead.
+
+This remains a regex-based highlighter, not the official parser or a query
+validator. Context-dependent names, syntax recovery and semantic validity are
+not reproduced, and typed-literal rules intentionally do not balance nested
+expressions. These changes affect colors only: saved and copied source is
+unchanged. No Kusto.Language binaries or source files are bundled.
 
 ## Legacy option matrix
 
