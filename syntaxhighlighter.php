@@ -7,7 +7,6 @@ Plugin URI:   https://github.com/saguiitay/syntaxhighlighter
 Version:      1.0.0
 Description:  Backward-compatible local Prism highlighting, with TypeScript, TSX and Kusto Query Language. Replaces SyntaxHighlighter Evolved.
 Author:       SyntaxHighlighter Prism contributors; Alex Mills (Viper007Bond), Automattic
-Author URI:   https://github.com/saguiitay/syntaxhighlighter
 Text Domain:  syntaxhighlighter-prism
 License:      GPL2+
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
