@@ -60,6 +60,11 @@ save/reload behavior. To run only those settings checks after a build, use
 `npm run test:settings-preview`; this skips the broader suite and extra theme
 installations.
 
+The block preview checks cover visible syntax colors inside the editor canvas,
+live typing, theme/line changes and toggling the preview off and on. Run
+`npm run test:editor-preview` after a build to exercise just that path, including
+checking that editor styles do not load on a frontend page without code.
+
 The site/browser are closed in `finally`; no background service is left running.
 Official WordPress/theme downloads are required on first use; no source snippets
 are sent externally. Two workers avoid editor request deadlock while limiting

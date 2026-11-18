@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
 import { verifySettingsPreview } from '../tests/browser/settings-preview.mjs';
+import { verifyEditorPreview } from '../tests/browser/editor-preview.mjs';
 
 await mkdir('artifacts', { recursive: true });
 const wpVersion = process.env.WP_VERSION || '6.8.12';
@@ -279,6 +280,7 @@ try {
 	);
 	assert.equal(previewResult.errors, '');
 	await verifySettingsPreview(page, instance.serverUrl, instance.playground);
+	await verifyEditorPreview(page, instance.serverUrl);
 	console.log(
 		'Classic and block themes, conditional assets, old/new Gutenberg serialization: passed.',
 	);

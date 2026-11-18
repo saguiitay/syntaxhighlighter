@@ -17,6 +17,7 @@
 		"test:php": "node scripts/test-php.mjs",
 		"test:wordpress": "node scripts/test-wordpress.mjs",
 		"test:settings-preview": "node scripts/test-settings-preview.mjs",
+		"test:editor-preview": "node scripts/test-editor-preview.mjs",
 		"test:package": "node scripts/test-package.mjs",
 		"benchmark": "node scripts/benchmark.mjs",
 		"lint": "eslint src scripts tests --no-warn-ignored",

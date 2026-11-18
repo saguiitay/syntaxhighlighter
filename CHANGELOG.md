@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Load preview styles and Prism themes inside the block editor's iframe so
+  live syntax previews show colors, layout and theme changes correctly.
 - Use the `syntaxhighlighter-prism` translation domain in PHP and the block
   editor, including script translation registration, without changing stored
   blocks, shortcodes, settings or compatibility hooks.

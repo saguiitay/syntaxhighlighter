@@ -86,6 +86,7 @@ class SyntaxHighlighter {
 		add_filter( 'plugin_action_links', array( $this, 'settings_link' ), 10, 2 );
 
 		// Editor Blocks
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_styles' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor_assets' ) );
 		register_block_type(
 			'syntaxhighlighter/code',
@@ -315,6 +316,25 @@ class SyntaxHighlighter {
 		register_setting( 'syntaxhighlighter_settings', 'syntaxhighlighter_settings', array( $this, 'validate_settings' ) );
 	}
 
+	function enqueue_block_editor_styles() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'syntaxhighlighter-blocks-css', // Handle.
+			plugins_url( 'dist/blocks.editor.build.css', __FILE__ ),
+			[],
+			( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) )
+				? filemtime( plugin_dir_path( __FILE__ ) . 'dist/blocks.editor.build.css' )
+				: $this->pluginver
+		);
+		wp_enqueue_style( 'syntaxhighlighter-core' );
+		foreach ( $this->prism->themes() as $theme => $name ) {
+			$this->prism->enqueue_theme( $theme );
+		}
+	}
+
 	// Enqueue block assets for the Editor
 	function enqueue_block_editor_assets() {
 		wp_enqueue_script(
@@ -325,20 +345,7 @@ class SyntaxHighlighter {
 				? filemtime( plugin_dir_path( __FILE__ ) . 'dist/blocks.build.js' )
 				: $this->pluginver
 		);
-
-		wp_enqueue_style(
-			'syntaxhighlighter-blocks-css', // Handle.
-			plugins_url( 'dist/blocks.editor.build.css', __FILE__ ),
-			[],
-			( ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) )
-				? filemtime( plugin_dir_path( __FILE__ ) . 'dist/blocks.editor.build.css' )
-				: $this->pluginver
-		);
 		wp_enqueue_script( 'syntaxhighlighter-core' );
-		wp_enqueue_style( 'syntaxhighlighter-core' );
-		foreach ( $this->prism->themes() as $theme => $name ) {
-			$this->prism->enqueue_theme( $theme );
-		}
 		$manifest = json_decode( file_get_contents( __DIR__ . '/dist/manifest.json' ), true );
 		$grammars = array();
 		foreach ( $manifest['dependencies'] as $id => $dependencies ) {
