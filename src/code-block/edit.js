@@ -37,8 +37,8 @@ export default function editSyntaxHighlighterBlock( { attributes, setAttributes,
 				}
 			} }
 			onChange={ ( nextContent ) => setAttributes( { content: nextContent } ) }
-			placeholder={ __( 'Tip: you can choose a code language from the block settings.', 'syntaxhighlighter' ) }
-			aria-label={ __( 'SyntaxHighlighter Code', 'syntaxhighlighter' ) }
+			placeholder={ __( 'Tip: you can choose a code language from the block settings.', 'syntaxhighlighter-prism' ) }
+			aria-label={ __( 'SyntaxHighlighter Code', 'syntaxhighlighter-prism' ) }
 		/>
 	</div>;
 

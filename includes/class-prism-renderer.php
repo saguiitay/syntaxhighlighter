@@ -28,21 +28,21 @@ class SyntaxHighlighter_Prism_Renderer {
 			wp_register_style( 'syntaxhighlighter-theme-' . $id, $url . 'themes/' . $id . '.css', array( 'syntaxhighlighter-core' ), $plugin->pluginver );
 		}
 		wp_localize_script( 'syntaxhighlighter-core', 'syntaxHighlighterPrismLabels', array(
-			'copy' => __( 'Copy code', 'syntaxhighlighter' ),
-			'copied' => __( 'Code copied.', 'syntaxhighlighter' ),
-			'failed' => __( 'Copy failed. Select the code and copy it manually.', 'syntaxhighlighter' ),
+			'copy' => __( 'Copy code', 'syntaxhighlighter-prism' ),
+			'copied' => __( 'Code copied.', 'syntaxhighlighter-prism' ),
+			'failed' => __( 'Copy failed. Select the code and copy it manually.', 'syntaxhighlighter-prism' ),
 		) );
 	}
 
 	public function themes() {
 		return array_merge(
 			array(
-				'auto' => __( 'Automatic (Coy light/dark)', 'syntaxhighlighter' ),
-				'light' => __( 'Coy (light)', 'syntaxhighlighter' ),
-				'dark' => __( 'Coy (dark)', 'syntaxhighlighter' ),
+				'auto' => __( 'Automatic (Coy light/dark)', 'syntaxhighlighter-prism' ),
+				'light' => __( 'Coy (light)', 'syntaxhighlighter-prism' ),
+				'dark' => __( 'Coy (dark)', 'syntaxhighlighter-prism' ),
 			),
 			$this->manifest['themes'],
-			array( 'none' => __( 'No syntax colors', 'syntaxhighlighter' ) )
+			array( 'none' => __( 'No syntax colors', 'syntaxhighlighter-prism' ) )
 		);
 	}
 
@@ -155,10 +155,10 @@ class SyntaxHighlighter_Prism_Renderer {
 		$escaped = str_replace( array( '[', "\r" ), array( '&#x5B;', '&#13;' ), htmlspecialchars( $source, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
 		$code = '<pre tabindex="0" class="' . esc_attr( implode( ' ', $classes ) ) . '"' . $data . '><code class="language-' . esc_attr( $language ) . '">' . $escaped . '</code></pre>';
 		$title = '' !== $options['title'] ? '<div class="sh-title">' . esc_html( $options['title'] ) . '</div>' : '';
-		$button = $options['copy'] ? '<button type="button" class="sh-copy" hidden>' . esc_html__( 'Copy code', 'syntaxhighlighter' ) . '</button>' : '';
+		$button = $options['copy'] ? '<button type="button" class="sh-copy" hidden>' . esc_html__( 'Copy code', 'syntaxhighlighter-prism' ) . '</button>' : '';
 		$controls = $options['copy'] || $options['toolbar'] ? '<div class="sh-controls">' . $button . '<span class="sh-status" role="status" aria-live="polite"></span></div>' : '';
 		if ( $options['collapse'] ) {
-			$code = '<details class="sh-collapse"><summary>' . esc_html( $options['title'] ? $options['title'] : __( 'Show code', 'syntaxhighlighter' ) ) . '</summary>' . $controls . $code . '</details>';
+			$code = '<details class="sh-collapse"><summary>' . esc_html( $options['title'] ? $options['title'] : __( 'Show code', 'syntaxhighlighter-prism' ) ) . '</summary>' . $controls . $code . '</details>';
 			$title = '';
 		} else {
 			$code = $title . $controls . $code;

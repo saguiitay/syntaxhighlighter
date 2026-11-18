@@ -6,17 +6,17 @@ import transforms from './transforms';
 const { settings } = window.syntaxHighlighterData;
 
 export default {
-	title: __( 'SyntaxHighlighter Code', 'syntaxhighlighter' ),
-	description: __( 'Local syntax highlighting, including TypeScript and Kusto Query Language.', 'syntaxhighlighter' ),
+	title: __( 'SyntaxHighlighter Code', 'syntaxhighlighter-prism' ),
+	description: __( 'Local syntax highlighting, including TypeScript and Kusto Query Language.', 'syntaxhighlighter-prism' ),
 	icon: 'editor-code',
 	category: 'text',
 	keywords: [
 		// translators: Keyword that user might search for when trying to locate block.
-		__( 'Source', 'syntaxhighlighter' ),
+		__( 'Source', 'syntaxhighlighter-prism' ),
 		// translators: Keyword that user might search for when trying to locate block.
-		__( 'Program', 'syntaxhighlighter' ),
+		__( 'Program', 'syntaxhighlighter-prism' ),
 		// translators: Keyword that user might search for when trying to locate block.
-		__( 'Develop', 'syntaxhighlighter' ),
+		__( 'Develop', 'syntaxhighlighter-prism' ),
 	],
 	attributes: {
 		content: {

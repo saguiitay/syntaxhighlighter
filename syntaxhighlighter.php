@@ -8,7 +8,7 @@ Version:      4.0.2
 Description:  Backward-compatible local Prism highlighting, with TypeScript, TSX and Kusto Query Language. Replaces SyntaxHighlighter Evolved.
 Author:       SyntaxHighlighter Prism contributors; Alex Mills (Viper007Bond), Automattic
 Author URI:   https://github.com/saguiitay/syntaxhighlighter
-Text Domain:  syntaxhighlighter
+Text Domain:  syntaxhighlighter-prism
 License:      GPL2+
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 6.8.12
@@ -22,10 +22,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( class_exists( 'SyntaxHighlighter', false ) ) {
 	register_activation_hook( __FILE__, static function () {
-		wp_die( esc_html__( 'Deactivate SyntaxHighlighter Evolved before activating SyntaxHighlighter Prism.', 'syntaxhighlighter' ) );
+		wp_die( esc_html__( 'Deactivate SyntaxHighlighter Evolved before activating SyntaxHighlighter Prism.', 'syntaxhighlighter-prism' ) );
 	} );
 	add_action( 'admin_notices', static function () {
-		echo '<div class="notice notice-error"><p>' . esc_html__( 'Deactivate SyntaxHighlighter Evolved before activating SyntaxHighlighter Prism.', 'syntaxhighlighter' ) . '</p></div>';
+		echo '<div class="notice notice-error"><p>' . esc_html__( 'Deactivate SyntaxHighlighter Evolved before activating SyntaxHighlighter Prism.', 'syntaxhighlighter-prism' ) . '</p></div>';
 	} );
 	return;
 } else {
@@ -52,7 +52,7 @@ class SyntaxHighlighter {
 
 	function __construct() {
 		// Load localization domain
-		load_plugin_textdomain( 'syntaxhighlighter' );
+		load_plugin_textdomain( 'syntaxhighlighter-prism' );
 
 		// Display hooks
 		add_filter( 'the_content', array( $this, 'parse_shortcodes' ), 7 ); // Posts
@@ -215,47 +215,47 @@ class SyntaxHighlighter {
 		) );
 
 		$this->brush_names = (array) apply_filters( 'syntaxhighlighter_brush_names', array(
-			'typescript' => __( 'TypeScript', 'syntaxhighlighter' ),
-			'tsx'        => __( 'TypeScript JSX (TSX)', 'syntaxhighlighter' ),
-			'kusto'      => __( 'Kusto Query Language (KQL)', 'syntaxhighlighter' ),
-			'as3'        => __( 'ActionScript',              'syntaxhighlighter' ),
-			'arduino'    => __( 'Arduino',                   'syntaxhighlighter' ),
-			'bash'       => __( 'BASH / Shell',              'syntaxhighlighter' ),
-			'coldfusion' => __( 'ColdFusion',                'syntaxhighlighter' ),
-			'clojure'    => __( 'Clojure',                   'syntaxhighlighter' ),
-			'cpp'        => __( 'C / C++',                   'syntaxhighlighter' ),
-			'csharp'     => __( 'C#',                        'syntaxhighlighter' ),
-			'css'        => __( 'CSS',                       'syntaxhighlighter' ),
-			'delphi'     => __( 'Delphi / Pascal',           'syntaxhighlighter' ),
-			'diff'       => __( 'diff / patch',              'syntaxhighlighter' ),
-			'erlang'     => __( 'Erlang',                    'syntaxhighlighter' ),
-			'fsharp'     => __( 'F#',                        'syntaxhighlighter' ),
-			'go'         => __( 'Go',                        'syntaxhighlighter' ),
-			'groovy'     => __( 'Groovy',                    'syntaxhighlighter' ),
-			'haskell'    => __( 'Haskell',                   'syntaxhighlighter' ),
-			'java'       => __( 'Java',                      'syntaxhighlighter' ),
-			'javafx'     => __( 'JavaFX',                    'syntaxhighlighter' ),
-			'jscript'    => __( 'JavaScript',                'syntaxhighlighter' ),
-			'json'       => __( 'JSON',                      'syntaxhighlighter' ),
-			'latex'      => __( 'LaTeX',                     'syntaxhighlighter' ),
-			'markdown'   => __( 'Markdown',                  'syntaxhighlighter' ),
-			'matlabkey'  => __( 'MATLAB',                    'syntaxhighlighter' ),
-			'objc'       => __( 'Objective-C',               'syntaxhighlighter' ),
-			'perl'       => __( 'Perl',                      'syntaxhighlighter' ),
-			'php'        => __( 'PHP',                       'syntaxhighlighter' ),
-			'plain'      => __( 'Plain Text',                'syntaxhighlighter' ),
-			'powerquery' => __( 'Power Query (M)',            'syntaxhighlighter' ),
-			'powershell' => __( 'PowerShell',                'syntaxhighlighter' ),
-			'python'     => __( 'Python',                    'syntaxhighlighter' ),
-			'r'          => __( 'R',                         'syntaxhighlighter' ),
-			'ruby'       => __( 'Ruby / Ruby on Rails',      'syntaxhighlighter' ),
-			'rust'       => __( 'Rust',                      'syntaxhighlighter' ),
-			'scala'      => __( 'Scala',                     'syntaxhighlighter' ),
-			'swift'      => __( 'Swift',                     'syntaxhighlighter' ),
-			'sql'        => __( 'SQL',                       'syntaxhighlighter' ),
-			'vb'         => __( 'Visual Basic',              'syntaxhighlighter' ),
-			'xml'        => __( 'HTML / XHTML / XML / XSLT', 'syntaxhighlighter' ),
-			'yaml'        => __( 'YAML',                     'syntaxhighlighter' ),
+			'typescript' => __( 'TypeScript', 'syntaxhighlighter-prism' ),
+			'tsx'        => __( 'TypeScript JSX (TSX)', 'syntaxhighlighter-prism' ),
+			'kusto'      => __( 'Kusto Query Language (KQL)', 'syntaxhighlighter-prism' ),
+			'as3'        => __( 'ActionScript',              'syntaxhighlighter-prism' ),
+			'arduino'    => __( 'Arduino',                   'syntaxhighlighter-prism' ),
+			'bash'       => __( 'BASH / Shell',              'syntaxhighlighter-prism' ),
+			'coldfusion' => __( 'ColdFusion',                'syntaxhighlighter-prism' ),
+			'clojure'    => __( 'Clojure',                   'syntaxhighlighter-prism' ),
+			'cpp'        => __( 'C / C++',                   'syntaxhighlighter-prism' ),
+			'csharp'     => __( 'C#',                        'syntaxhighlighter-prism' ),
+			'css'        => __( 'CSS',                       'syntaxhighlighter-prism' ),
+			'delphi'     => __( 'Delphi / Pascal',           'syntaxhighlighter-prism' ),
+			'diff'       => __( 'diff / patch',              'syntaxhighlighter-prism' ),
+			'erlang'     => __( 'Erlang',                    'syntaxhighlighter-prism' ),
+			'fsharp'     => __( 'F#',                        'syntaxhighlighter-prism' ),
+			'go'         => __( 'Go',                        'syntaxhighlighter-prism' ),
+			'groovy'     => __( 'Groovy',                    'syntaxhighlighter-prism' ),
+			'haskell'    => __( 'Haskell',                   'syntaxhighlighter-prism' ),
+			'java'       => __( 'Java',                      'syntaxhighlighter-prism' ),
+			'javafx'     => __( 'JavaFX',                    'syntaxhighlighter-prism' ),
+			'jscript'    => __( 'JavaScript',                'syntaxhighlighter-prism' ),
+			'json'       => __( 'JSON',                      'syntaxhighlighter-prism' ),
+			'latex'      => __( 'LaTeX',                     'syntaxhighlighter-prism' ),
+			'markdown'   => __( 'Markdown',                  'syntaxhighlighter-prism' ),
+			'matlabkey'  => __( 'MATLAB',                    'syntaxhighlighter-prism' ),
+			'objc'       => __( 'Objective-C',               'syntaxhighlighter-prism' ),
+			'perl'       => __( 'Perl',                      'syntaxhighlighter-prism' ),
+			'php'        => __( 'PHP',                       'syntaxhighlighter-prism' ),
+			'plain'      => __( 'Plain Text',                'syntaxhighlighter-prism' ),
+			'powerquery' => __( 'Power Query (M)',            'syntaxhighlighter-prism' ),
+			'powershell' => __( 'PowerShell',                'syntaxhighlighter-prism' ),
+			'python'     => __( 'Python',                    'syntaxhighlighter-prism' ),
+			'r'          => __( 'R',                         'syntaxhighlighter-prism' ),
+			'ruby'       => __( 'Ruby / Ruby on Rails',      'syntaxhighlighter-prism' ),
+			'rust'       => __( 'Rust',                      'syntaxhighlighter-prism' ),
+			'scala'      => __( 'Scala',                     'syntaxhighlighter-prism' ),
+			'swift'      => __( 'Swift',                     'syntaxhighlighter-prism' ),
+			'sql'        => __( 'SQL',                       'syntaxhighlighter-prism' ),
+			'vb'         => __( 'Visual Basic',              'syntaxhighlighter-prism' ),
+			'xml'        => __( 'HTML / XHTML / XML / XSLT', 'syntaxhighlighter-prism' ),
+			'yaml'        => __( 'YAML',                     'syntaxhighlighter-prism' ),
 		) );
 
 		// Add any custom brushes that aren't making use of the newer "syntaxhighlighter_brush_names" filter.
@@ -288,13 +288,13 @@ class SyntaxHighlighter {
 		// Plugins can add to this list: http://www.viper007bond.com/wordpress-plugins/syntaxhighlighter/adding-a-new-theme/
 		$this->prism = new SyntaxHighlighter_Prism_Renderer( $this );
 		$this->themes = (array) apply_filters( 'syntaxhighlighter_themes', array_merge( $this->prism->themes(), array(
-			'default'    => __( 'Default',      'syntaxhighlighter' ),
-			'django'     => __( 'Django',       'syntaxhighlighter' ),
-			'eclipse'    => __( 'Eclipse',      'syntaxhighlighter' ),
-			'emacs'      => __( 'Emacs',        'syntaxhighlighter' ),
-			'fadetogrey' => __( 'Fade to Grey', 'syntaxhighlighter' ),
-			'midnight'   => __( 'Midnight',     'syntaxhighlighter' ),
-			'rdark'      => __( 'RDark',        'syntaxhighlighter' ),
+			'default'    => __( 'Default',      'syntaxhighlighter-prism' ),
+			'django'     => __( 'Django',       'syntaxhighlighter-prism' ),
+			'eclipse'    => __( 'Eclipse',      'syntaxhighlighter-prism' ),
+			'emacs'      => __( 'Emacs',        'syntaxhighlighter-prism' ),
+			'fadetogrey' => __( 'Fade to Grey', 'syntaxhighlighter-prism' ),
+			'midnight'   => __( 'Midnight',     'syntaxhighlighter-prism' ),
+			'rdark'      => __( 'RDark',        'syntaxhighlighter-prism' ),
 		) ) );
 
 		// Other special characters that need to be encoded before going into the database (namely to work around kses)
@@ -306,7 +306,7 @@ class SyntaxHighlighter {
 
 	// Register the settings page
 	function register_settings_page() {
-		add_options_page( __( 'SyntaxHighlighter Settings', 'syntaxhighlighter' ), __( 'SyntaxHighlighter', 'syntaxhighlighter' ), 'manage_options', 'syntaxhighlighter', array( $this, 'settings_page' ) );
+		add_options_page( __( 'SyntaxHighlighter Settings', 'syntaxhighlighter-prism' ), __( 'SyntaxHighlighter', 'syntaxhighlighter-prism' ), 'manage_options', 'syntaxhighlighter', array( $this, 'settings_page' ) );
 	}
 
 
@@ -350,7 +350,7 @@ class SyntaxHighlighter {
 
 		// WordPress 5.0+ only, no Gutenberg plugin support
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'syntaxhighlighter-blocks', 'syntaxhighlighter' );
+			wp_set_script_translations( 'syntaxhighlighter-blocks', 'syntaxhighlighter-prism' );
 		}
 
 		natcasesort( $this->brush_names );
@@ -479,7 +479,7 @@ class SyntaxHighlighter {
 		}
 
 		if ( $file == $this_plugin ) {
-			$links[] = '<a href="' . admin_url( 'options-general.php?page=syntaxhighlighter' ) . '">' . __( 'Settings', 'syntaxhighlighter' ) . '</a>';
+			$links[] = '<a href="' . admin_url( 'options-general.php?page=syntaxhighlighter' ) . '">' . __( 'Settings', 'syntaxhighlighter-prism' ) . '</a>';
 		}
 
 		return $links;
@@ -942,18 +942,18 @@ class SyntaxHighlighter {
 		wp_localize_script( 'syntaxhighlighter-settings-preview', 'syntaxHighlighterSettingsPreview', array(
 			'url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'syntaxhighlighter-preview' ),
-			'updating' => __( 'Updating preview...', 'syntaxhighlighter' ),
-			'failed' => __( 'Preview could not be updated. The previous preview is still shown; try changing an option again.', 'syntaxhighlighter' ),
+			'updating' => __( 'Updating preview...', 'syntaxhighlighter-prism' ),
+			'failed' => __( 'Preview could not be updated. The previous preview is still shown; try changing an option again.', 'syntaxhighlighter-prism' ),
 		) );
 	}
 
 	public function ajax_settings_preview() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'You cannot preview these settings.', 'syntaxhighlighter' ) ), 403 );
+			wp_send_json_error( array( 'message' => __( 'You cannot preview these settings.', 'syntaxhighlighter-prism' ) ), 403 );
 		}
 		check_ajax_referer( 'syntaxhighlighter-preview', 'nonce' );
 		if ( ! isset( $_POST['syntaxhighlighter_settings'] ) || ! is_array( $_POST['syntaxhighlighter_settings'] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Preview settings are missing or invalid.', 'syntaxhighlighter' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Preview settings are missing or invalid.', 'syntaxhighlighter-prism' ) ), 400 );
 		}
 		wp_send_json_success( array( 'html' => $this->settings_preview( wp_unslash( $_POST['syntaxhighlighter_settings'] ) ) ) );
 	}
@@ -973,14 +973,14 @@ class SyntaxHighlighter {
 	<title>PHP Code Example</title>
 </head>
 <body>
-	<h1>' . __( 'PHP Code Example', 'syntaxhighlighter' ) . '</h1>
+	<h1>' . __( 'PHP Code Example', 'syntaxhighlighter-prism' ) . '</h1>
 
-	<p><?php echo \'' . __( 'Hello World!', 'syntaxhighlighter' ) . '\'; ?></p>
+	<p><?php echo \'' . __( 'Hello World!', 'syntaxhighlighter-prism' ) . '\'; ?></p>
 
 	<div class="foobar">
 ' . __( '		This	is	an
 		example	of	smart
-		tabs.', 'syntaxhighlighter' ) . '
+		tabs.', 'syntaxhighlighter-prism' ) . '
 	</div>
 
 	<p><?php echo \'https://wordpress.org/\'; ?></p>
@@ -1001,18 +1001,18 @@ class SyntaxHighlighter {
 	jQuery(document).ready(function( $ ) {
 		// Confirm pressing of the "Reset to Defaults" button
 		$("#syntaxhighlighter-defaults").click(function(){
-			var areyousure = confirm("<?php echo esc_js( __( 'Are you sure you want to reset your settings to the defaults?', 'syntaxhighlighter' ) ); ?>");
+			var areyousure = confirm("<?php echo esc_js( __( 'Are you sure you want to reset your settings to the defaults?', 'syntaxhighlighter-prism' ) ); ?>");
 			if ( true != areyousure ) return false;
 		});
 		<?php if ( ! empty( $_GET['defaults'] ) ) : ?>
-		$("#message p strong").text("<?php echo esc_js( __( 'Settings reset to defaults.', 'syntaxhighlighter' ) ); ?>");
+		$("#message p strong").text("<?php echo esc_js( __( 'Settings reset to defaults.', 'syntaxhighlighter-prism' ) ); ?>");
 		<?php endif; ?>
 	});
 // ]]>
 </script>
 
 <div class="wrap">
-	<h2><?php esc_html_e( 'SyntaxHighlighter Settings', 'syntaxhighlighter' ); ?></h2>
+	<h2><?php esc_html_e( 'SyntaxHighlighter Settings', 'syntaxhighlighter-prism' ); ?></h2>
 
 	<form method="post" action="options.php" id="syntaxhighlighter-settings">
 
@@ -1021,22 +1021,22 @@ class SyntaxHighlighter {
 
 	<table class="form-table">
 		<tr valign="top">
-			<th scope="row"><?php esc_html_e( 'Highlighting engine', 'syntaxhighlighter' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Highlighting engine', 'syntaxhighlighter-prism' ); ?></th>
 			<td>
 				<strong>Prism.js 1.30.0</strong>
 				<input type="hidden" name="syntaxhighlighter_settings[shversion]" value="<?php echo esc_attr( $this->settings['shversion'] ); ?>" />
-				<p><?php esc_html_e( 'Legacy version settings are retained for rollback. Prism supplies copying and optional line wrapping without Flash.', 'syntaxhighlighter' ); ?></p>
+				<p><?php esc_html_e( 'Legacy version settings are retained for rollback. Prism supplies copying and optional line wrapping without Flash.', 'syntaxhighlighter-prism' ); ?></p>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="syntaxhighlighter-theme"><?php esc_html_e( 'Color Theme', 'syntaxhighlighter' ); ?></label></th>
+			<th scope="row"><label for="syntaxhighlighter-theme"><?php esc_html_e( 'Color Theme', 'syntaxhighlighter-prism' ); ?></label></th>
 			<td>
 				<select name="syntaxhighlighter_settings[theme]" id="syntaxhighlighter-theme" class="postform">
 <?php
 					$modern = $this->prism->themes();
 					$groups = array(
-						__( 'Prism themes', 'syntaxhighlighter' ) => array_intersect_key( $this->themes, $modern ),
-						__( 'Legacy and custom themes', 'syntaxhighlighter' ) => array_diff_key( $this->themes, $modern ),
+						__( 'Prism themes', 'syntaxhighlighter-prism' ) => array_intersect_key( $this->themes, $modern ),
+						__( 'Legacy and custom themes', 'syntaxhighlighter-prism' ) => array_diff_key( $this->themes, $modern ),
 					);
 					foreach ( $groups as $label => $choices ) {
 						if ( empty( $choices ) ) {
@@ -1050,18 +1050,18 @@ class SyntaxHighlighter {
 					}
 ?>
 				</select>
-				<p class="description"><?php esc_html_e( 'The default for all code blocks and shortcodes, unless a block selects its own theme. Legacy theme names retain their Coy light/dark mappings.', 'syntaxhighlighter' ); ?></p>
+				<p class="description"><?php esc_html_e( 'The default for all code blocks and shortcodes, unless a block selects its own theme. Legacy theme names retain their Coy light/dark mappings.', 'syntaxhighlighter-prism' ); ?></p>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><?php esc_html_e( 'Load All Brushes', 'syntaxhighlighter' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Load All Brushes', 'syntaxhighlighter-prism' ); ?></th>
 			<td>
 				<fieldset>
-					<legend class="hidden"><?php esc_html_e( 'Load All Brushes', 'syntaxhighlighter' ); ?></legend>
+					<legend class="hidden"><?php esc_html_e( 'Load All Brushes', 'syntaxhighlighter-prism' ); ?></legend>
 					<label for="syntaxhighlighter-loadallbrushes">
 						<input name="syntaxhighlighter_settings[loadallbrushes]" type="checkbox" id="syntaxhighlighter-loadallbrushes" value="1" <?php checked( $this->settings['loadallbrushes'], 1 ); ?> />
 						<?php
-							echo wp_kses( __( 'Always load all local grammars. This compatibility setting increases page weight; normally rendered blocks and legacy <code>&lt;pre class="brush: ..."&gt;</code> content select their own grammars.', 'syntaxhighlighter' ), array( 'code' => array() ) );
+							echo wp_kses( __( 'Always load all local grammars. This compatibility setting increases page weight; normally rendered blocks and legacy <code>&lt;pre class="brush: ..."&gt;</code> content select their own grammars.', 'syntaxhighlighter-prism' ), array( 'code' => array() ) );
 						?>
 					</label>
 				</fieldset>
@@ -1069,46 +1069,46 @@ class SyntaxHighlighter {
 		</tr>
 	</table>
 
-	<h3><?php esc_html_e( 'Defaults', 'syntaxhighlighter' ); ?></h3>
+	<h3><?php esc_html_e( 'Defaults', 'syntaxhighlighter-prism' ); ?></h3>
 
-	<p><?php esc_html_e( 'All of the settings below can be configured on a per-code block basis, but you can control the defaults of all code blocks here.', 'syntaxhighlighter' ); ?></p>
+	<p><?php esc_html_e( 'All of the settings below can be configured on a per-code block basis, but you can control the defaults of all code blocks here.', 'syntaxhighlighter-prism' ); ?></p>
 
 	<table class="form-table">
 		<tr valign="top">
-			<th scope="row"><?php esc_html_e( 'Miscellaneous', 'syntaxhighlighter' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Miscellaneous', 'syntaxhighlighter-prism' ); ?></th>
 			<td>
 				<fieldset>
-					<legend class="hidden"><?php esc_html_e( 'Miscellaneous', 'syntaxhighlighter' ); ?></legend>
+					<legend class="hidden"><?php esc_html_e( 'Miscellaneous', 'syntaxhighlighter-prism' ); ?></legend>
 
-					<label for="syntaxhighlighter-gutter"><input name="syntaxhighlighter_settings[gutter]" type="checkbox" id="syntaxhighlighter-gutter" value="1" <?php checked( $this->settings['gutter'], 1 ); ?> /> <?php esc_html_e( 'Display line numbers', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-copy"><input name="syntaxhighlighter_settings[copy]" type="checkbox" id="syntaxhighlighter-copy" value="1" <?php checked( $this->settings['copy'], 1 ); ?> /> <?php esc_html_e( 'Display the copy button', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-toolbar"><input name="syntaxhighlighter_settings[toolbar]" type="checkbox" id="syntaxhighlighter-toolbar" value="1" <?php checked( $this->settings['toolbar'], 1 ); ?> /> <?php esc_html_e( 'Display the toolbar', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-autolinks"><input name="syntaxhighlighter_settings[autolinks]" type="checkbox" id="syntaxhighlighter-autolinks" value="1" <?php checked( $this->settings['autolinks'], 1 ); ?> /> <?php esc_html_e( 'Automatically make URLs clickable', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-collapse"><input name="syntaxhighlighter_settings[collapse]" type="checkbox" id="syntaxhighlighter-collapse" value="1" <?php checked( $this->settings['collapse'], 1 ); ?> /> <?php esc_html_e( 'Collapse code boxes', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-light"><input name="syntaxhighlighter_settings[light]" type="checkbox" id="syntaxhighlighter-light" value="1" <?php checked( $this->settings['light'], 1 ); ?> /> <?php esc_html_e( 'Use the light display mode, best for single lines of code', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-smarttabs"><input name="syntaxhighlighter_settings[smarttabs]" type="checkbox" id="syntaxhighlighter-smarttabs" value="1" <?php checked( $this->settings['smarttabs'], 1 ); ?> /> <?php esc_html_e( 'Use smart tabs allowing tabs being used for alignment', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-wraplines"><input name="syntaxhighlighter_settings[wraplines]" type="checkbox" id="syntaxhighlighter-wraplines" value="1" <?php checked( $this->settings['wraplines'], 1 ); ?> /> <?php esc_html_e( 'Wrap long lines (disable for horizontal scrolling)', 'syntaxhighlighter' ); ?></label><br />
-					<label for="syntaxhighlighter-quickcode"><input name="syntaxhighlighter_settings[quickcode]" type="checkbox" id="syntaxhighlighter-quickcode" value="1" <?php checked( $this->settings['quickcode'], 1 ); ?> /> <?php esc_html_e( 'Select source on double click', 'syntaxhighlighter' ); ?></label><br />
-					<!--<label for="syntaxhighlighter-htmlscript"><input name="syntaxhighlighter_settings[htmlscript]" type="checkbox" id="syntaxhighlighter-htmlscript" value="1" <?php checked( $this->settings['htmlscript'], 1 ); ?> /> <?php esc_html_e( 'Enable &quot;HTML script&quot; mode by default (see the bottom of this page for details). Checking this box is not recommended as this mode only works with certain languages.', 'syntaxhighlighter' ); ?></label>-->
+					<label for="syntaxhighlighter-gutter"><input name="syntaxhighlighter_settings[gutter]" type="checkbox" id="syntaxhighlighter-gutter" value="1" <?php checked( $this->settings['gutter'], 1 ); ?> /> <?php esc_html_e( 'Display line numbers', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-copy"><input name="syntaxhighlighter_settings[copy]" type="checkbox" id="syntaxhighlighter-copy" value="1" <?php checked( $this->settings['copy'], 1 ); ?> /> <?php esc_html_e( 'Display the copy button', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-toolbar"><input name="syntaxhighlighter_settings[toolbar]" type="checkbox" id="syntaxhighlighter-toolbar" value="1" <?php checked( $this->settings['toolbar'], 1 ); ?> /> <?php esc_html_e( 'Display the toolbar', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-autolinks"><input name="syntaxhighlighter_settings[autolinks]" type="checkbox" id="syntaxhighlighter-autolinks" value="1" <?php checked( $this->settings['autolinks'], 1 ); ?> /> <?php esc_html_e( 'Automatically make URLs clickable', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-collapse"><input name="syntaxhighlighter_settings[collapse]" type="checkbox" id="syntaxhighlighter-collapse" value="1" <?php checked( $this->settings['collapse'], 1 ); ?> /> <?php esc_html_e( 'Collapse code boxes', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-light"><input name="syntaxhighlighter_settings[light]" type="checkbox" id="syntaxhighlighter-light" value="1" <?php checked( $this->settings['light'], 1 ); ?> /> <?php esc_html_e( 'Use the light display mode, best for single lines of code', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-smarttabs"><input name="syntaxhighlighter_settings[smarttabs]" type="checkbox" id="syntaxhighlighter-smarttabs" value="1" <?php checked( $this->settings['smarttabs'], 1 ); ?> /> <?php esc_html_e( 'Use smart tabs allowing tabs being used for alignment', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-wraplines"><input name="syntaxhighlighter_settings[wraplines]" type="checkbox" id="syntaxhighlighter-wraplines" value="1" <?php checked( $this->settings['wraplines'], 1 ); ?> /> <?php esc_html_e( 'Wrap long lines (disable for horizontal scrolling)', 'syntaxhighlighter-prism' ); ?></label><br />
+					<label for="syntaxhighlighter-quickcode"><input name="syntaxhighlighter_settings[quickcode]" type="checkbox" id="syntaxhighlighter-quickcode" value="1" <?php checked( $this->settings['quickcode'], 1 ); ?> /> <?php esc_html_e( 'Select source on double click', 'syntaxhighlighter-prism' ); ?></label><br />
+					<!--<label for="syntaxhighlighter-htmlscript"><input name="syntaxhighlighter_settings[htmlscript]" type="checkbox" id="syntaxhighlighter-htmlscript" value="1" <?php checked( $this->settings['htmlscript'], 1 ); ?> /> <?php esc_html_e( 'Enable &quot;HTML script&quot; mode by default (see the bottom of this page for details). Checking this box is not recommended as this mode only works with certain languages.', 'syntaxhighlighter-prism' ); ?></label>-->
 				</fieldset>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="syntaxhighlighter-classname"><?php esc_html_e( 'Additional CSS Class(es)', 'syntaxhighlighter' ); ?></label></th>
+			<th scope="row"><label for="syntaxhighlighter-classname"><?php esc_html_e( 'Additional CSS Class(es)', 'syntaxhighlighter-prism' ); ?></label></th>
 			<td><input name="syntaxhighlighter_settings[classname]" type="text" id="syntaxhighlighter-classname" value="<?php echo esc_attr( $this->settings['classname'] ); ?>" class="regular-text" /></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="syntaxhighlighter-firstline"><?php esc_html_e( 'Starting Line Number', 'syntaxhighlighter' ); ?></label></th>
+			<th scope="row"><label for="syntaxhighlighter-firstline"><?php esc_html_e( 'Starting Line Number', 'syntaxhighlighter-prism' ); ?></label></th>
 			<td><input name="syntaxhighlighter_settings[firstline]" type="text" id="syntaxhighlighter-firstline" value="<?php echo esc_attr( $this->settings['firstline'] ); ?>" class="small-text" /></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="syntaxhighlighter-padlinenumbers"><?php esc_html_e( 'Line Number Padding', 'syntaxhighlighter' ); ?></label></th>
+			<th scope="row"><label for="syntaxhighlighter-padlinenumbers"><?php esc_html_e( 'Line Number Padding', 'syntaxhighlighter-prism' ); ?></label></th>
 			<td>
 				<select name="syntaxhighlighter_settings[padlinenumbers]" id="syntaxhighlighter-padlinenumbers" class="postform">
 <?php
 					$linepaddings = array(
-						'false' => __( 'Off', 'syntaxhighlighter' ),
-						'true'  => __( 'Automatic', 'syntaxhighlighter' ),
+						'false' => __( 'Off', 'syntaxhighlighter-prism' ),
+						'true'  => __( 'Automatic', 'syntaxhighlighter-prism' ),
 						1       => 1,
 						2       => 2,
 						3       => 3,
@@ -1124,14 +1124,14 @@ class SyntaxHighlighter {
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="syntaxhighlighter-tabsize"><?php esc_html_e( 'Tab Size', 'syntaxhighlighter' ); ?></label></th>
+			<th scope="row"><label for="syntaxhighlighter-tabsize"><?php esc_html_e( 'Tab Size', 'syntaxhighlighter-prism' ); ?></label></th>
 			<td><input name="syntaxhighlighter_settings[tabsize]" type="text" id="syntaxhighlighter-tabsize" value="<?php echo esc_attr( $this->settings['tabsize'] ); ?>" class="small-text" /></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="syntaxhighlighter-title"><?php esc_html_e( 'Title', 'syntaxhighlighter' ); ?></label></th>
+			<th scope="row"><label for="syntaxhighlighter-title"><?php esc_html_e( 'Title', 'syntaxhighlighter-prism' ); ?></label></th>
 			<td>
 				<input name="syntaxhighlighter_settings[title]" type="text" id="syntaxhighlighter-title" value="<?php echo esc_attr( $this->settings['title'] ); ?>" class="regular-text" /><br />
-				<?php esc_html_e( 'Some optional default text to display above each code block or as the clickable text for collapsed code blocks.', 'syntaxhighlighter' ); ?>
+				<?php esc_html_e( 'Some optional default text to display above each code block or as the clickable text for collapsed code blocks.', 'syntaxhighlighter-prism' ); ?>
 			</td>
 		</tr>
 	</table>
@@ -1141,19 +1141,19 @@ class SyntaxHighlighter {
 		if ( function_exists( 'submit_button' ) ) {
 			submit_button( null, 'primary', 'syntaxhighlighter-submit', false );
 			echo ' ';
-			submit_button( __( 'Reset to Defaults', 'syntaxhighlighter' ), 'primary', 'syntaxhighlighter-defaults', false );
+			submit_button( __( 'Reset to Defaults', 'syntaxhighlighter-prism' ), 'primary', 'syntaxhighlighter-defaults', false );
 		} else {
 			echo '<input type="submit" name="syntaxhighlighter-submit" class="button-primary" value="' . __( 'Save Changes') . '" />' . "\n";
-			echo '<input type="submit" name="syntaxhighlighter-defaults" id="syntaxhighlighter-defaults" class="button-primary" value="' . __( 'Reset to Defaults', 'syntaxhighlighter' ) . '" />' . "\n";
+			echo '<input type="submit" name="syntaxhighlighter-defaults" id="syntaxhighlighter-defaults" class="button-primary" value="' . __( 'Reset to Defaults', 'syntaxhighlighter-prism' ) . '" />' . "\n";
 		}
 ?>
 	</p>
 
 	</form>
 
-	<h3><?php esc_html_e( 'Preview', 'syntaxhighlighter' ); ?></h3>
+	<h3><?php esc_html_e( 'Preview', 'syntaxhighlighter-prism' ); ?></h3>
 
-	<p><?php esc_html_e( 'Changes are previewed immediately. Click "Save Changes" to apply them to your site.', 'syntaxhighlighter' ); ?></p>
+	<p><?php esc_html_e( 'Changes are previewed immediately. Click "Save Changes" to apply them to your site.', 'syntaxhighlighter-prism' ); ?></p>
 	<p id="syntaxhighlighter-preview-status" role="status" aria-live="polite"></p>
 
 	<?php
@@ -1168,9 +1168,9 @@ class SyntaxHighlighter {
 		echo '</div>';
 ?>
 
-	<h3 style="margin-top:30px"><?php esc_html_e( 'Shortcode Parameters', 'syntaxhighlighter' ); ?></h3>
+	<h3 style="margin-top:30px"><?php esc_html_e( 'Shortcode Parameters', 'syntaxhighlighter-prism' ); ?></h3>
 
-	<p><?php printf( __( 'These are the parameters you can pass to the shortcode and what they do. For the booleans (i.e. on/off), pass %1$s/%2$s or %3$s/%4$s.', 'syntaxhighlighter' ), '<code>true</code>', '<code>1</code>', '<code>false</code>', '<code>0</code>' ); ?></p>
+	<p><?php printf( __( 'These are the parameters you can pass to the shortcode and what they do. For the booleans (i.e. on/off), pass %1$s/%2$s or %3$s/%4$s.', 'syntaxhighlighter-prism' ), '<code>true</code>', '<code>1</code>', '<code>false</code>', '<code>0</code>' ); ?></p>
 
 	<ul class="ul-disc">
 		<li>
@@ -1178,7 +1178,7 @@ class SyntaxHighlighter {
 				echo wp_kses(
 					sprintf(
 						// translators: %1$s Lang parameter; %2$s Language parameter; %3$s List of brush names.
-						_x( '%1$s or %2$s &#8212; The language syntax to highlight with. You can alternately just use that as the tag, such as <code>[php]code[/php]</code>. Available tags: %3$s.', 'language parameter', 'syntaxhighlighter' ),
+						_x( '%1$s or %2$s &#8212; The language syntax to highlight with. You can alternately just use that as the tag, such as <code>[php]code[/php]</code>. Available tags: %3$s.', 'language parameter', 'syntaxhighlighter-prism' ),
 						'<code>lang</code>',
 						'<code>language</code>',
 						implode( ', ', array_keys( $this->brushes ) )
@@ -1196,7 +1196,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Autolinks parameter.
-					esc_html_x( '%s &#8212; Toggle automatic URL linking.', 'autolinks parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Toggle automatic URL linking.', 'autolinks parameter', 'syntaxhighlighter-prism' ),
 					'<code>autolinks</code>'
 				);
 			?>
@@ -1205,7 +1205,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Classname parameter.
-					esc_html_x( '%s &#8212; Add an additional CSS class to the code box.', 'classname parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Add an additional CSS class to the code box.', 'classname parameter', 'syntaxhighlighter-prism' ),
 					'<code>classname</code>'
 				);
 			?>
@@ -1214,7 +1214,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Collapse parameter.
-					esc_html_x( '%s &#8212; Toggle collapsing the code box by default, requiring a click to expand it. Good for large code posts.', 'collapse parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Toggle collapsing the code box by default, requiring a click to expand it. Good for large code posts.', 'collapse parameter', 'syntaxhighlighter-prism' ),
 					'<code>collapse</code>'
 				);
 			?>
@@ -1223,7 +1223,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Firstline parameter.
-					esc_html_x( '%s &#8212; An interger specifying what number the first line should be (for the line numbering).', 'firstline parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; An interger specifying what number the first line should be (for the line numbering).', 'firstline parameter', 'syntaxhighlighter-prism' ),
 					'<code>firstline</code>'
 				);
 			?>
@@ -1232,7 +1232,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Gutter parameter.
-					esc_html_x( '%s &#8212; Toggle the left-side line numbering.', 'gutter parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Toggle the left-side line numbering.', 'gutter parameter', 'syntaxhighlighter-prism' ),
 					'<code>gutter</code>'
 				);
 			?>
@@ -1241,7 +1241,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %1$s Highlight parameter; %2$s Example.
-					esc_html_x( '%1$s &#8212; A comma-separated list of line numbers to highlight. You can also specify a range. Example: %2$s', 'highlight parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%1$s &#8212; A comma-separated list of line numbers to highlight. You can also specify a range. Example: %2$s', 'highlight parameter', 'syntaxhighlighter-prism' ),
 					'<code>highlight</code>',
 					'<code>2,5-10,12</code>'
 				);
@@ -1251,7 +1251,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Htmlscript parameter.
-					esc_html_x( "%s &#8212; Toggle highlighting any extra HTML/XML. Good for when you're mixing HTML/XML with another language, such as having PHP inside an HTML web page. This only works with certain languages.", 'htmlscript parameter', 'syntaxhighlighter' ),
+					esc_html_x( "%s &#8212; Toggle highlighting any extra HTML/XML. Good for when you're mixing HTML/XML with another language, such as having PHP inside an HTML web page. This only works with certain languages.", 'htmlscript parameter', 'syntaxhighlighter-prism' ),
 					'<code>htmlscript</code>'
 				);
 			?>
@@ -1260,7 +1260,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Light parameter.
-					esc_html_x( '%s &#8212; Toggle light mode which disables the gutter and toolbar all at once.', 'light parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Toggle light mode which disables the gutter and toolbar all at once.', 'light parameter', 'syntaxhighlighter-prism' ),
 					'<code>light</code>'
 				);
 			?>
@@ -1269,7 +1269,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Padlinenumbers parameter.
-					esc_html_x( '%s &#8212; Controls line number padding. Valid values are <code>false</code> (no padding), <code>true</code> (automatic padding), or an integer (forced padding).', 'padlinenumbers parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Controls line number padding. Valid values are <code>false</code> (no padding), <code>true</code> (automatic padding), or an integer (forced padding).', 'padlinenumbers parameter', 'syntaxhighlighter-prism' ),
 					'<code>padlinenumbers</code>'
 				);
 			?>
@@ -1278,7 +1278,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %1$s Title parameter; %2$s Collapse parameter.
-					esc_html_x( '%1$s (v3 only) &#8212; Sets some text to show up before the code. Very useful when combined with the %2$s parameter.', 'title parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%1$s (v3 only) &#8212; Sets some text to show up before the code. Very useful when combined with the %2$s parameter.', 'title parameter', 'syntaxhighlighter-prism' ),
 					'<code>title</code>',
 					'<code>collapse</code>'
 				);
@@ -1288,7 +1288,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Toolbar parameter.
-					esc_html_x( '%s &#8212; Toggle the toolbar (buttons in v2, the about question mark in v3)', 'toolbar parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Toggle the toolbar (buttons in v2, the about question mark in v3)', 'toolbar parameter', 'syntaxhighlighter-prism' ),
 					'<code>toolbar</code>'
 				);
 			?>
@@ -1297,7 +1297,7 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Wraplines parameter.
-					esc_html_x( '%s (v2 only) &#8212; Toggle line wrapping.', 'wraplines parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s (v2 only) &#8212; Toggle line wrapping.', 'wraplines parameter', 'syntaxhighlighter-prism' ),
 					'<code>wraplines</code>'
 				);
 			?>
@@ -1306,20 +1306,20 @@ class SyntaxHighlighter {
 			<?php
 				printf(
 					// translators: %s Quickcode parameter.
-					esc_html_x( '%s &#8212; Enable edit mode on double click.', 'quickcode parameter', 'syntaxhighlighter' ),
+					esc_html_x( '%s &#8212; Enable edit mode on double click.', 'quickcode parameter', 'syntaxhighlighter-prism' ),
 					'<code>quickcode</code>'
 				);
 			?>
 		</li>
 	</ul>
 
-	<p><?php esc_html_e( 'Some example shortcodes:', 'syntaxhighlighter' ); ?></p>
+	<p><?php esc_html_e( 'Some example shortcodes:', 'syntaxhighlighter-prism' ); ?></p>
 
 	<ul class="ul-disc">
-		<li><code>[php]<?php esc_html_e( 'your code here', 'syntaxhighlighter' ); ?>[/php]</code></li>
-		<li><code>[css autolinks=&quot;false&quot; classname=&quot;myclass&quot; collapse=&quot;false&quot; firstline=&quot;1&quot; gutter=&quot;true&quot; highlight=&quot;1-3,6,9&quot; htmlscript=&quot;false&quot; light=&quot;false&quot; padlinenumbers=&quot;false&quot; smarttabs=&quot;true&quot; tabsize=&quot;4&quot; toolbar=&quot;true&quot; title=&quot;<?php esc_html_e( 'example-filename.php', 'syntaxhighlighter' ); ?>&quot;]<?php esc_html_e( 'your code here', 'syntaxhighlighter' ); ?>[/css]</code></li>
-		<li><code>[code lang=&quot;js&quot;]<?php esc_html_e( 'your code here', 'syntaxhighlighter' ); ?>[/code]</code></li>
-		<li><code>[sourcecode language=&quot;plain&quot;]<?php esc_html_e( 'your code here', 'syntaxhighlighter' ); ?>[/sourcecode]</code></li>
+		<li><code>[php]<?php esc_html_e( 'your code here', 'syntaxhighlighter-prism' ); ?>[/php]</code></li>
+		<li><code>[css autolinks=&quot;false&quot; classname=&quot;myclass&quot; collapse=&quot;false&quot; firstline=&quot;1&quot; gutter=&quot;true&quot; highlight=&quot;1-3,6,9&quot; htmlscript=&quot;false&quot; light=&quot;false&quot; padlinenumbers=&quot;false&quot; smarttabs=&quot;true&quot; tabsize=&quot;4&quot; toolbar=&quot;true&quot; title=&quot;<?php esc_html_e( 'example-filename.php', 'syntaxhighlighter-prism' ); ?>&quot;]<?php esc_html_e( 'your code here', 'syntaxhighlighter-prism' ); ?>[/css]</code></li>
+		<li><code>[code lang=&quot;js&quot;]<?php esc_html_e( 'your code here', 'syntaxhighlighter-prism' ); ?>[/code]</code></li>
+		<li><code>[sourcecode language=&quot;plain&quot;]<?php esc_html_e( 'your code here', 'syntaxhighlighter-prism' ); ?>[/sourcecode]</code></li>
 	</ul>
 
 <?php $this->maybe_output_scripts(); ?>

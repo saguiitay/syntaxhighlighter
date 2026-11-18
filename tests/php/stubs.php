@@ -5,6 +5,8 @@ $sh_filters = array();
 $sh_scripts = array();
 $sh_styles = array();
 $sh_capability = true;
+$sh_translations = array();
+$sh_script_translations = array();
 function register_block_type( $name, $args ) {}
 function load_plugin_textdomain( $domain ) {}
 function add_action( ...$args ) { add_filter( ...$args ); }
@@ -24,8 +26,8 @@ function apply_filters( $tag, $value, ...$args ) {
 	return $value;
 }
 function do_action( $tag, ...$args ) { apply_filters( $tag, $args[0] ?? null, ...array_slice( $args, 1 ) ); }
-function __( $text, $domain = '' ) { return $text; }
-function esc_html__( $text, $domain = '' ) { return esc_html( $text ); }
+function __( $text, $domain = '' ) { return $GLOBALS['sh_translations'][ $domain ][ $text ] ?? $text; }
+function esc_html__( $text, $domain = '' ) { return esc_html( __( $text, $domain ) ); }
 function esc_attr( $text ) { return htmlspecialchars( (string) $text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ); }
 function esc_html( $text ) { return esc_attr( $text ); }
 function wp_strip_all_tags( $text ) { return strip_tags( $text ); }
@@ -43,6 +45,7 @@ function wp_register_style( $handle, $src, ...$args ) {
 function wp_enqueue_script( $handle, ...$args ) { $GLOBALS['sh_scripts'][ $handle ]['enqueued'] = true; }
 function wp_enqueue_style( $handle, ...$args ) { $GLOBALS['sh_styles'][ $handle ]['enqueued'] = true; }
 function wp_localize_script( ...$args ) {}
+function wp_set_script_translations( $handle, $domain ) { $GLOBALS['sh_script_translations'][ $handle ] = $domain; }
 function wp_add_inline_script( $handle, $data, $position = 'after' ) { $GLOBALS['sh_inline_scripts'][ $handle ][] = $data; }
 function wp_script_is( $handle, $state ) { return ! empty( $GLOBALS['sh_scripts'][ $handle ]['enqueued'] ); }
 function wp_style_is( $handle, $state ) {

@@ -59,7 +59,7 @@ export default function Preview({ attributes }) {
 		return () => { cancelled = true; };
 	}, [visible, attributes]);
 	return <div className="syntaxhighlighter-editor-preview">
-		<ToggleControl label={__('Show syntax preview', 'syntaxhighlighter')} checked={visible} onChange={setVisible} />
+		<ToggleControl label={__('Show syntax preview', 'syntaxhighlighter-prism')} checked={visible} onChange={setVisible} />
 		{error && <p role="alert">{error}</p>}
 		{visible && <div ref={ref} />}
 	</div>;

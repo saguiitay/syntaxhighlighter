@@ -9,7 +9,7 @@ export default ( { attributes, setAttributes, options } ) => {
 		<ToolbarDropdown
 			key="code-language"
 			options={ options }
-			optionsLabel={ __( 'Code Language', 'syntaxhighlighter' ) }
+			optionsLabel={ __( 'Code Language', 'syntaxhighlighter-prism' ) }
 			value={ language }
 			onChange={ ( value ) => setAttributes( { language: value } ) }
 		/>

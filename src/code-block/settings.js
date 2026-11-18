@@ -43,7 +43,7 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="code-language">
 				<ComboboxControl
-					label={ __( 'Code Language', 'syntaxhighlighter' ) }
+					label={ __( 'Code Language', 'syntaxhighlighter-prism' ) }
 					value={ language }
 					options={ options }
 					onChange={ ( nextLanguage ) => setAttributes( { language: nextLanguage } ) }>
@@ -59,7 +59,7 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="show-line-numbers">
 				<ToggleControl
-					label={ __( 'Show Line Numbers', 'syntaxhighlighter' ) }
+					label={ __( 'Show Line Numbers', 'syntaxhighlighter-prism' ) }
 					checked={ lineNumbers }
 					onChange={ ( nextLineNumbers ) => setAttributes( { lineNumbers: nextLineNumbers } ) }>
 				</ToggleControl>
@@ -72,7 +72,7 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="first-line-number">
 				<TextControl
-					label={ __( 'First Line Number', 'syntaxhighlighter' ) }
+					label={ __( 'First Line Number', 'syntaxhighlighter-prism' ) }
 					type="number"
 					value={ firstLineNumber }
 					onChange={ ( nextFirstLineNumber ) => setAttributes( { firstLineNumber: nextFirstLineNumber } ) }
@@ -88,9 +88,9 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="highlight-lines">
 				<TextControl
-					label={ __( 'Highlight Lines', 'syntaxhighlighter' ) }
+					label={ __( 'Highlight Lines', 'syntaxhighlighter-prism' ) }
 					value={ highlightLines }
-					help={ __( 'A comma-separated list of line numbers to highlight. Can also be a range. Example: 1,5,10-20', 'syntaxhighlighter' ) }
+					help={ __( 'A comma-separated list of line numbers to highlight. Can also be a range. Example: 1,5,10-20', 'syntaxhighlighter-prism' ) }
 					onChange={ ( nextHighlightLines ) => setAttributes( { highlightLines: nextHighlightLines } ) }>
 				</TextControl>
 			</PanelRow>,
@@ -102,7 +102,7 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="wrap-long-lines">
 				<ToggleControl
-					label={ __( 'Wrap Long Lines', 'syntaxhighlighter' ) }
+					label={ __( 'Wrap Long Lines', 'syntaxhighlighter-prism' ) }
 					checked={ wrapLines }
 					onChange={ ( nextWrapLines ) => setAttributes( { wrapLines: nextWrapLines } ) }>
 				</ToggleControl>
@@ -115,7 +115,7 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="make-urls-clickable">
 				<ToggleControl
-					label={ __( 'Make URLs Clickable', 'syntaxhighlighter' ) }
+					label={ __( 'Make URLs Clickable', 'syntaxhighlighter-prism' ) }
 					checked={ makeURLsClickable }
 					onChange={ ( nextMakeURLsClickable ) => setAttributes( { makeURLsClickable: nextMakeURLsClickable } ) }>
 				</ToggleControl>
@@ -128,7 +128,7 @@ export default ( { attributes, setAttributes } ) => {
 		blockSettings.push(
 			<PanelRow key="edit-mode">
 				<ToggleControl
-					label={ __( 'Enable edit mode on double click', 'syntaxhighlighter' ) }
+					label={ __( 'Enable edit mode on double click', 'syntaxhighlighter-prism' ) }
 					checked={ quickCode }
 					onChange={ ( nextQuickCode ) => setAttributes( { quickCode: nextQuickCode } ) }>
 				</ToggleControl>
@@ -143,18 +143,18 @@ export default ( { attributes, setAttributes } ) => {
 			</ToolbarGroup>
 		</BlockControls>
 		<InspectorControls key="syntaxHighlighterInspectorControls">
-			<PanelBody title={ __( 'Settings', 'syntaxhighlighter' ) }>
+			<PanelBody title={ __( 'Settings', 'syntaxhighlighter-prism' ) }>
 				<SelectControl
-					label={ __( 'Theme', 'syntaxhighlighter' ) }
+					label={ __( 'Theme', 'syntaxhighlighter-prism' ) }
 					value={ attributes.theme || '' }
 					options={ [
-						{ label: __( 'Site setting', 'syntaxhighlighter' ), value: '' },
+						{ label: __( 'Site setting', 'syntaxhighlighter-prism' ), value: '' },
 						...Object.entries( window.syntaxHighlighterData.themes ).map( ( [ value, label ] ) => ( { value, label } ) ),
 					] }
 					onChange={ ( theme ) => setAttributes( { theme: theme || undefined } ) }
 				/>
 				<ToggleControl
-					label={ __( 'Collapse code', 'syntaxhighlighter' ) }
+					label={ __( 'Collapse code', 'syntaxhighlighter-prism' ) }
 					checked={ !! attributes.collapse }
 					onChange={ ( collapse ) => setAttributes( { collapse } ) }
 				/>

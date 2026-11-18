@@ -241,3 +241,8 @@ override: WordPress.org can supply updates once this plugin is approved and
 published under its own slug. Building or installing a ZIP does not publish a
 directory release or install an automatic GitHub updater. No database upgrade
 is required.
+
+PHP and block-editor translations use the `syntaxhighlighter-prism` text domain,
+matching the distributable directory rather than the original plugin's domain.
+Upstream language packs are not reused. This does not rename saved blocks,
+shortcodes, options, public hooks, classes or script handles.

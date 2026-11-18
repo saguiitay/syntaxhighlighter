@@ -21,7 +21,7 @@ See README.md and docs/ for installation, compatibility differences, exact teste
 For supported languages, aliases and option equivalents, see docs/compatibility.md in this package.
 
 Development of this fork is [on GitHub](https://github.com/saguiitay/syntaxhighlighter).
-The retained translation domain and historical contributors come from SyntaxHighlighter Evolved. This fork is not the plugin deployed on WordPress.com or distributed by the upstream translation project.
+Historical contributors are credited from SyntaxHighlighter Evolved. This plugin uses its own `syntaxhighlighter-prism` translation domain; it is not the plugin deployed on WordPress.com or distributed by the upstream translation project.
 
 == Frequently Asked Questions ==
 

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Use the `syntaxhighlighter-prism` translation domain in PHP and the block
+  editor, including script translation registration, without changing stored
+  blocks, shortcodes, settings or compatibility hooks.
 - Remove the external GitHub update override so a future WordPress.org release
   can receive standard directory updates under its own slug.
 - Refine KQL highlighting against the official lexer: whole typed literals,
