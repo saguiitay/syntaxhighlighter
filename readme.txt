@@ -1,6 +1,6 @@
 === SyntaxHighlighter Prism ===
 Contributors: saguiitay, Viper007Bond, automattic, donncha
-Tags: code, syntax highlighting, typescript, kusto, prism
+Tags: code, syntax highlighting, kusto, prism
 Requires at least: 7.0
 Requires PHP: 8.2
 Tested up to: 7.1
@@ -79,6 +79,11 @@ Copying requires HTTPS or localhost and browser clipboard permission. If copying
 = Can I switch back to the original plugin? =
 
 Deactivate this plugin, then reactivate SyntaxHighlighter Evolved. Existing content and settings remain in place. Languages and shortcode tags added by this plugin may not work in the original.
+
+== Screenshots ==
+
+1. Frontend syntax highlighting with the Coy theme, line numbers and a copy button.
+2. KQL block editing with live preview, a dark theme and highlighted lines.
 
 == Changelog ==
 
