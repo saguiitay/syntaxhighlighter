@@ -235,5 +235,9 @@ existing installation it skips this fork and reports an admin notice. WordPress
 activation also rejects loading the unguarded original class after the fork.
 Do not install both as active network/site plugins.
 
-The distributable directory and Update URI are distinct. No automatic upstream
-WordPress.org update, database upgrade, public release or publishing step exists.
+The distributable directory is `syntaxhighlighter-prism`, distinct from the
+original plugin's `syntaxhighlighter` directory. There is no external `Update URI`
+override: WordPress.org can supply updates once this plugin is approved and
+published under its own slug. Building or installing a ZIP does not publish a
+directory release or install an automatic GitHub updater. No database upgrade
+is required.

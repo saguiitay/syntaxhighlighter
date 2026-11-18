@@ -19,9 +19,10 @@ are retained. Not maintained or released by Automattic.
 
 The ZIP is self-contained: production needs WordPress **6.8.12+** and PHP
 **8.2+**, not Node.js, npm or Composer. Its folder/update identity is
-`syntaxhighlighter-prism`, not the upstream WordPress.org slug. The `Update URI`
-prevents replacement by WordPress.org's original plugin; there is no automatic
-GitHub updater. Nothing is published by the build.
+`syntaxhighlighter-prism`, not the upstream WordPress.org slug. Standard
+WordPress.org updates are enabled once this plugin is approved and published
+under its own slug; there is no external update override or automatic GitHub
+updater. Nothing is published by the build.
 
 Existing ZIPs are not rebuilt when source changes. Rebuild before deploying
 unreleased changes; a ZIP's versioned filename alone does not establish that it

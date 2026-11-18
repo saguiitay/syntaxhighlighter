@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Remove the external GitHub update override so a future WordPress.org release
+  can receive standard directory updates under its own slug.
 - Refine KQL highlighting against the official lexer: whole typed literals,
   both multiline string forms, accurate number/duration boundaries, negated
   operators, query aliases/options, join variables, hints and dotted properties.
